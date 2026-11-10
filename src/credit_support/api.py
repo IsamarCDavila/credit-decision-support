@@ -1,53 +1,32 @@
 import hashlib
-import secrets
 from typing import Annotated, Any
 from uuid import UUID, uuid4
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Query
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from sqlalchemy import Connection, text
+from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 from credit_support.audit import append_event, canonical
 from credit_support.db import get_engine
+from credit_support.ingestion_api import router as ingestion_router
+from credit_support.limits import RequestSizeLimit
 from credit_support.schemas import AuditPage, CaseView, CreateCase, Error, Health
-from credit_support.settings import Identity, get_settings
+from credit_support.security import authorize, identity
+from credit_support.settings import Identity
 
 app = FastAPI(
     title="Credit Decision Support",
-    version="0.1.0",
+    version="0.2.0",
     description=(
-        "Synthetic-data credit analysis foundation. Document ingestion, evaluation, "
+        "Synthetic document ingestion and evidence extraction. Financial evaluation, "
         "and human review are subsequent milestones."
     ),
 )
-bearer = HTTPBearer(auto_error=False)
+app.add_middleware(RequestSizeLimit)
+app.include_router(ingestion_router)
 errors: dict[int | str, dict[str, Any]] = {
     code: {"model": Error} for code in (401, 403, 404, 409, 503)
 }
-
-
-def identity(
-    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer)],
-) -> Identity:
-    if credentials and credentials.scheme.lower() == "bearer":
-        for token, actor in get_settings().demo_identities.items():
-            if secrets.compare_digest(credentials.credentials.encode(), token.encode()):
-                return actor
-    raise HTTPException(
-        401, "Invalid or missing credentials", headers={"WWW-Authenticate": "Bearer"}
-    )
-
-
-def authorize(conn: Connection, case_id: UUID, actor: Identity) -> None:
-    row = conn.execute(
-        text("""
-        SELECT 1 FROM case_members WHERE case_id=:id AND actor_id=:actor AND role=:role
-    """),
-        {"id": case_id, "actor": actor.actor_id, "role": actor.role},
-    ).first()
-    if row is None:
-        raise HTTPException(404, "Case not found")
 
 
 @app.exception_handler(SQLAlchemyError)
@@ -66,7 +45,7 @@ def health() -> Health:
 def ready() -> Health:
     with get_engine().connect() as conn:
         revision: str = conn.execute(text("SELECT version_num FROM alembic_version")).scalar_one()
-        if revision != "0001_foundation":
+        if revision != "0002_ingestion":
             raise HTTPException(503, "Database migration required")
     return Health(status="ready")
 

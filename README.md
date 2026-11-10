@@ -6,7 +6,7 @@ Auditable AI-assisted credit analysis with synthetic data, deterministic financi
 
 ## Project status
 
-**Foundation — Phase 1.** The backend supports synthetic case creation, case-level access, idempotency, and an audit timeline. PostgreSQL migrations and a persistent worker are implemented. Document ingestion, financial evaluation, and the review interface follow in later milestones. Performance and model-quality targets remain unmeasured.
+**Document ingestion — Phase 2.** The backend accepts supported synthetic PDF/CSV statements, retains original files, and extracts financial fields with verifiable source references. Case permissions, idempotency, historical snapshots, migrations, and worker processing are implemented. Financial rules, model-assisted analysis, and human review follow in later milestones. Performance and model-quality targets remain unmeasured.
 
 The MVP supports SME cases in USD, full annual periods, and standalone financial statements. It prepares evidence-backed analysis for a human reviewer. Reports are marked **SIMULATION**; recommendations do not authorize real credit.
 
@@ -14,6 +14,7 @@ The MVP supports SME cases in USD, full annual periods, and standalone financial
 
 | Document | Purpose |
 |---|---|
+| [Document ingestion](docs/ingestion.md) | Supported formats, evidence extraction, limits, and demo |
 | [Foundation operations](docs/foundation.md) | Setup, API access, worker behavior, and verification |
 | [Project specification](docs/specification.md) | Problem, scope, architecture, and design targets |
 | [Architecture decision](docs/adr/001-mvp.md) | MVP scope and technical choices |
@@ -44,10 +45,10 @@ Prerequisites: Python 3.12, uv, and Docker Compose v2.
 uv sync --frozen --extra dev
 uv run python scripts/configure_demo.py
 docker compose up --build --wait api worker
-uv run python scripts/smoke_api.py
+uv run python scripts/smoke_ingestion.py
 ```
 
-The API runs at `http://127.0.0.1:8000`; interactive documentation is at `/docs`. Configuration generation creates private local credentials and refuses to overwrite `.env`. See [foundation operations](docs/foundation.md) for permissions, database requirements, tests, and current limitations.
+The API runs at `http://127.0.0.1:8000`; interactive documentation is at `/docs`. Configuration generation creates private local credentials and refuses to overwrite `.env`. See [document ingestion](docs/ingestion.md) for the extraction workflow and [foundation operations](docs/foundation.md) for database and identity configuration.
 
 ## Data and licensing
 

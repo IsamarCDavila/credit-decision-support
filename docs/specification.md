@@ -30,7 +30,7 @@ Real bank origination, credit-bureau integration, real customer data, automatic 
 flowchart TD
   UI[Review interface] --> API[FastAPI]
   API --> DB[(PostgreSQL: cases and jobs)]
-  API --> FS[(Private synthetic documents)]
+  API --> FS[(PostgreSQL document bytes)]
   DB --> WF[Persistent worker / state machine]
   WF --> X[Structured extraction]
   WF --> P[Deterministic policy selection]
@@ -57,7 +57,7 @@ Agents extract and synthesize; deterministic tools calculate and apply explicit 
 | Persistence | PostgreSQL 16, SQLAlchemy, Alembic; pgvector for policy retrieval |
 | Orchestration | Explicit Python state machine and database-backed jobs |
 | Models | Provider-independent adapter, validated structured outputs, offline CI mock |
-| Documents | Private local storage; text-based PDF and UTF-8 CSV parsers |
+| Documents | Transactional PostgreSQL document storage; text-based PDF and UTF-8 CSV parsers ([ADR-002](adr/002-ingestion.md)) |
 | Interface | React/TypeScript review interface |
 | Quality and operations | Docker Compose, pytest, Ruff, mypy, GitHub Actions, secret scanning |
 

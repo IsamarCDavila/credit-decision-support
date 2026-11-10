@@ -8,18 +8,14 @@ from sqlalchemy import Engine, text
 
 from credit_support.audit import append_event
 from credit_support.db import get_engine
+from credit_support.ingestion import extract
+from credit_support.parsers import IngestionError
 from credit_support.settings import get_settings
 
 
 def claim(engine: Engine, worker_id: str, lease_seconds: int) -> dict[str, Any] | None:
+    expire_exhausted(engine)
     with engine.begin() as conn:
-        # Expired jobs at the attempt limit are terminalized before selecting more work.
-        conn.execute(
-            text("""
-            UPDATE jobs SET status='FAILED_TERMINAL',lease_until=NULL,lease_token=NULL
-            WHERE attempts>=3 AND status='RUNNING' AND lease_until<now()
-        """)
-        )
         row = (
             conn.execute(
                 text("""
@@ -38,6 +34,47 @@ def claim(engine: Engine, worker_id: str, lease_seconds: int) -> dict[str, Any] 
             .first()
         )
         return dict(row) if row else None
+
+
+def expire_exhausted(engine: Engine) -> None:
+    with engine.begin() as conn:
+        candidate = (
+            conn.execute(
+                text("""
+          SELECT j.id,j.evaluation_id,j.step,e.case_id FROM jobs j
+          JOIN evaluations e ON e.id=j.evaluation_id WHERE j.attempts>=3
+          AND j.status='RUNNING' AND j.lease_until<clock_timestamp() ORDER BY j.id LIMIT 1
+        """)
+            )
+            .mappings()
+            .first()
+        )
+        if not candidate:
+            return
+        conn.execute(
+            text("SELECT id FROM cases WHERE id=:id FOR UPDATE"), {"id": candidate["case_id"]}
+        )
+        expired = conn.execute(
+            text("""
+          UPDATE jobs SET status='FAILED_TERMINAL',lease_until=NULL,lease_token=NULL,
+          result='{"error":"Lease attempts exhausted"}' WHERE id=:id AND attempts>=3
+          AND status='RUNNING' AND lease_until<clock_timestamp() RETURNING id
+        """),
+            {"id": candidate["id"]},
+        ).first()
+        if expired:
+            if candidate["step"] == "extract_documents":
+                conn.execute(
+                    text("UPDATE evaluations SET processing_state='FAILED_TERMINAL' WHERE id=:id"),
+                    {"id": candidate["evaluation_id"]},
+                )
+            append_event(
+                conn,
+                candidate["case_id"],
+                "worker",
+                "JOB_FAILED_TERMINAL",
+                {"job_id": str(candidate["id"]), "reason": "LEASE_ATTEMPTS_EXHAUSTED"},
+            )
 
 
 def heartbeat(engine: Engine, job: dict[str, Any], lease_seconds: int) -> bool:
@@ -74,12 +111,29 @@ def finish(engine: Engine, job: dict[str, Any]) -> bool:
         if current is None:
             return False
         result: dict[str, Any]
-        if current["step"] != "foundation_check":
+        if current["step"] == "extract_documents":
+            try:
+                with conn.begin_nested():
+                    result = extract(conn, UUID(str(job["evaluation_id"])))
+                status = "SUCCEEDED"
+            except IngestionError as exc:
+                status, result = "FAILED_TERMINAL", {"error": str(exc)}
+                conn.execute(
+                    text("UPDATE evaluations SET processing_state='FAILED_TERMINAL' WHERE id=:id"),
+                    {"id": job["evaluation_id"]},
+                )
+        elif current["step"] != "foundation_check":
             status = "FAILED_TERMINAL"
             result = {"error": "Unsupported foundation step"}
         else:
             status = "SUCCEEDED"
             result = {"snapshot_available": True, "simulation": True}
+        active: bool = conn.execute(
+            text("SELECT lease_until>clock_timestamp() FROM jobs WHERE id=:id"), {"id": job["id"]}
+        ).scalar_one()
+        if not active:
+            conn.rollback()
+            return False
         conn.execute(
             text("""
             UPDATE jobs SET status=:status,result=CAST(:result AS jsonb),lease_until=NULL,

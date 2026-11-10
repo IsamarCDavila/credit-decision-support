@@ -30,7 +30,7 @@ Quedan fuera del MVP la originación bancaria real, integración con burós, dat
 flowchart TD
   UI[Interfaz de revisión] --> API[FastAPI]
   API --> DB[(PostgreSQL: expedientes y trabajos)]
-  API --> FS[(Documentos sintéticos privados)]
+  API --> FS[(Bytes de documentos en PostgreSQL)]
   DB --> WF[Worker persistente / máquina de estados]
   WF --> X[Extracción estructurada]
   WF --> P[Selección determinista de política]
@@ -57,7 +57,7 @@ Los agentes extraen y sintetizan; las herramientas deterministas calculan y apli
 | Persistencia | PostgreSQL 16, SQLAlchemy, Alembic; pgvector para recuperar políticas |
 | Orquestación | Máquina de estados explícita en Python y trabajos persistidos en base de datos |
 | Modelos | Adaptador independiente del proveedor, salidas estructuradas validadas y mock de CI sin conexión |
-| Documentos | Almacenamiento local privado; parsers de PDF con texto y CSV UTF-8 |
+| Documentos | Almacenamiento transaccional en PostgreSQL; parsers de PDF con texto y CSV UTF-8 ([ADR-002](adr/002-ingestion.md)) |
 | Interfaz | Interfaz de revisión React/TypeScript |
 | Calidad y operaciones | Docker Compose, pytest, Ruff, mypy, GitHub Actions y detección de secretos |
 

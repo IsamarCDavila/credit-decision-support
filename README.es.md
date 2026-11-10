@@ -6,7 +6,7 @@ Análisis crediticio asistido por IA con trazabilidad, datos sintéticos, reglas
 
 ## Estado del proyecto
 
-**Infraestructura base — Fase 1.** El backend permite crear expedientes sintéticos, aplicar permisos por expediente, gestionar idempotencia y consultar auditoría. Se implementaron migraciones PostgreSQL y un worker persistente. La ingesta documental, evaluación financiera e interfaz de revisión corresponden a hitos posteriores. Las metas de rendimiento y calidad de modelos permanecen sin medir.
+**Ingesta documental — Fase 2.** El backend admite estados sintéticos PDF/CSV con formato definido, conserva archivos originales y extrae campos financieros con referencias verificables. Se implementaron permisos, idempotencia, snapshots históricos, migraciones y procesamiento mediante worker. Las reglas financieras, análisis asistido por modelos y revisión humana corresponden a hitos posteriores. Las metas de rendimiento y calidad de modelos permanecen sin medir.
 
 El MVP admite expedientes PyME en USD, periodos anuales completos y estados financieros individuales. Prepara análisis respaldados por evidencia para un revisor humano. Los informes llevan la marca **SIMULACIÓN**; las recomendaciones no autorizan créditos reales.
 
@@ -14,6 +14,7 @@ El MVP admite expedientes PyME en USD, periodos anuales completos y estados fina
 
 | Documento | Propósito |
 |---|---|
+| [Ingesta documental](docs/es/ingestion.md) | Formatos, extracción con evidencia, límites y demo |
 | [Operación de infraestructura base](docs/es/foundation.md) | Arranque, acceso a API, worker y verificación |
 | [Especificación del proyecto](docs/es/specification.md) | Problema, alcance, arquitectura y metas de diseño |
 | [Decisión de arquitectura](docs/es/adr/001-mvp.md) | Alcance del MVP y elecciones técnicas |
@@ -44,10 +45,10 @@ Requisitos: Python 3.12, uv y Docker Compose v2.
 uv sync --frozen --extra dev
 uv run python scripts/configure_demo.py
 docker compose up --build --wait api worker
-uv run python scripts/smoke_api.py
+uv run python scripts/smoke_ingestion.py
 ```
 
-La API se ejecuta en `http://127.0.0.1:8000`; su documentación interactiva se encuentra en `/docs`. La generación de configuración crea credenciales locales privadas y rechaza sobrescribir `.env`. La [guía de operación](docs/es/foundation.md) describe permisos, requisitos de base de datos, pruebas y limitaciones actuales.
+La API se ejecuta en `http://127.0.0.1:8000`; su documentación interactiva se encuentra en `/docs`. La generación de configuración crea credenciales locales privadas y rechaza sobrescribir `.env`. La [guía de ingesta](docs/es/ingestion.md) describe la extracción; la [guía de operación](docs/es/foundation.md) detalla la configuración de identidad y base de datos.
 
 ## Datos y licencia
 
