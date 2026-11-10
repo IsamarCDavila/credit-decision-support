@@ -1,4 +1,4 @@
--- Reference export through 0004_ai_workflow. Apply changes with Alembic.
+-- Reference export through 0005_human_review. Apply changes with Alembic.
 -- PostgreSQL 16 foundation schema.
 CREATE TABLE cases (
  id uuid PRIMARY KEY, segment text NOT NULL CHECK (segment = 'SME'),
@@ -472,3 +472,9 @@ DO $$ BEGIN
   GRANT SELECT,INSERT ON ai_drafts TO cds_runtime;
  END IF;
 END $$;
+
+
+CREATE INDEX case_member_workspace ON case_members(actor_id,role,case_id);
+CREATE INDEX case_created_order ON cases(created_at DESC,id DESC);
+CREATE INDEX evaluation_case_history ON evaluations(case_id,created_at DESC,id DESC);
+ALTER TABLE reviews ADD CONSTRAINT review_reason_length CHECK(length(reason)<=4000);
