@@ -1,0 +1,71 @@
+{
+  "synthetic": true,
+  "seed": 1,
+  "case_id": "00000000-0000-4000-8000-000000000001",
+  "segment": "SME",
+  "currency": "USD",
+  "cutoff": "2026-01-31",
+  "policy": {
+    "id": "SME-USD-DEMO-2026-01",
+    "valid_from": "2026-01-01",
+    "valid_to": "2027-01-01",
+    "minimum_dscr": "1.20"
+  },
+  "period": {
+    "start": "2025-01-01",
+    "end": "2025-12-31",
+    "basis": "individual"
+  },
+  "document": {
+    "id": "doc-001",
+    "kind": "csv",
+    "content": "key,value,currency\navailable_cash_flow,150000.00,USD\ndebt_service,100000.00,USD\n",
+    "sha256": "1dafafee3ab19d81271e1396e22b107a3723e04614f67f27e33b09b1c37f4527"
+  },
+  "evidence": [
+    {
+      "evidence_id": "ev-001",
+      "document_id": "doc-001",
+      "locator": {
+        "row": 2,
+        "column": "value"
+      },
+      "excerpt": "150000.00"
+    },
+    {
+      "evidence_id": "ev-002",
+      "document_id": "doc-001",
+      "locator": {
+        "row": 3,
+        "column": "value"
+      },
+      "excerpt": "100000.00"
+    }
+  ],
+  "facts": [
+    {
+      "fact_id": "fact-001",
+      "key": "available_cash_flow",
+      "value": "150000.00",
+      "status": "extracted",
+      "evidence_ids": [
+        "ev-001"
+      ]
+    },
+    {
+      "fact_id": "fact-002",
+      "key": "debt_service",
+      "value": "100000.00",
+      "status": "extracted",
+      "evidence_ids": [
+        "ev-002"
+      ]
+    }
+  ],
+  "expected": {
+    "dscr": "1.5000",
+    "rule_result": "meets_rules",
+    "recommendation_status": "DRAFT_ONLY",
+    "human_review": "PENDING"
+  }
+}
