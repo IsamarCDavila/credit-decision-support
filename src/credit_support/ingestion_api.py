@@ -65,6 +65,7 @@ class EvidenceView(BaseModel):
 
 class ExtractionView(BaseModel):
     evaluation_id: UUID
+    prepared_by: str
     processing_state: str
     job_status: str
     current: bool
@@ -281,6 +282,7 @@ def extraction_detail(id: UUID, evaluation_id: UUID, actor: Actor) -> Any:
         ]
         return {
             "evaluation_id": evaluation_id,
+            "prepared_by": evaluation["prepared_by"],
             "processing_state": evaluation["processing_state"],
             "job_status": evaluation["job_status"],
             "current": case["current_evaluation_id"] == evaluation_id,

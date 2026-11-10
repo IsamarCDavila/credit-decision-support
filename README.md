@@ -6,7 +6,7 @@ Auditable AI-assisted credit analysis with synthetic data, deterministic financi
 
 ## Project status
 
-**Grounded AI drafts — Phase 4.** The backend ingests synthetic PDF/CSV statements, verifies model-proposed observations, calculates DSCR, checks versioned policies, and prepares bilingual drafts from verified claims. OpenAI is optional and disabled by default, with a cumulative US$2 application allowance. Controlled evaluations distinguish mock orchestration from live model measurements. The review interface and report export remain Phase 5.
+**Human review workspace — Phase 5.** The application ingests synthetic PDF/CSV statements, verifies model-proposed observations, calculates DSCR, checks versioned policies, and prepares grounded bilingual drafts. A browser workspace supports case assignment, independent human review, evidence/audit inspection, and verified JSON/PDF reports. OpenAI remains optional and disabled by default, with a cumulative US$2 application allowance. Security, resilience, and measured load hardening remain Phase 6.
 
 The MVP supports SME cases in USD, full annual periods, and standalone financial statements. It prepares evidence-backed analysis for a human reviewer. Reports are marked **SIMULATION**; recommendations do not authorize real credit.
 
@@ -14,6 +14,7 @@ The MVP supports SME cases in USD, full annual periods, and standalone financial
 
 | Document | Purpose |
 |---|---|
+| [Human review workspace](docs/human-review.md) | Browser access, assignment, decisions, report reconstruction, and demo |
 | [Grounded AI workflow](docs/ai-workflow.md) | Model roles, source validation, OpenAI setup, costs, and comparison limits |
 | [Policy catalog and financial checks](docs/policy-engine.md) | Policy selection, DSCR, citations, and baseline verification |
 | [Document ingestion](docs/ingestion.md) | Supported formats, evidence extraction, limits, and demo |
@@ -51,9 +52,10 @@ docker compose up --build --wait api worker
 uv run python scripts/smoke_ingestion.py
 uv run python scripts/smoke_policy.py
 uv run python scripts/evaluate_ai.py --provider mock --output storage/ai-mock.json
+uv run python scripts/smoke_review.py
 ```
 
-The API runs at `http://127.0.0.1:8000`; interactive documentation is at `/docs`. Configuration generation creates private local credentials and refuses to overwrite `.env`. See [document ingestion](docs/ingestion.md) for the extraction workflow and [foundation operations](docs/foundation.md) for database and identity configuration.
+The workspace opens at `http://127.0.0.1:8000/`; interactive API documentation is at `/docs`. Configuration generation creates private local credentials and refuses to overwrite `.env`. See [human review](docs/human-review.md) for signing in and the review workflow, [document ingestion](docs/ingestion.md) for supported inputs, and [foundation operations](docs/foundation.md) for database/identity configuration.
 
 ## Data and licensing
 

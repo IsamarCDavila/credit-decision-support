@@ -6,7 +6,7 @@ Análisis crediticio asistido por IA con trazabilidad, datos sintéticos, reglas
 
 ## Estado del proyecto
 
-**Borradores de IA con evidencia — Fase 4.** El backend ingiere estados sintéticos PDF/CSV, verifica observaciones propuestas por modelos, calcula DSCR, comprueba políticas versionadas y prepara borradores bilingües con afirmaciones verificadas. OpenAI es opcional, está desactivado por defecto y tiene una asignación acumulada de US$2 en la aplicación. Las evaluaciones controladas distinguen la orquestación simulada de las mediciones reales. La interfaz de revisión y exportación corresponden a la fase 5.
+**Espacio de revisión humana — Fase 5.** La aplicación ingiere estados sintéticos PDF/CSV, verifica observaciones propuestas por modelos, calcula DSCR, comprueba políticas versionadas y prepara borradores bilingües con evidencia. La interfaz permite asignar expedientes, realizar una revisión independiente, consultar fuentes/auditoría y exportar JSON/PDF verificados. OpenAI sigue siendo opcional y está desactivado por defecto, con asignación acumulada de US$2. Seguridad, resiliencia y carga medida corresponden a la fase 6.
 
 El MVP admite expedientes PyME en USD, periodos anuales completos y estados financieros individuales. Prepara análisis respaldados por evidencia para un revisor humano. Los informes llevan la marca **SIMULACIÓN**; las recomendaciones no autorizan créditos reales.
 
@@ -14,6 +14,7 @@ El MVP admite expedientes PyME en USD, periodos anuales completos y estados fina
 
 | Documento | Propósito |
 |---|---|
+| [Espacio de revisión humana](docs/es/human-review.md) | Acceso web, asignación, decisiones, reconstrucción de informes y demo |
 | [Flujo de IA con evidencia](docs/es/ai-workflow.md) | Roles, validación, configuración de OpenAI, costos y límites de comparación |
 | [Catálogo y controles financieros](docs/es/policy-engine.md) | Selección de políticas, DSCR, citas y verificación de referencia |
 | [Ingesta documental](docs/es/ingestion.md) | Formatos, extracción con evidencia, límites y demo |
@@ -51,9 +52,10 @@ docker compose up --build --wait api worker
 uv run python scripts/smoke_ingestion.py
 uv run python scripts/smoke_policy.py
 uv run python scripts/evaluate_ai.py --provider mock --output storage/ai-mock.json
+uv run python scripts/smoke_review.py
 ```
 
-La API se ejecuta en `http://127.0.0.1:8000`; su documentación interactiva se encuentra en `/docs`. La generación de configuración crea credenciales locales privadas y rechaza sobrescribir `.env`. La [guía de ingesta](docs/es/ingestion.md) describe la extracción; la [guía de operación](docs/es/foundation.md) detalla la configuración de identidad y base de datos.
+La interfaz abre en `http://127.0.0.1:8000/`; la documentación interactiva de la API está en `/docs`. La configuración crea credenciales locales privadas y rechaza sobrescribir `.env`. La [guía de revisión](docs/es/human-review.md) explica el acceso y el flujo de revisión; la [guía de ingesta](docs/es/ingestion.md), los formatos; y la [operación base](docs/es/foundation.md), la identidad y base de datos.
 
 ## Datos y licencia
 

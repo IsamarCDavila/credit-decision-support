@@ -1,8 +1,10 @@
 import hashlib
-from typing import Annotated, Any
+from pathlib import Path
+from typing import Annotated, Any, Literal
 from uuid import UUID, uuid4
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Query
+from fastapi.responses import FileResponse
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -12,13 +14,15 @@ from credit_support.db import get_engine
 from credit_support.ingestion_api import router as ingestion_router
 from credit_support.limits import RequestSizeLimit
 from credit_support.policy_api import router as policy_router
+from credit_support.reports import router as report_router
+from credit_support.review_api import router as review_router
 from credit_support.schemas import AuditPage, CaseView, CreateCase, Error, Health
 from credit_support.security import authorize, identity
 from credit_support.settings import Identity
 
 app = FastAPI(
     title="Credit Decision Support",
-    version="0.4.0",
+    version="0.5.0",
     description=(
         "Synthetic document ingestion, deterministic financial calculations, and versioned "
         "policy checks, and grounded model-assisted drafts for human review."
@@ -28,6 +32,38 @@ app.add_middleware(RequestSizeLimit)
 app.include_router(ingestion_router)
 app.include_router(policy_router)
 app.include_router(ai_router)
+app.include_router(review_router)
+app.include_router(report_router)
+web_root = Path(__file__).parent / "web"
+
+
+@app.get("/assets/{name}", include_in_schema=False)
+def workspace_asset(name: Literal["workspace.js", "workspace.css"]) -> FileResponse:
+    return FileResponse(
+        web_root / name, media_type=("text/javascript" if name.endswith(".js") else "text/css")
+    )
+
+
+@app.middleware("http")
+async def response_headers(request: Any, call_next: Any) -> Any:
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["Referrer-Policy"] = "no-referrer"
+    response.headers["Cache-Control"] = "no-store"
+    if request.url.path == "/":
+        response.headers["Content-Security-Policy"] = (
+            "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; "
+            "img-src 'self' data:; object-src 'none'; base-uri 'none'; "
+            "frame-ancestors 'none'; form-action 'self'"
+        )
+    return response
+
+
+@app.get("/", include_in_schema=False)
+def workspace_page() -> FileResponse:
+    return FileResponse(web_root / "index.html")
+
+
 errors: dict[int | str, dict[str, Any]] = {
     code: {"model": Error} for code in (401, 403, 404, 409, 503)
 }
@@ -49,7 +85,7 @@ def health() -> Health:
 def ready() -> Health:
     with get_engine().connect() as conn:
         revision: str = conn.execute(text("SELECT version_num FROM alembic_version")).scalar_one()
-        if revision != "0004_ai_workflow":
+        if revision != "0005_human_review":
             raise HTTPException(503, "Database migration required")
     return Health(status="ready")
 

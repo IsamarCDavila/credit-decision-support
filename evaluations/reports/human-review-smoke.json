@@ -1,0 +1,45 @@
+{
+  "case_id": "05292889-753b-4763-85a2-b38c5bfe00ef",
+  "evaluation_id": "a2c03f06-1fb4-4c64-9019-582402759c89",
+  "review_state": "NEEDS_MORE_INFO",
+  "provider": "mock",
+  "paid_model_calls": 0,
+  "report_locales": [
+    "en",
+    "es"
+  ],
+  "report_formats": [
+    "json",
+    "pdf"
+  ],
+  "idempotency_verified": true,
+  "duplicate_review_blocked": true,
+  "static_assets_verified": true,
+  "embedded_pdf_snapshot_verified": true,
+  "validation_version": "human-review-smoke-v1",
+  "run_at_utc": "2026-11-10T17:11:08.604035+00:00",
+  "local_test_count": 169,
+  "local_test_result": "passed",
+  "browser_checks": {
+    "analyst_assignment": true,
+    "independent_spanish_review": true,
+    "source_inspection": true,
+    "pdf_download": true,
+    "desktop_and_mobile_presentation": true
+  },
+  "pdf_visual_checks": {
+    "locales": [
+      "en",
+      "es"
+    ],
+    "representative_pages_per_locale": 4,
+    "clipping_or_missing_glyphs_observed": false
+  },
+  "openai_ledger": {
+    "limit_usd": "2",
+    "committed_or_reserved_usd": "0.209620",
+    "openai_calls": 34
+  },
+  "live_model_enabled": false,
+  "limitations": "Controlled synthetic demonstration; no production identity, load, fairness, or service-level claim."
+}

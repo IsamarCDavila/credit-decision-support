@@ -126,7 +126,7 @@ wheels = [
 
 [[package]]
 name = "credit-decision-support"
-version = "0.4.0"
+version = "0.5.0"
 source = { editable = "." }
 dependencies = [
     { name = "alembic" },
@@ -136,6 +136,7 @@ dependencies = [
     { name = "pydantic-settings" },
     { name = "pypdf" },
     { name = "python-multipart" },
+    { name = "reportlab" },
     { name = "sqlalchemy" },
     { name = "uvicorn" },
 ]
@@ -165,6 +166,7 @@ requires-dist = [
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8,<10" },
     { name = "python-multipart", specifier = ">=0.0.20,<1" },
     { name = "pyyaml", marker = "extra == 'dev'", specifier = ">=6,<7" },
+    { name = "reportlab", specifier = ">=4,<5" },
     { name = "reportlab", marker = "extra == 'dev'", specifier = ">=4,<5" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.11,<1" },
     { name = "sqlalchemy", specifier = ">=2.0,<3" },
