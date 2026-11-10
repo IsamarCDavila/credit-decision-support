@@ -38,10 +38,9 @@ El flujo especializado utiliza dos roles acotados con el mismo modelo, sin agent
 
 ## Configuración de OpenAI y controles de costo
 
-El consumo real está desactivado por defecto. Configuración privada en `.env`:
+El consumo real está desactivado por defecto. Guardar la clave privada en `.env` bajo `CDS_OPENAI_API_KEY` y configurar:
 
 ```dotenv
-CDS_OPENAI_API_KEY=<clave-api-privada>
 CDS_LLM_LIVE_ENABLED=true
 CDS_LLM_MODEL=gpt-5.6-terra
 CDS_LLM_BUDGET_USD=2.00

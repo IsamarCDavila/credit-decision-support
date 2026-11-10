@@ -38,10 +38,9 @@ Read `GET /v1/cases/{id}/evaluations/{evaluation_id}` for the draft, calculation
 
 ## OpenAI configuration and cost controls
 
-Live consumption is disabled by default. Configure private `.env` values:
+Live consumption is disabled by default. Store the private key in `.env` under `CDS_OPENAI_API_KEY`, then configure:
 
 ```dotenv
-CDS_OPENAI_API_KEY=<private-api-key>
 CDS_LLM_LIVE_ENABLED=true
 CDS_LLM_MODEL=gpt-5.6-terra
 CDS_LLM_BUDGET_USD=2.00
