@@ -1,552 +1,632 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "version": "0.0.1",
-    "description": "Initial design contract. Synthetic data only. No running backend.",
-    "title": "Credit Decision Support"
+    "title": "Credit Decision Support",
+    "description": "Synthetic-data credit analysis foundation. Document ingestion, evaluation, and human review are subsequent milestones.",
+    "version": "0.1.0"
   },
-  "security": [
-    {
-      "DemoBearer": []
-    }
-  ],
   "paths": {
-    "/v1/cases": {
-      "post": {
-        "operationId": "createCase",
-        "summary": "Create synthetic SME USD case",
-        "parameters": [
-          {
-            "required": true,
-            "in": "header",
-            "schema": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 128
-            },
-            "name": "Idempotency-Key"
-          }
-        ],
+    "/healthz": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_healthz_get",
         "responses": {
-          "201": {
-            "description": "Create synthetic SME USD case"
-          },
-          "400": {
-            "description": "Error; see docs/domain.md"
-          },
-          "401": {
-            "description": "Error; see docs/domain.md"
-          },
-          "403": {
-            "description": "Error; see docs/domain.md"
-          },
-          "404": {
-            "description": "Error; see docs/domain.md"
-          },
-          "409": {
-            "description": "Error; see docs/domain.md"
-          },
-          "413": {
-            "description": "Error; see docs/domain.md"
-          },
-          "422": {
-            "description": "Error; see docs/domain.md"
-          },
-          "503": {
-            "description": "Error; see docs/domain.md"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "segment",
-                  "currency",
-                  "cutoff"
-                ],
-                "type": "object",
-                "properties": {
-                  "cutoff": {
-                    "format": "date",
-                    "type": "string"
-                  },
-                  "currency": {
-                    "const": "USD"
-                  },
-                  "segment": {
-                    "const": "SME"
-                  }
-                },
-                "additionalProperties": false
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
               }
             }
-          },
-          "required": true
+          }
         }
       }
     },
-    "/v1/cases/{id}/documents": {
-      "post": {
-        "operationId": "uploadDocument",
-        "summary": "Upload synthetic PDF or CSV",
-        "parameters": [
-          {
-            "required": true,
-            "in": "path",
-            "schema": {
-              "format": "uuid",
-              "type": "string"
-            },
-            "name": "id"
-          },
-          {
-            "required": true,
-            "in": "header",
-            "schema": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 128
-            },
-            "name": "Idempotency-Key"
-          }
-        ],
+    "/readyz": {
+      "get": {
+        "summary": "Ready",
+        "operationId": "ready_readyz_get",
         "responses": {
-          "202": {
-            "description": "Upload synthetic PDF or CSV"
-          },
-          "400": {
-            "description": "Error; see docs/domain.md"
-          },
-          "401": {
-            "description": "Error; see docs/domain.md"
-          },
-          "403": {
-            "description": "Error; see docs/domain.md"
-          },
-          "404": {
-            "description": "Error; see docs/domain.md"
-          },
-          "409": {
-            "description": "Error; see docs/domain.md"
-          },
-          "413": {
-            "description": "Error; see docs/domain.md"
-          },
-          "422": {
-            "description": "Error; see docs/domain.md"
-          },
-          "503": {
-            "description": "Error; see docs/domain.md"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "required": [
-                  "file"
-                ],
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "format": "binary",
-                    "type": "string"
-                  }
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
                 }
               }
             }
           },
-          "required": true
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
         }
       }
     },
-    "/v1/cases/{id}/evaluate": {
+    "/v1/cases": {
       "post": {
-        "operationId": "evaluateCase",
-        "summary": "Create immutable evaluation snapshot and job",
+        "summary": "Create Case",
+        "operationId": "create_case_v1_cases_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
-            "required": true,
-            "in": "path",
-            "schema": {
-              "format": "uuid",
-              "type": "string"
-            },
-            "name": "id"
-          },
-          {
-            "required": true,
+            "name": "Idempotency-Key",
             "in": "header",
+            "required": true,
             "schema": {
               "type": "string",
               "minLength": 1,
-              "maxLength": 128
-            },
-            "name": "Idempotency-Key"
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCase"
+              }
+            }
+          }
+        },
         "responses": {
-          "202": {
-            "description": "Create immutable evaluation snapshot and job"
-          },
-          "400": {
-            "description": "Error; see docs/domain.md"
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaseView"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Error; see docs/domain.md"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
           },
           "403": {
-            "description": "Error; see docs/domain.md"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
           },
           "404": {
-            "description": "Error; see docs/domain.md"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
           },
           "409": {
-            "description": "Error; see docs/domain.md"
-          },
-          "413": {
-            "description": "Error; see docs/domain.md"
-          },
-          "422": {
-            "description": "Error; see docs/domain.md"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
           },
           "503": {
-            "description": "Error; see docs/domain.md"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
           }
         }
       }
     },
     "/v1/cases/{id}": {
       "get": {
-        "operationId": "getCase",
-        "summary": "Read case and current evaluation",
-        "parameters": [
+        "summary": "Get Case",
+        "operationId": "get_case_v1_cases__id__get",
+        "security": [
           {
-            "required": true,
-            "in": "path",
-            "schema": {
-              "format": "uuid",
-              "type": "string"
-            },
-            "name": "id"
+            "HTTPBearer": []
           }
         ],
-        "responses": {
-          "200": {
-            "description": "Read case and current evaluation"
-          },
-          "400": {
-            "description": "Error; see docs/domain.md"
-          },
-          "401": {
-            "description": "Error; see docs/domain.md"
-          },
-          "403": {
-            "description": "Error; see docs/domain.md"
-          },
-          "404": {
-            "description": "Error; see docs/domain.md"
-          },
-          "409": {
-            "description": "Error; see docs/domain.md"
-          },
-          "413": {
-            "description": "Error; see docs/domain.md"
-          },
-          "422": {
-            "description": "Error; see docs/domain.md"
-          },
-          "503": {
-            "description": "Error; see docs/domain.md"
-          }
-        }
-      }
-    },
-    "/v1/cases/{id}/report": {
-      "get": {
-        "operationId": "getReport",
-        "summary": "Read SIMULACION report only at DRAFT_READY",
         "parameters": [
           {
-            "required": true,
+            "name": "id",
             "in": "path",
-            "schema": {
-              "format": "uuid",
-              "type": "string"
-            },
-            "name": "id"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Read SIMULACION report only at DRAFT_READY"
-          },
-          "400": {
-            "description": "Error; see docs/domain.md"
-          },
-          "401": {
-            "description": "Error; see docs/domain.md"
-          },
-          "403": {
-            "description": "Error; see docs/domain.md"
-          },
-          "404": {
-            "description": "Error; see docs/domain.md"
-          },
-          "409": {
-            "description": "Error; see docs/domain.md"
-          },
-          "413": {
-            "description": "Error; see docs/domain.md"
-          },
-          "422": {
-            "description": "Error; see docs/domain.md"
-          },
-          "503": {
-            "description": "Error; see docs/domain.md"
-          }
-        }
-      }
-    },
-    "/v1/cases/{id}/review": {
-      "post": {
-        "operationId": "reviewCase",
-        "summary": "Review current evaluation with mandatory reason",
-        "parameters": [
-          {
             "required": true,
-            "in": "path",
-            "schema": {
-              "format": "uuid",
-              "type": "string"
-            },
-            "name": "id"
-          },
-          {
-            "required": true,
-            "in": "header",
             "schema": {
               "type": "string",
-              "minLength": 1,
-              "maxLength": 128
-            },
-            "name": "Idempotency-Key"
+              "format": "uuid",
+              "title": "Id"
+            }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Review current evaluation with mandatory reason"
-          },
-          "400": {
-            "description": "Error; see docs/domain.md"
-          },
-          "401": {
-            "description": "Error; see docs/domain.md"
-          },
-          "403": {
-            "description": "Error; see docs/domain.md"
-          },
-          "404": {
-            "description": "Error; see docs/domain.md"
-          },
-          "409": {
-            "description": "Error; see docs/domain.md"
-          },
-          "413": {
-            "description": "Error; see docs/domain.md"
-          },
-          "422": {
-            "description": "Error; see docs/domain.md"
-          },
-          "503": {
-            "description": "Error; see docs/domain.md"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "evaluation_id",
-                  "expected_review_state",
-                  "decision",
-                  "reason"
-                ],
-                "type": "object",
-                "properties": {
-                  "evaluation_id": {
-                    "format": "uuid",
-                    "type": "string"
-                  },
-                  "decision": {
-                    "enum": [
-                      "APPROVED",
-                      "REJECTED",
-                      "NEEDS_MORE_INFO"
-                    ],
-                    "type": "string"
-                  },
-                  "reason": {
-                    "minLength": 1,
-                    "type": "string"
-                  },
-                  "expected_review_state": {
-                    "const": "PENDING"
-                  }
-                },
-                "additionalProperties": false
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaseView"
+                }
               }
             }
           },
-          "required": true
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
         }
       }
     },
     "/v1/cases/{id}/audit-events": {
       "get": {
-        "operationId": "getAuditEvents",
-        "summary": "Read paginated audit events",
+        "summary": "Audit Events",
+        "operationId": "audit_events_v1_cases__id__audit_events_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
-            "required": true,
+            "name": "id",
             "in": "path",
+            "required": true,
             "schema": {
+              "type": "string",
               "format": "uuid",
-              "type": "string"
-            },
-            "name": "id"
+              "title": "Id"
+            }
           },
           {
+            "name": "after_sequence",
             "in": "query",
+            "required": false,
             "schema": {
-              "minimum": 0,
-              "type": "integer"
-            },
-            "name": "after_sequence"
-          },
-          {
-            "in": "query",
-            "schema": {
-              "default": 50,
               "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "After Sequence"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
               "minimum": 1,
-              "maximum": 100
-            },
-            "name": "limit"
+              "default": 50,
+              "title": "Limit"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Read paginated audit events"
-          },
-          "400": {
-            "description": "Error; see docs/domain.md"
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditPage"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Error; see docs/domain.md"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
           },
           "403": {
-            "description": "Error; see docs/domain.md"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
           },
           "404": {
-            "description": "Error; see docs/domain.md"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
           },
           "409": {
-            "description": "Error; see docs/domain.md"
-          },
-          "413": {
-            "description": "Error; see docs/domain.md"
-          },
-          "422": {
-            "description": "Error; see docs/domain.md"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
           },
           "503": {
-            "description": "Error; see docs/domain.md"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
           }
         }
-      }
-    },
-    "/healthz": {
-      "get": {
-        "operationId": "health",
-        "summary": "Liveness",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Liveness"
-          },
-          "400": {
-            "description": "Error; see docs/domain.md"
-          },
-          "401": {
-            "description": "Error; see docs/domain.md"
-          },
-          "403": {
-            "description": "Error; see docs/domain.md"
-          },
-          "404": {
-            "description": "Error; see docs/domain.md"
-          },
-          "409": {
-            "description": "Error; see docs/domain.md"
-          },
-          "413": {
-            "description": "Error; see docs/domain.md"
-          },
-          "422": {
-            "description": "Error; see docs/domain.md"
-          },
-          "503": {
-            "description": "Error; see docs/domain.md"
-          }
-        },
-        "security": []
-      }
-    },
-    "/readyz": {
-      "get": {
-        "operationId": "readiness",
-        "summary": "Dependency readiness",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Dependency readiness"
-          },
-          "400": {
-            "description": "Error; see docs/domain.md"
-          },
-          "401": {
-            "description": "Error; see docs/domain.md"
-          },
-          "403": {
-            "description": "Error; see docs/domain.md"
-          },
-          "404": {
-            "description": "Error; see docs/domain.md"
-          },
-          "409": {
-            "description": "Error; see docs/domain.md"
-          },
-          "413": {
-            "description": "Error; see docs/domain.md"
-          },
-          "422": {
-            "description": "Error; see docs/domain.md"
-          },
-          "503": {
-            "description": "Error; see docs/domain.md"
-          }
-        },
-        "security": []
       }
     }
   },
   "components": {
+    "schemas": {
+      "AuditEvent": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "sequence": {
+            "type": "integer",
+            "title": "Sequence"
+          },
+          "actor_id": {
+            "type": "string",
+            "title": "Actor Id"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payload"
+          },
+          "previous_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Hash"
+          },
+          "event_hash": {
+            "type": "string",
+            "title": "Event Hash"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "sequence",
+          "actor_id",
+          "kind",
+          "payload",
+          "previous_hash",
+          "event_hash",
+          "created_at"
+        ],
+        "title": "AuditEvent"
+      },
+      "AuditPage": {
+        "properties": {
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/AuditEvent"
+            },
+            "type": "array",
+            "title": "Events"
+          },
+          "next_after_sequence": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next After Sequence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "events",
+          "next_after_sequence"
+        ],
+        "title": "AuditPage"
+      },
+      "CaseView": {
+        "properties": {
+          "segment": {
+            "type": "string",
+            "const": "SME",
+            "title": "Segment"
+          },
+          "currency": {
+            "type": "string",
+            "const": "USD",
+            "title": "Currency"
+          },
+          "cutoff": {
+            "type": "string",
+            "format": "date",
+            "title": "Cutoff"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "current_evaluation_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Evaluation Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "segment",
+          "currency",
+          "cutoff",
+          "id",
+          "created_at",
+          "current_evaluation_id"
+        ],
+        "title": "CaseView"
+      },
+      "CreateCase": {
+        "properties": {
+          "segment": {
+            "type": "string",
+            "const": "SME",
+            "title": "Segment"
+          },
+          "currency": {
+            "type": "string",
+            "const": "USD",
+            "title": "Currency"
+          },
+          "cutoff": {
+            "type": "string",
+            "format": "date",
+            "title": "Cutoff"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "segment",
+          "currency",
+          "cutoff"
+        ],
+        "title": "CreateCase"
+      },
+      "Error": {
+        "properties": {
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "required": [
+          "detail"
+        ],
+        "title": "Error"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Health": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "ready"
+            ],
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "Health"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    },
     "securitySchemes": {
-      "DemoBearer": {
-        "scheme": "bearer",
-        "type": "http"
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
       }
     }
   }

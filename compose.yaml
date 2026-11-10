@@ -1,0 +1,49 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: credit_support
+      POSTGRES_PASSWORD: ${CDS_DATABASE_PASSWORD:?Generate .env first}
+      CDS_RUNTIME_PASSWORD: ${CDS_RUNTIME_PASSWORD:?Generate .env first}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sh:/docker-entrypoint-initdb.d/01-runtime.sh:ro
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U postgres -d credit_support"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  migrate:
+    build: .
+    environment:
+      CDS_DATABASE_URL: postgresql+psycopg://postgres:${CDS_DATABASE_PASSWORD}@db:5432/credit_support
+    command: [alembic, upgrade, head]
+    depends_on:
+      db:
+        condition: service_healthy
+  api:
+    build: .
+    environment:
+      CDS_DATABASE_URL: postgresql+psycopg://cds_runtime:${CDS_RUNTIME_PASSWORD}@db:5432/credit_support
+      CDS_DEMO_IDENTITIES: ${CDS_DEMO_IDENTITIES:?Generate .env first}
+    ports:
+      - 127.0.0.1:8000:8000
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/readyz',timeout=3)"]
+      interval: 5s
+      timeout: 4s
+      retries: 10
+  worker:
+    build: .
+    environment:
+      CDS_DATABASE_URL: postgresql+psycopg://cds_runtime:${CDS_RUNTIME_PASSWORD}@db:5432/credit_support
+    command: [python, -m, credit_support.worker]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: on-failure:3
+volumes:
+  postgres_data:
