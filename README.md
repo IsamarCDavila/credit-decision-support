@@ -6,7 +6,7 @@ Auditable AI-assisted credit analysis with synthetic data, deterministic financi
 
 ## Project status
 
-**Policy checks — Phase 3.** The backend ingests synthetic PDF/CSV statements, extracts source-backed facts, selects versioned policies, and calculates DSCR with deterministic rule outcomes and policy citations. A controlled baseline report is available; real-world performance and model quality have not been established. Model-assisted drafting and human review remain later milestones.
+**Grounded AI drafts — Phase 4.** The backend ingests synthetic PDF/CSV statements, verifies model-proposed observations, calculates DSCR, checks versioned policies, and prepares bilingual drafts from verified claims. OpenAI is optional and disabled by default, with a cumulative US$2 application allowance. Controlled evaluations distinguish mock orchestration from live model measurements. The review interface and report export remain Phase 5.
 
 The MVP supports SME cases in USD, full annual periods, and standalone financial statements. It prepares evidence-backed analysis for a human reviewer. Reports are marked **SIMULATION**; recommendations do not authorize real credit.
 
@@ -14,6 +14,7 @@ The MVP supports SME cases in USD, full annual periods, and standalone financial
 
 | Document | Purpose |
 |---|---|
+| [Grounded AI workflow](docs/ai-workflow.md) | Model roles, source validation, OpenAI setup, costs, and comparison limits |
 | [Policy catalog and financial checks](docs/policy-engine.md) | Policy selection, DSCR, citations, and baseline verification |
 | [Document ingestion](docs/ingestion.md) | Supported formats, evidence extraction, limits, and demo |
 | [Foundation operations](docs/foundation.md) | Setup, API access, worker behavior, and verification |
@@ -49,6 +50,7 @@ uv run python scripts/configure_demo.py
 docker compose up --build --wait api worker
 uv run python scripts/smoke_ingestion.py
 uv run python scripts/smoke_policy.py
+uv run python scripts/evaluate_ai.py --provider mock --output storage/ai-mock.json
 ```
 
 The API runs at `http://127.0.0.1:8000`; interactive documentation is at `/docs`. Configuration generation creates private local credentials and refuses to overwrite `.env`. See [document ingestion](docs/ingestion.md) for the extraction workflow and [foundation operations](docs/foundation.md) for database and identity configuration.

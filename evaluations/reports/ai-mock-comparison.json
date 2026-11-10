@@ -1,0 +1,760 @@
+{
+  "evaluation": "bounded-ai-comparison-v1",
+  "run_id": "32fc40d9-49dd-412b-873d-b44cd9c627b0",
+  "run_at_utc": "2026-11-10T15:35:00.058726+00:00",
+  "provider": "mock",
+  "corpus_seed": 100,
+  "repetitions": 1,
+  "campaign_status": "completed",
+  "planned_workflow_runs": 20,
+  "pricing_usd_per_million_tokens": {
+    "input": "2",
+    "output": "12"
+  },
+  "limitations": [
+    "Controlled synthetic CSVs, not narrative documents or real credit cases.",
+    "Material wording is rendered by code; this is not a free-text hallucination benchmark.",
+    "Generalist selects claim IDs before tools; specialized draft role sees verified claim cards.",
+    "Equal total output-token cap (4096) does not equalize context or actual consumption.",
+    "Mock results validate orchestration only; no model-quality or speedup claim.",
+    "Small sample; no claim of superiority, statistical significance, or manual time savings."
+  ],
+  "runs": [
+    {
+      "variant": "complete",
+      "repetition": 1,
+      "workflow": "generalist",
+      "evaluation_id": "65cb76e0-2925-46e7-9530-06fd965142fe",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 1.1438,
+      "model_calls": [
+        {
+          "id": "e549a385-a87d-488f-b808-b25cc8729e76",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "generalist",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "complete",
+      "repetition": 1,
+      "workflow": "multi_agent",
+      "evaluation_id": "61618206-f3a0-4c8a-9fe6-577d090d2198",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 1.1501,
+      "model_calls": [
+        {
+          "id": "dfd6c221-dc15-4bb3-b677-15a2202cc322",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "extractor",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        },
+        {
+          "id": "119341de-e107-4c20-a3e8-8c6e05b75a33",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "draft",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "missing",
+      "repetition": 1,
+      "workflow": "generalist",
+      "evaluation_id": "a8b04aa1-385f-450c-805a-b25368a810e6",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 0.9394,
+      "model_calls": [
+        {
+          "id": "38aa81ca-6881-4170-ae50-ed0bc805d033",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "generalist",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "missing",
+      "repetition": 1,
+      "workflow": "multi_agent",
+      "evaluation_id": "c40bd5a5-f24f-453c-bec2-a661a1f25591",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 1.1294,
+      "model_calls": [
+        {
+          "id": "637351ee-2863-4fa8-ae24-ad6bb3f91abe",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "extractor",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        },
+        {
+          "id": "a9050df4-7751-4dbc-9781-048d2604b9fa",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "draft",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "ambiguous",
+      "repetition": 1,
+      "workflow": "generalist",
+      "evaluation_id": "b9c733e8-2807-42fd-b5ca-89e572911857",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 1.1093,
+      "model_calls": [
+        {
+          "id": "6a54ab03-cfa2-431a-ad5a-cde15131cf0c",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "generalist",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "ambiguous",
+      "repetition": 1,
+      "workflow": "multi_agent",
+      "evaluation_id": "e7ae1fdf-7a1d-4527-ac89-348e2c7c364d",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 0.9303,
+      "model_calls": [
+        {
+          "id": "a662023b-b62f-45d0-bc32-d7642ff1478c",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "extractor",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        },
+        {
+          "id": "f851a50d-a8b8-40c2-9446-0b5e6c3f87b9",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "draft",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "invalid",
+      "repetition": 1,
+      "workflow": "generalist",
+      "evaluation_id": "1eee527c-97b4-4a93-9dab-41827f172e15",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 1.1117,
+      "model_calls": [
+        {
+          "id": "9a6d53b1-6fa2-497a-bd10-b4f136b4c1f1",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "generalist",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "invalid",
+      "repetition": 1,
+      "workflow": "multi_agent",
+      "evaluation_id": "9a038cf9-68d7-4b27-96c7-2818ad29118e",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 1.1265,
+      "model_calls": [
+        {
+          "id": "1564b737-8a30-4e7e-8308-26546a73dfca",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "extractor",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        },
+        {
+          "id": "931b06f9-4bbf-4964-a30b-0dad21c4610c",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "draft",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "zero_debt",
+      "repetition": 1,
+      "workflow": "generalist",
+      "evaluation_id": "762ec1da-fd1f-4a2c-aa60-7da78d7461e9",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 1.1105,
+      "model_calls": [
+        {
+          "id": "e8c2354c-06cf-43a8-9566-62ff9445bd11",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "generalist",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "zero_debt",
+      "repetition": 1,
+      "workflow": "multi_agent",
+      "evaluation_id": "3c08c5d3-6b25-4120-8018-93b51150467e",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 1.1536,
+      "model_calls": [
+        {
+          "id": "77b2807f-ac74-44eb-a5ba-d2904331e71c",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "extractor",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        },
+        {
+          "id": "3910ebfd-6625-40b2-b73c-e734a6974543",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "draft",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "negative_cash",
+      "repetition": 1,
+      "workflow": "generalist",
+      "evaluation_id": "3daa1aa1-8351-45eb-8577-2baffc263076",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 1.3033,
+      "model_calls": [
+        {
+          "id": "cad6b4f8-cc64-47a5-b2ee-2dbdc5716d62",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "generalist",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "negative_cash",
+      "repetition": 1,
+      "workflow": "multi_agent",
+      "evaluation_id": "16eefbd7-70fa-4b82-8779-175ac365244c",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 1.2546,
+      "model_calls": [
+        {
+          "id": "f49a1b99-34e1-40df-bd81-0173a4cc18ed",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "extractor",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        },
+        {
+          "id": "eff1a3ef-846f-4fec-b3e7-d34f60d54445",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "draft",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "blank",
+      "repetition": 1,
+      "workflow": "generalist",
+      "evaluation_id": "88b2b856-5ff6-49c5-b1e4-642331e4e6f5",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 1.1339,
+      "model_calls": [
+        {
+          "id": "8580763a-c0d4-4872-a859-4572fa1529f9",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "generalist",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "blank",
+      "repetition": 1,
+      "workflow": "multi_agent",
+      "evaluation_id": "29a27b07-fba6-4943-80a3-862362bd6dae",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 0.8937,
+      "model_calls": [
+        {
+          "id": "44dae6c6-c179-4bb7-9554-a19891e87fab",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "extractor",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        },
+        {
+          "id": "3c244f48-c6dc-4ae8-b41d-d731776b163d",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "draft",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "large_revenue",
+      "repetition": 1,
+      "workflow": "generalist",
+      "evaluation_id": "e795f22f-2634-4d30-9e15-4447286006de",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 1.1043,
+      "model_calls": [
+        {
+          "id": "148a7645-a36b-48a4-8c55-9d1a72bc2703",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "generalist",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "large_revenue",
+      "repetition": 1,
+      "workflow": "multi_agent",
+      "evaluation_id": "95de88e2-f595-4502-994a-e6f5b17a567b",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 0.8969,
+      "model_calls": [
+        {
+          "id": "2d1ab0de-7ca4-483b-9850-89ccf4029b51",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "extractor",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        },
+        {
+          "id": "04c19ae0-2333-47b2-80b6-e7eaea2c79ec",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "draft",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "negative_debt",
+      "repetition": 1,
+      "workflow": "generalist",
+      "evaluation_id": "bfd3cb6b-b8d8-4441-ae3b-d43cc613e472",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 0.8795,
+      "model_calls": [
+        {
+          "id": "55eb660d-75db-4bf1-9fd9-1e9341846cc2",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "generalist",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "negative_debt",
+      "repetition": 1,
+      "workflow": "multi_agent",
+      "evaluation_id": "8946091d-e664-4313-afcb-8dbba70c4114",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 1.089,
+      "model_calls": [
+        {
+          "id": "317ff3a6-8609-45a9-b15b-3e3425de7b49",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "extractor",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        },
+        {
+          "id": "51924000-ae41-4e59-bae4-c87c2aed3232",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "draft",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "injection",
+      "repetition": 1,
+      "workflow": "generalist",
+      "evaluation_id": "e4f4ccaf-9c37-4e11-81d6-6eb41d2caa17",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 1.0894,
+      "model_calls": [
+        {
+          "id": "a9ed90f1-3637-44b3-925d-d15b68e8ee7f",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "generalist",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "injection",
+      "repetition": 1,
+      "workflow": "multi_agent",
+      "evaluation_id": "599c0799-b7e5-483c-af76-878171e6dc4c",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 1.0908,
+      "model_calls": [
+        {
+          "id": "5ba2df46-fea4-42df-a65b-5e72625d862a",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "extractor",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        },
+        {
+          "id": "d90d2e9e-5468-4dfe-b2b3-8afd3e4a3450",
+          "provider": "mock",
+          "model": "deterministic-fixture-v1",
+          "stage": "draft",
+          "status": "COMPLETED",
+          "input_tokens": null,
+          "output_tokens": null,
+          "charged_usd": "0",
+          "reserved_usd": "0",
+          "accounted_usd": "0",
+          "cost_status": "mock",
+          "prompt_version": "grounded-agents-v1",
+          "response_id": null
+        }
+      ],
+      "error": null
+    }
+  ],
+  "summary": {
+    "generalist": {
+      "runs": 10,
+      "successful": 10,
+      "ground_truth_matches": 10,
+      "fully_grounded_drafts": 10,
+      "model_calls": 10,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "charged_or_reserved_usd": "0",
+      "unknown_usage_calls": 0,
+      "median_seconds": 1.1099
+    },
+    "multi_agent": {
+      "runs": 10,
+      "successful": 10,
+      "ground_truth_matches": 10,
+      "fully_grounded_drafts": 10,
+      "model_calls": 20,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "charged_or_reserved_usd": "0",
+      "unknown_usage_calls": 0,
+      "median_seconds": 1.1086
+    }
+  }
+}

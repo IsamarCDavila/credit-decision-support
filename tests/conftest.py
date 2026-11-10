@@ -34,6 +34,7 @@ def database():
                 "WHERE rolname='cds_runtime') THEN CREATE ROLE cds_runtime; END IF; END $$"
             )
         )
+    os.environ["CDS_LLM_LIVE_ENABLED"] = "false"
     os.environ["CDS_DATABASE_URL"] = url
     get_settings.cache_clear()
     config = Config(str(ROOT / "alembic.ini"))

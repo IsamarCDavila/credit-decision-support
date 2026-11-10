@@ -17,6 +17,6 @@ def test_migration_round_trip_preserves_unrelated_tables(database):
     with database.begin() as conn:
         assert (
             conn.execute(text("SELECT version_num FROM alembic_version")).scalar_one()
-            == "0003_policy_engine"
+            == "0004_ai_workflow"
         )
         conn.execute(text("DROP TABLE unrelated_fixture"))

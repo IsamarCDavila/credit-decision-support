@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Credit Decision Support",
-    "description": "Synthetic document ingestion, deterministic financial calculations, and versioned policy checks. Model-assisted drafting and human review are subsequent milestones.",
-    "version": "0.3.0"
+    "description": "Synthetic document ingestion, deterministic financial calculations, and versioned policy checks, and grounded model-assisted drafts for human review.",
+    "version": "0.4.0"
   },
   "paths": {
     "/v1/cases/{id}/documents": {
@@ -582,6 +582,72 @@
         }
       }
     },
+    "/v1/cases/{id}/ai-evaluate": {
+      "post": {
+        "summary": "Start Ai",
+        "operationId": "start_ai_v1_cases__id__ai_evaluate_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractionReceipt"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/healthz": {
       "get": {
         "summary": "Health",
@@ -950,6 +1016,147 @@
   },
   "components": {
     "schemas": {
+      "AIDraft": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "DRAFT_ONLY",
+            "title": "Status"
+          },
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation"
+          },
+          "requires_human_review": {
+            "type": "boolean",
+            "const": true,
+            "title": "Requires Human Review"
+          },
+          "marker_en": {
+            "type": "string",
+            "const": "SIMULATION",
+            "title": "Marker En"
+          },
+          "marker_es": {
+            "type": "string",
+            "const": "SIMULACI\u00d3N",
+            "title": "Marker Es"
+          },
+          "provider": {
+            "type": "string",
+            "enum": [
+              "mock",
+              "openai"
+            ],
+            "title": "Provider"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "workflow": {
+            "type": "string",
+            "enum": [
+              "multi_agent",
+              "generalist"
+            ],
+            "title": "Workflow"
+          },
+          "section_order": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "overview",
+                "financials",
+                "policy",
+                "limitations"
+              ]
+            },
+            "type": "array",
+            "title": "Section Order"
+          },
+          "claims": {
+            "items": {
+              "$ref": "#/components/schemas/ClaimCard"
+            },
+            "type": "array",
+            "title": "Claims"
+          },
+          "tool_trace": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tool Trace"
+          },
+          "limitations_en": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations En"
+          },
+          "limitations_es": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations Es"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "simulation",
+          "requires_human_review",
+          "marker_en",
+          "marker_es",
+          "provider",
+          "model",
+          "workflow",
+          "section_order",
+          "claims",
+          "tool_trace",
+          "limitations_en",
+          "limitations_es"
+        ],
+        "title": "AIDraft"
+      },
+      "AIRequest": {
+        "properties": {
+          "source_evaluation_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Source Evaluation Id"
+          },
+          "provider": {
+            "type": "string",
+            "enum": [
+              "mock",
+              "openai"
+            ],
+            "title": "Provider",
+            "default": "mock"
+          },
+          "workflow": {
+            "type": "string",
+            "enum": [
+              "multi_agent",
+              "generalist"
+            ],
+            "title": "Workflow",
+            "default": "multi_agent"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "source_evaluation_id"
+        ],
+        "title": "AIRequest"
+      },
       "AuditEvent": {
         "properties": {
           "id": {
@@ -1174,6 +1381,76 @@
           "current_evaluation_id"
         ],
         "title": "CaseView"
+      },
+      "ClaimCard": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "section": {
+            "type": "string",
+            "enum": [
+              "overview",
+              "financials",
+              "policy",
+              "limitations"
+            ],
+            "title": "Section"
+          },
+          "text_en": {
+            "type": "string",
+            "title": "Text En"
+          },
+          "text_es": {
+            "type": "string",
+            "title": "Text Es"
+          },
+          "fact_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Fact Ids"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Evidence Ids"
+          },
+          "calculation_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Calculation Ids"
+          },
+          "policy_fragment_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Policy Fragment Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "section",
+          "text_en",
+          "text_es",
+          "fact_ids",
+          "evidence_ids",
+          "calculation_ids",
+          "policy_fragment_ids"
+        ],
+        "title": "ClaimCard"
       },
       "CreateCase": {
         "properties": {
@@ -1489,6 +1766,24 @@
                 "type": "null"
               }
             ]
+          },
+          "ai_draft": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AIDraft"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "model_calls": {
+            "items": {
+              "$ref": "#/components/schemas/ModelCallView"
+            },
+            "type": "array",
+            "title": "Model Calls",
+            "default": []
           }
         },
         "type": "object",
@@ -1613,6 +1908,114 @@
           "status"
         ],
         "title": "Health"
+      },
+      "ModelCallView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "provider": {
+            "type": "string",
+            "title": "Provider"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "stage": {
+            "type": "string",
+            "title": "Stage"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "input_tokens": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Tokens"
+          },
+          "output_tokens": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Output Tokens"
+          },
+          "charged_usd": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Charged Usd"
+          },
+          "reserved_usd": {
+            "type": "string",
+            "title": "Reserved Usd"
+          },
+          "accounted_usd": {
+            "type": "string",
+            "title": "Accounted Usd"
+          },
+          "cost_status": {
+            "type": "string",
+            "enum": [
+              "mock",
+              "usage_based",
+              "reserved"
+            ],
+            "title": "Cost Status"
+          },
+          "prompt_version": {
+            "type": "string",
+            "title": "Prompt Version"
+          },
+          "response_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Response Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "provider",
+          "model",
+          "stage",
+          "status",
+          "input_tokens",
+          "output_tokens",
+          "charged_usd",
+          "reserved_usd",
+          "accounted_usd",
+          "cost_status",
+          "prompt_version",
+          "response_id"
+        ],
+        "title": "ModelCallView"
       },
       "PolicyCheckView": {
         "properties": {

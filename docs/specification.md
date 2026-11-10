@@ -92,4 +92,4 @@ Use synthetic data exclusively. Enforce case-level permissions and separate anal
 
 The complete MVP requires reproducible startup, migrations, CI, verified evidence, deterministic rules, human review, audit reconstruction, at least ten varied end-to-end cases, measured evaluation reports, and a brief demo. The [roadmap](roadmap.md) defines intermediate gates.
 
-Open decisions include the live-model provider and token budget, fixture/document licensing, and the scope of later extraction or infrastructure extensions. Synthetic policies do not represent a bank's actual lending policy. Source templates and generated fixtures require documented provenance and usage rights.
+Phase 4 uses optional OpenAI access with a cumulative US$2 local application allowance; see the [AI workflow](ai-workflow.md) for controls and evaluation limits. Open decisions include fixture/document licensing and the scope of later extraction or infrastructure extensions. Synthetic policies do not represent a bank's actual lending policy. Source templates and generated fixtures require documented provenance and usage rights.

@@ -1,4 +1,6 @@
+from decimal import Decimal
 from functools import lru_cache
+from typing import Literal
 
 from pydantic import BaseModel, Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -18,6 +20,12 @@ class Settings(BaseSettings):
     demo_identities: dict[str, Identity] = Field(default_factory=dict, repr=False)
     worker_lease_seconds: int = Field(default=30, ge=5, le=300)
     worker_poll_seconds: float = Field(default=1.0, ge=0.1, le=60)
+    openai_api_key: SecretStr | None = Field(default=None, repr=False)
+    llm_live_enabled: bool = False
+    llm_model: Literal["gpt-5.6-terra"] = "gpt-5.6-terra"
+    llm_budget_usd: Decimal = Field(default=Decimal("2.00"), gt=0, le=2)
+    llm_max_calls: int = Field(default=64, ge=1, le=100)
+    llm_timeout_seconds: float = Field(default=60, ge=1, le=120)
 
     @model_validator(mode="after")
     def validate_configuration(self) -> "Settings":

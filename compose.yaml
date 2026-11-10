@@ -26,6 +26,9 @@ services:
     environment:
       CDS_DATABASE_URL: postgresql+psycopg://cds_runtime:${CDS_RUNTIME_PASSWORD}@db:5432/credit_support
       CDS_DEMO_IDENTITIES: ${CDS_DEMO_IDENTITIES:?Generate .env first}
+      CDS_OPENAI_API_KEY: ${CDS_OPENAI_API_KEY:-}
+      CDS_LLM_LIVE_ENABLED: ${CDS_LLM_LIVE_ENABLED:-false}
+      CDS_LLM_BUDGET_USD: ${CDS_LLM_BUDGET_USD:-2.00}
     ports:
       - 127.0.0.1:8000:8000
     depends_on:
@@ -40,6 +43,9 @@ services:
     build: .
     environment:
       CDS_DATABASE_URL: postgresql+psycopg://cds_runtime:${CDS_RUNTIME_PASSWORD}@db:5432/credit_support
+      CDS_OPENAI_API_KEY: ${CDS_OPENAI_API_KEY:-}
+      CDS_LLM_LIVE_ENABLED: ${CDS_LLM_LIVE_ENABLED:-false}
+      CDS_LLM_BUDGET_USD: ${CDS_LLM_BUDGET_USD:-2.00}
     command: [python, -m, credit_support.worker]
     depends_on:
       migrate:

@@ -65,7 +65,7 @@ def expire_exhausted(engine: Engine) -> None:
             {"id": candidate["id"]},
         ).first()
         if expired:
-            if candidate["step"] in ("extract_documents", "evaluate_policy"):
+            if candidate["step"] in ("extract_documents", "evaluate_policy", "ai_workflow"):
                 conn.execute(
                     text("UPDATE evaluations SET processing_state='FAILED_TERMINAL' WHERE id=:id"),
                     {"id": candidate["evaluation_id"]},
@@ -93,6 +93,10 @@ def heartbeat(engine: Engine, job: dict[str, Any], lease_seconds: int) -> bool:
 
 
 def finish(engine: Engine, job: dict[str, Any]) -> bool:
+    if job["step"] == "ai_workflow":
+        from credit_support.ai_workflow import finish_ai
+
+        return finish_ai(engine, job)
     with engine.begin() as conn:
         # Lock case before job to match audit/review ordering and avoid deadlocks.
         case_id: UUID = conn.execute(
