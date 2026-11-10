@@ -33,6 +33,7 @@ jobs:
       - run: docker compose config --quiet
       - run: docker compose up --build --wait api worker
       - run: curl --fail http://127.0.0.1:8000/readyz
+      - run: uv run python scripts/smoke_ingestion.py
       - if: always()
         run: docker compose down
   secrets:

@@ -1,0 +1,8 @@
+key,value,currency,period_start,period_end,basis,synthetic
+annual_revenue,848992.00,USD,2025-01-01,2025-12-31,individual,true
+ebitda,578463.00,USD,2025-01-01,2025-12-31,individual,true
+total_debt,853765.00,USD,2025-01-01,2025-12-31,individual,true
+debt_service,830304.00,USD,2025-01-01,2025-12-31,individual,true
+available_cash_flow,870584.00,USD,2025-01-01,2025-12-31,individual,true
+obligations,325340.00,USD,2025-01-01,2025-12-31,individual,true
+available_cash_flow,999999.00,USD,2025-01-01,2025-12-31,individual,true

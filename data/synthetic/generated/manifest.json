@@ -1,0 +1,346 @@
+{
+  "generator_version": "synthetic-statements-v1",
+  "seed": 100,
+  "cases": [
+    {
+      "case_id": "case-001",
+      "variant": "complete",
+      "expected": {
+        "annual_revenue": {
+          "status": "extracted",
+          "value": "709382.00"
+        },
+        "ebitda": {
+          "status": "extracted",
+          "value": "304214.00"
+        },
+        "total_debt": {
+          "status": "extracted",
+          "value": "665420.00"
+        },
+        "debt_service": {
+          "status": "extracted",
+          "value": "476097.00"
+        },
+        "available_cash_flow": {
+          "status": "extracted",
+          "value": "589830.00"
+        },
+        "obligations": {
+          "status": "extracted",
+          "value": "150877.00"
+        }
+      },
+      "sha256": {
+        "case-001.csv": "68c285a415ffaef07003baa3611b0340289060fb0659a3c0c662d1cbcfd8a386",
+        "case-001.pdf": "57fa87039f92b6588934630aae3799524e2865909e1cec815861a30d3dabb49f"
+      }
+    },
+    {
+      "case_id": "case-002",
+      "variant": "missing",
+      "expected": {
+        "annual_revenue": {
+          "status": "extracted",
+          "value": "255368.00"
+        },
+        "ebitda": {
+          "status": "extracted",
+          "value": "809145.00"
+        },
+        "total_debt": {
+          "status": "extracted",
+          "value": "745886.00"
+        },
+        "debt_service": {
+          "status": "missing",
+          "value": null
+        },
+        "available_cash_flow": {
+          "status": "extracted",
+          "value": "277928.00"
+        },
+        "obligations": {
+          "status": "extracted",
+          "value": "681347.00"
+        }
+      },
+      "sha256": {
+        "case-002.csv": "0e406b75af09089cf3b9a4e9dc085c0526c538fe93b42c39140dafb96a1de86d",
+        "case-002.pdf": "6707c57e1c4a928607d48973f70b2b3e76a771f93892faab5d4e4d0892c61631"
+      }
+    },
+    {
+      "case_id": "case-003",
+      "variant": "ambiguous",
+      "expected": {
+        "annual_revenue": {
+          "status": "extracted",
+          "value": "848992.00"
+        },
+        "ebitda": {
+          "status": "extracted",
+          "value": "578463.00"
+        },
+        "total_debt": {
+          "status": "extracted",
+          "value": "853765.00"
+        },
+        "debt_service": {
+          "status": "extracted",
+          "value": "830304.00"
+        },
+        "available_cash_flow": {
+          "status": "ambiguous",
+          "value": null
+        },
+        "obligations": {
+          "status": "extracted",
+          "value": "325340.00"
+        }
+      },
+      "sha256": {
+        "case-003.csv": "8b4ea2f9663b05984b3456f73c172082698f169666d6bbd2cbbd1ef034781286",
+        "case-003.pdf": "d1109218a3af0da734de0f7c43724646f6351d612b45ba0c96c32374ee3ee0f4"
+      }
+    },
+    {
+      "case_id": "case-004",
+      "variant": "invalid",
+      "expected": {
+        "annual_revenue": {
+          "status": "invalid",
+          "value": null
+        },
+        "ebitda": {
+          "status": "extracted",
+          "value": "307484.00"
+        },
+        "total_debt": {
+          "status": "extracted",
+          "value": "867458.00"
+        },
+        "debt_service": {
+          "status": "extracted",
+          "value": "338679.00"
+        },
+        "available_cash_flow": {
+          "status": "extracted",
+          "value": "510023.00"
+        },
+        "obligations": {
+          "status": "extracted",
+          "value": "446703.00"
+        }
+      },
+      "sha256": {
+        "case-004.csv": "9e44a4c66d62010d3e5e5a0188c8f339a1052bae1bf108efb9796eee8af23995",
+        "case-004.pdf": "430bdc4694b4ad609e5a665cc08de004164832e394ee58eb24c581d41e1dcde8"
+      }
+    },
+    {
+      "case_id": "case-005",
+      "variant": "zero_debt",
+      "expected": {
+        "annual_revenue": {
+          "status": "extracted",
+          "value": "720049.00"
+        },
+        "ebitda": {
+          "status": "extracted",
+          "value": "466077.00"
+        },
+        "total_debt": {
+          "status": "extracted",
+          "value": "708931.00"
+        },
+        "debt_service": {
+          "status": "extracted",
+          "value": "0.00"
+        },
+        "available_cash_flow": {
+          "status": "extracted",
+          "value": "102080.00"
+        },
+        "obligations": {
+          "status": "extracted",
+          "value": "427385.00"
+        }
+      },
+      "sha256": {
+        "case-005.csv": "42e80d98a6e0d65700707873f4c4751733007c277b6191ddfadb4e817fea38f1",
+        "case-005.pdf": "ad8086677724bd12984d86ea73add35181b58e58740090fdc448451c6431f7b9"
+      }
+    },
+    {
+      "case_id": "case-006",
+      "variant": "negative_cash",
+      "expected": {
+        "annual_revenue": {
+          "status": "extracted",
+          "value": "845205.00"
+        },
+        "ebitda": {
+          "status": "extracted",
+          "value": "602516.00"
+        },
+        "total_debt": {
+          "status": "extracted",
+          "value": "117577.00"
+        },
+        "debt_service": {
+          "status": "extracted",
+          "value": "682375.00"
+        },
+        "available_cash_flow": {
+          "status": "extracted",
+          "value": "-10000.00"
+        },
+        "obligations": {
+          "status": "extracted",
+          "value": "599229.00"
+        }
+      },
+      "sha256": {
+        "case-006.csv": "5d2424aad56e4dae97d8db79f6841dc191c36ff3e85898113bd3c8ef83590ed4",
+        "case-006.pdf": "1a55c1dfc990ee71bbcd38bddfef2c4d2de75ca60a12135258a6794992ad21bb"
+      }
+    },
+    {
+      "case_id": "case-007",
+      "variant": "blank",
+      "expected": {
+        "annual_revenue": {
+          "status": "extracted",
+          "value": "358455.00"
+        },
+        "ebitda": {
+          "status": "extracted",
+          "value": "749916.00"
+        },
+        "total_debt": {
+          "status": "extracted",
+          "value": "709526.00"
+        },
+        "debt_service": {
+          "status": "missing",
+          "value": null
+        },
+        "available_cash_flow": {
+          "status": "extracted",
+          "value": "789745.00"
+        },
+        "obligations": {
+          "status": "extracted",
+          "value": "545937.00"
+        }
+      },
+      "sha256": {
+        "case-007.csv": "9f7858085bf8dcb7f7bbff13bbc6cfd8df6d1b58d037c314b4a5fbe351d13f73",
+        "case-007.pdf": "6f439e2a0c08554ad508a3872dd04fea447ea00d5f328264fc9cae04078c3edc"
+      }
+    },
+    {
+      "case_id": "case-008",
+      "variant": "large_revenue",
+      "expected": {
+        "annual_revenue": {
+          "status": "extracted",
+          "value": "999999999999999999.99"
+        },
+        "ebitda": {
+          "status": "extracted",
+          "value": "850052.00"
+        },
+        "total_debt": {
+          "status": "extracted",
+          "value": "189078.00"
+        },
+        "debt_service": {
+          "status": "extracted",
+          "value": "793924.00"
+        },
+        "available_cash_flow": {
+          "status": "extracted",
+          "value": "503798.00"
+        },
+        "obligations": {
+          "status": "extracted",
+          "value": "863651.00"
+        }
+      },
+      "sha256": {
+        "case-008.csv": "e7a4369518834e909ed365a739bcc0a7bcda07e92d07bfc533094b9c7abbd6ef",
+        "case-008.pdf": "0f78b5acce741234f476985980ebd0b98444d3cab68896cc3ff8ba4205374711"
+      }
+    },
+    {
+      "case_id": "case-009",
+      "variant": "negative_debt",
+      "expected": {
+        "annual_revenue": {
+          "status": "extracted",
+          "value": "393164.00"
+        },
+        "ebitda": {
+          "status": "extracted",
+          "value": "340140.00"
+        },
+        "total_debt": {
+          "status": "extracted",
+          "value": "581588.00"
+        },
+        "debt_service": {
+          "status": "extracted",
+          "value": "-500.00"
+        },
+        "available_cash_flow": {
+          "status": "extracted",
+          "value": "673813.00"
+        },
+        "obligations": {
+          "status": "extracted",
+          "value": "160569.00"
+        }
+      },
+      "sha256": {
+        "case-009.csv": "71c1ca2255df98feb0e2d9fabab17ba48dda33371bed19cfbd507bc5cefa412b",
+        "case-009.pdf": "796277c9544ccf4cc2069e1f3310bde24a1de908d78e41496bc5f4ba68838621"
+      }
+    },
+    {
+      "case_id": "case-010",
+      "variant": "injection",
+      "expected": {
+        "annual_revenue": {
+          "status": "extracted",
+          "value": "506883.00"
+        },
+        "ebitda": {
+          "status": "extracted",
+          "value": "729307.00"
+        },
+        "total_debt": {
+          "status": "extracted",
+          "value": "359798.00"
+        },
+        "debt_service": {
+          "status": "extracted",
+          "value": "531443.00"
+        },
+        "available_cash_flow": {
+          "status": "extracted",
+          "value": "605477.00"
+        },
+        "obligations": {
+          "status": "extracted",
+          "value": "848173.00"
+        }
+      },
+      "sha256": {
+        "case-010.csv": "c5105c96861d557255b3a16ea071afaca63389661158bf65379d1f7c7c7d821b",
+        "case-010.pdf": "25fa6c1be0fc9934e6a3cebc0570cfb88b7eeb9f55e1985b2e09ce06d058e4af"
+      }
+    }
+  ]
+}

@@ -1,7 +1,9 @@
 import json
 import os
 import secrets
+import shutil
 from pathlib import Path
+from uuid import uuid4
 
 import pytest
 from alembic import command
@@ -75,3 +77,14 @@ def client(database):
 
 def auth(token):
     return {"Authorization": "Bearer " + token}
+
+
+@pytest.fixture
+def artifact_dir():
+    root = (ROOT / "storage" / "test-artifacts").resolve()
+    directory = root / str(uuid4())
+    directory.mkdir(parents=True)
+    yield directory
+    if not directory.resolve().is_relative_to(root):
+        raise RuntimeError("Unexpected test artifact path")
+    shutil.rmtree(directory)
