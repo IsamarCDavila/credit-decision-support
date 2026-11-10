@@ -22,6 +22,6 @@ Version `v0.1.0` marks an executable foundation. Version `v1.0.0` requires the c
 
 ## Dependencies and extensions
 
-The foundation requires Python 3.12 and Docker Compose. A live LLM provider is not required for that milestone. Provider selection and token budget are resolved before live-model evaluation.
+The foundation requires Python 3.12 and Docker Compose. Phase 4 provides an offline mock and optional OpenAI integration with a cumulative US$2 application allowance; see the [AI workflow](ai-workflow.md). Live-model measurements are distinct from offline orchestration tests.
 
 Temporal, MCP, Kafka, Kubernetes, OCR, currency conversion, and additional financial segments remain separate extensions. Each requires an architecture decision, a defined need, and appropriate benchmark evidence. Small synthetic fixtures may be versioned; credentials, real documents, and provider logs are excluded.

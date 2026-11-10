@@ -17,13 +17,19 @@ from credit_support.settings import Identity
 
 
 def queue_policy_check(
-    engine: Engine, case_id: UUID, source_id: UUID, actor: Identity, key: str
+    engine: Engine,
+    case_id: UUID,
+    source_id: UUID,
+    actor: Identity,
+    key: str,
+    ai: dict[str, str] | None = None,
 ) -> dict[str, str]:
     if actor.role != "analyst":
         raise HTTPException(403, "Analyst role required")
-    route = f"/v1/cases/{case_id}/evaluate"
+    step = "ai_workflow" if ai else "evaluate_policy"
+    route = f"/v1/cases/{case_id}/" + ("ai-evaluate" if ai else "evaluate")
     request_hash = hashlib.sha256(
-        canonical({"source_evaluation_id": str(source_id)}).encode()
+        canonical({"source_evaluation_id": str(source_id), **({"ai": ai} if ai else {})}).encode()
     ).hexdigest()
     with engine.begin() as conn:
         case = require_case(conn, case_id, actor, lock=True)
@@ -69,15 +75,17 @@ def queue_policy_check(
             },
             "formula_version": FORMULA_VERSION,
         }
+        if ai:
+            snapshot.update(purpose="AI_ASSISTED_DRAFT", ai=ai)
         digest = hashlib.sha256(canonical(snapshot).encode()).hexdigest()
         existing = (
             conn.execute(
                 text("""
           SELECT e.id AS evaluation_id,j.id AS job_id FROM evaluations e JOIN jobs j
-          ON j.evaluation_id=e.id AND j.step='evaluate_policy'
+          ON j.evaluation_id=e.id AND j.step=:step
           WHERE e.case_id=:case AND e.input_hash=:hash
         """),
-                {"case": case_id, "hash": digest},
+                {"case": case_id, "hash": digest, "step": step},
             )
             .mappings()
             .first()
@@ -117,9 +125,9 @@ def queue_policy_check(
             conn.execute(
                 text("""
               INSERT INTO jobs(id,evaluation_id,step,input_hash,status)
-              VALUES(:id,:eval,'evaluate_policy',:hash,'READY')
+              VALUES(:id,:eval,:step,:hash,'READY')
             """),
-                {"id": job_id, "eval": evaluation_id, "hash": digest},
+                {"id": job_id, "eval": evaluation_id, "hash": digest, "step": step},
             )
             receipt = {"evaluation_id": str(evaluation_id), "job_id": str(job_id)}
             append_event(

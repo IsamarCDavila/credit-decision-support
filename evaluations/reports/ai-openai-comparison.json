@@ -1,0 +1,484 @@
+{
+  "evaluation": "bounded-ai-comparison-v1",
+  "run_id": "37d012d3-4fa9-4b81-8000-e68f68e22c79",
+  "run_at_utc": "2026-11-10T16:13:58.617338+00:00",
+  "provider": "openai",
+  "corpus_seed": 100,
+  "repetitions": 2,
+  "campaign_status": "completed",
+  "planned_workflow_runs": 12,
+  "pricing_usd_per_million_tokens": {
+    "input": "2",
+    "output": "12"
+  },
+  "limitations": [
+    "Controlled synthetic CSVs, not narrative documents or real credit cases.",
+    "Material wording is rendered by code; this is not a free-text hallucination benchmark.",
+    "Generalist selects claim IDs before tools; specialized draft role sees verified claim cards.",
+    "Equal total output-token cap (4096) does not equalize context or actual consumption.",
+    "Mock results validate orchestration only; no model-quality or speedup claim.",
+    "Small sample; no claim of superiority, statistical significance, or manual time savings."
+  ],
+  "runs": [
+    {
+      "variant": "complete",
+      "repetition": 1,
+      "workflow": "generalist",
+      "evaluation_id": "ddc79f3b-aef9-45c1-9ea1-c97b40502903",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 4.5442,
+      "model_calls": [
+        {
+          "id": "b5001718-88eb-4cb9-a48a-3ae91245d244",
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "stage": "generalist",
+          "status": "COMPLETED",
+          "input_tokens": 746,
+          "output_tokens": 225,
+          "charged_usd": "0.004192",
+          "reserved_usd": "0.06438",
+          "accounted_usd": "0.004192",
+          "cost_status": "usage_based",
+          "prompt_version": "grounded-agents-v2",
+          "response_id": "resp_0e1025c3486bb6c1016af342c8c8e487d1a5302cd770a6dd22"
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "complete",
+      "repetition": 1,
+      "workflow": "multi_agent",
+      "evaluation_id": "178e1c0f-0fd7-4069-af07-5b9b1b906596",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 4.7956,
+      "model_calls": [
+        {
+          "id": "1f50770b-628b-467d-9264-40876a0fc621",
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "stage": "extractor",
+          "status": "COMPLETED",
+          "input_tokens": 636,
+          "output_tokens": 144,
+          "charged_usd": "0.003",
+          "reserved_usd": "0.038738",
+          "accounted_usd": "0.003",
+          "cost_status": "usage_based",
+          "prompt_version": "grounded-agents-v2",
+          "response_id": "resp_058f0dbe5046bf1a016af342cc955487d1a6048be31aec0545"
+        },
+        {
+          "id": "b44ec5b6-ec5c-458c-9d6d-4b7511013e33",
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "stage": "draft",
+          "status": "COMPLETED",
+          "input_tokens": 1423,
+          "output_tokens": 83,
+          "charged_usd": "0.003842",
+          "reserved_usd": "0.043434",
+          "accounted_usd": "0.003842",
+          "cost_status": "usage_based",
+          "prompt_version": "grounded-agents-v2",
+          "response_id": "resp_03df4072f9334858016af342cea48c87d1970722d1eb5e9ad0"
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "ambiguous",
+      "repetition": 1,
+      "workflow": "generalist",
+      "evaluation_id": "ec3a2310-5a44-43e9-92b0-db868ca14c05",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 3.2697,
+      "model_calls": [
+        {
+          "id": "c6137364-2c94-49b7-adfb-756b0dcd34b1",
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "stage": "generalist",
+          "status": "COMPLETED",
+          "input_tokens": 769,
+          "output_tokens": 246,
+          "charged_usd": "0.00449",
+          "reserved_usd": "0.064544",
+          "accounted_usd": "0.00449",
+          "cost_status": "usage_based",
+          "prompt_version": "grounded-agents-v2",
+          "response_id": "resp_0b8378bbb905f275016af342d264ec87d192e62e7d383de258"
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "ambiguous",
+      "repetition": 1,
+      "workflow": "multi_agent",
+      "evaluation_id": "cfc163b5-8dc2-4965-84c7-8e684c00ebe9",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 5.0095,
+      "model_calls": [
+        {
+          "id": "b529dae6-8dd2-4a99-8efe-985044c7fb41",
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "stage": "extractor",
+          "status": "COMPLETED",
+          "input_tokens": 659,
+          "output_tokens": 165,
+          "charged_usd": "0.003298",
+          "reserved_usd": "0.038902",
+          "accounted_usd": "0.003298",
+          "cost_status": "usage_based",
+          "prompt_version": "grounded-agents-v2",
+          "response_id": "resp_053d67335271763a016af342d5a4d487d1ad1628770209fe5a"
+        },
+        {
+          "id": "ee5b5962-f572-45e3-b1db-e72b870a488c",
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "stage": "draft",
+          "status": "COMPLETED",
+          "input_tokens": 1455,
+          "output_tokens": 83,
+          "charged_usd": "0.003906",
+          "reserved_usd": "0.04356",
+          "accounted_usd": "0.003906",
+          "cost_status": "usage_based",
+          "prompt_version": "grounded-agents-v2",
+          "response_id": "resp_0236e3f6d21718be016af342d7c30887d1bf1b0e4aadde571a"
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "injection",
+      "repetition": 1,
+      "workflow": "generalist",
+      "evaluation_id": "334257ac-3aff-4bba-9c43-32a1bd067a91",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 4.1125,
+      "model_calls": [
+        {
+          "id": "4f103396-4c13-4a47-a485-96b9fe0247c8",
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "stage": "generalist",
+          "status": "COMPLETED",
+          "input_tokens": 767,
+          "output_tokens": 225,
+          "charged_usd": "0.004234",
+          "reserved_usd": "0.064562",
+          "accounted_usd": "0.004234",
+          "cost_status": "usage_based",
+          "prompt_version": "grounded-agents-v2",
+          "response_id": "resp_09f1c249b5a3f4a5016af342dc660087d1b92b17c491b5a665"
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "injection",
+      "repetition": 1,
+      "workflow": "multi_agent",
+      "evaluation_id": "bc8b0864-df7e-4e25-b452-d8237f8b44f9",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 4.804,
+      "model_calls": [
+        {
+          "id": "01d73738-3f20-4764-a083-93f4cf7eee19",
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "stage": "extractor",
+          "status": "COMPLETED",
+          "input_tokens": 657,
+          "output_tokens": 144,
+          "charged_usd": "0.003042",
+          "reserved_usd": "0.03892",
+          "accounted_usd": "0.003042",
+          "cost_status": "usage_based",
+          "prompt_version": "grounded-agents-v2",
+          "response_id": "resp_019d93be60e01d49016af342dff7d087d197645f29ba3b6a50"
+        },
+        {
+          "id": "edd08638-e14a-4e81-8c5d-04f954c22f53",
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "stage": "draft",
+          "status": "COMPLETED",
+          "input_tokens": 1435,
+          "output_tokens": 83,
+          "charged_usd": "0.003866",
+          "reserved_usd": "0.04343",
+          "accounted_usd": "0.003866",
+          "cost_status": "usage_based",
+          "prompt_version": "grounded-agents-v2",
+          "response_id": "resp_0e15b03c90273013016af342e217b487d1aad24e8e7a0e8d4b"
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "complete",
+      "repetition": 2,
+      "workflow": "multi_agent",
+      "evaluation_id": "242504e9-a092-495b-92ac-9c8f081baeff",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 4.5597,
+      "model_calls": [
+        {
+          "id": "efcefab7-1116-4912-b2c4-067cc8244841",
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "stage": "extractor",
+          "status": "COMPLETED",
+          "input_tokens": 636,
+          "output_tokens": 144,
+          "charged_usd": "0.003",
+          "reserved_usd": "0.038738",
+          "accounted_usd": "0.003",
+          "cost_status": "usage_based",
+          "prompt_version": "grounded-agents-v2",
+          "response_id": "resp_03172a6ae58db95b016af342e5dfe887d180fd623fcec3a4ad"
+        },
+        {
+          "id": "802b8e08-ed26-43d4-bfff-699dbab30b52",
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "stage": "draft",
+          "status": "COMPLETED",
+          "input_tokens": 1423,
+          "output_tokens": 83,
+          "charged_usd": "0.003842",
+          "reserved_usd": "0.043434",
+          "accounted_usd": "0.003842",
+          "cost_status": "usage_based",
+          "prompt_version": "grounded-agents-v2",
+          "response_id": "resp_055b726a1d237e79016af342e7c15487d1909ee66a476cfcdf"
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "complete",
+      "repetition": 2,
+      "workflow": "generalist",
+      "evaluation_id": "71fa953d-7d08-47b6-8cb8-abca812c0081",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 3.5007,
+      "model_calls": [
+        {
+          "id": "3c3bc093-3e7d-4c38-b9fe-6e77b194e3bc",
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "stage": "generalist",
+          "status": "COMPLETED",
+          "input_tokens": 746,
+          "output_tokens": 225,
+          "charged_usd": "0.004192",
+          "reserved_usd": "0.06438",
+          "accounted_usd": "0.004192",
+          "cost_status": "usage_based",
+          "prompt_version": "grounded-agents-v2",
+          "response_id": "resp_0612294c443cc0aa016af342ea68a087d1b2395286ecbccf17"
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "ambiguous",
+      "repetition": 2,
+      "workflow": "multi_agent",
+      "evaluation_id": "f3caa57b-1660-461e-b102-8c2a6d547772",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 4.3843,
+      "model_calls": [
+        {
+          "id": "a1c48e0f-a41f-45e9-96a7-08bff70c0f66",
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "stage": "extractor",
+          "status": "COMPLETED",
+          "input_tokens": 659,
+          "output_tokens": 165,
+          "charged_usd": "0.003298",
+          "reserved_usd": "0.038902",
+          "accounted_usd": "0.003298",
+          "cost_status": "usage_based",
+          "prompt_version": "grounded-agents-v2",
+          "response_id": "resp_09e786b41b0d26d2016af342eef85887d1b1af785d7e7c5b38"
+        },
+        {
+          "id": "bad197bb-bb06-4823-9c67-db1e04f283c2",
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "stage": "draft",
+          "status": "COMPLETED",
+          "input_tokens": 1464,
+          "output_tokens": 83,
+          "charged_usd": "0.003924",
+          "reserved_usd": "0.04356",
+          "accounted_usd": "0.003924",
+          "cost_status": "usage_based",
+          "prompt_version": "grounded-agents-v2",
+          "response_id": "resp_09a194f2fac1d02e016af342f0eb5c87d1a826959c51777aae"
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "ambiguous",
+      "repetition": 2,
+      "workflow": "generalist",
+      "evaluation_id": "b52084ea-fd29-4c93-8db9-3920741e28ad",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 3.2783,
+      "model_calls": [
+        {
+          "id": "c5ab97b8-42ed-4c0f-8d37-1675b6bfadc2",
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "stage": "generalist",
+          "status": "COMPLETED",
+          "input_tokens": 769,
+          "output_tokens": 246,
+          "charged_usd": "0.00449",
+          "reserved_usd": "0.064544",
+          "accounted_usd": "0.00449",
+          "cost_status": "usage_based",
+          "prompt_version": "grounded-agents-v2",
+          "response_id": "resp_08ea54c9f6f89196016af342f375fc87d1b474e9a953c325cb"
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "injection",
+      "repetition": 2,
+      "workflow": "multi_agent",
+      "evaluation_id": "1c856951-a634-4445-961a-4197316d64cd",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 5.6953,
+      "model_calls": [
+        {
+          "id": "b29026cf-3d04-4060-9a09-a39eaa8fe8ea",
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "stage": "extractor",
+          "status": "COMPLETED",
+          "input_tokens": 657,
+          "output_tokens": 144,
+          "charged_usd": "0.003042",
+          "reserved_usd": "0.03892",
+          "accounted_usd": "0.003042",
+          "cost_status": "usage_based",
+          "prompt_version": "grounded-agents-v2",
+          "response_id": "resp_06e69c40ca3ff874016af342f9c70487d18b64d42e2454beb8"
+        },
+        {
+          "id": "4ae51811-bd56-4acd-98d1-20d805dd14b5",
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "stage": "draft",
+          "status": "COMPLETED",
+          "input_tokens": 1443,
+          "output_tokens": 83,
+          "charged_usd": "0.003882",
+          "reserved_usd": "0.04343",
+          "accounted_usd": "0.003882",
+          "cost_status": "usage_based",
+          "prompt_version": "grounded-agents-v2",
+          "response_id": "resp_0bd6602e3ada6a18016af342fbc20087d1879992c3ceb0c12b"
+        }
+      ],
+      "error": null
+    },
+    {
+      "variant": "injection",
+      "repetition": 2,
+      "workflow": "generalist",
+      "evaluation_id": "3c33ef6b-b7db-49dd-85bc-3584715c1149",
+      "succeeded": true,
+      "matches_ground_truth": true,
+      "grounded_complete_draft": true,
+      "elapsed_seconds": 4.5416,
+      "model_calls": [
+        {
+          "id": "eee3a73f-2b1b-483f-981d-5a299edc2bf1",
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "stage": "generalist",
+          "status": "COMPLETED",
+          "input_tokens": 767,
+          "output_tokens": 225,
+          "charged_usd": "0.004234",
+          "reserved_usd": "0.064562",
+          "accounted_usd": "0.004234",
+          "cost_status": "usage_based",
+          "prompt_version": "grounded-agents-v2",
+          "response_id": "resp_04d5cf2cca7936a8016af34300006487d19882f4caee90af2e"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "summary": {
+    "generalist": {
+      "runs": 6,
+      "successful": 6,
+      "ground_truth_matches": 6,
+      "fully_grounded_drafts": 6,
+      "model_calls": 6,
+      "input_tokens": 4564,
+      "output_tokens": 1392,
+      "charged_or_reserved_usd": "0.025832",
+      "unknown_usage_calls": 0,
+      "median_seconds": 3.8066
+    },
+    "multi_agent": {
+      "runs": 6,
+      "successful": 6,
+      "ground_truth_matches": 6,
+      "fully_grounded_drafts": 6,
+      "model_calls": 12,
+      "input_tokens": 12547,
+      "output_tokens": 1404,
+      "charged_or_reserved_usd": "0.041942",
+      "unknown_usage_calls": 0,
+      "median_seconds": 4.7998
+    }
+  },
+  "cumulative_application_ledger": {
+    "limit_usd": "2",
+    "committed_or_reserved_usd": "0.209620",
+    "openai_calls": 34
+  },
+  "initial_attempt_report": "ai-openai-initial-attempt.json",
+  "previous_campaign_report": "ai-openai-v1-comparison.json",
+  "source_reference_scheme": "evaluation-local-short-ids-with-schema-enum-v2"
+}

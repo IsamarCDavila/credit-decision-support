@@ -22,6 +22,6 @@ La versión `v0.1.0` identifica una base ejecutable. La versión `v1.0.0` requie
 
 ## Dependencias y ampliaciones
 
-La infraestructura base requiere Python 3.12 y Docker Compose. Ese hito no necesita un proveedor LLM activo. La elección de proveedor y presupuesto de tokens se resuelve antes de evaluar modelos reales.
+La infraestructura base requiere Python 3.12 y Docker Compose. La fase 4 incorpora un mock sin conexión e integración opcional con OpenAI y asignación acumulada de US$2 en la aplicación; véase el [flujo de IA](ai-workflow.md). Las mediciones reales se distinguen de las pruebas simuladas de orquestación.
 
 Temporal, MCP, Kafka, Kubernetes, OCR, conversión de moneda y segmentos financieros adicionales permanecen como ampliaciones separadas. Cada una requiere una decisión de arquitectura, una necesidad definida y mediciones apropiadas. Se pueden versionar ejemplos sintéticos pequeños; se excluyen credenciales, documentos reales y registros de proveedores.

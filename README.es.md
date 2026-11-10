@@ -6,7 +6,7 @@ Análisis crediticio asistido por IA con trazabilidad, datos sintéticos, reglas
 
 ## Estado del proyecto
 
-**Controles de políticas — Fase 3.** El backend ingiere estados sintéticos PDF/CSV, extrae hechos con evidencia, selecciona políticas versionadas y calcula DSCR con resultados deterministas y citas de política. Se incluye un informe de referencia controlado; no se ha establecido rendimiento real ni calidad de modelos. La redacción asistida por modelos y revisión humana corresponden a hitos posteriores.
+**Borradores de IA con evidencia — Fase 4.** El backend ingiere estados sintéticos PDF/CSV, verifica observaciones propuestas por modelos, calcula DSCR, comprueba políticas versionadas y prepara borradores bilingües con afirmaciones verificadas. OpenAI es opcional, está desactivado por defecto y tiene una asignación acumulada de US$2 en la aplicación. Las evaluaciones controladas distinguen la orquestación simulada de las mediciones reales. La interfaz de revisión y exportación corresponden a la fase 5.
 
 El MVP admite expedientes PyME en USD, periodos anuales completos y estados financieros individuales. Prepara análisis respaldados por evidencia para un revisor humano. Los informes llevan la marca **SIMULACIÓN**; las recomendaciones no autorizan créditos reales.
 
@@ -14,6 +14,7 @@ El MVP admite expedientes PyME en USD, periodos anuales completos y estados fina
 
 | Documento | Propósito |
 |---|---|
+| [Flujo de IA con evidencia](docs/es/ai-workflow.md) | Roles, validación, configuración de OpenAI, costos y límites de comparación |
 | [Catálogo y controles financieros](docs/es/policy-engine.md) | Selección de políticas, DSCR, citas y verificación de referencia |
 | [Ingesta documental](docs/es/ingestion.md) | Formatos, extracción con evidencia, límites y demo |
 | [Operación de infraestructura base](docs/es/foundation.md) | Arranque, acceso a API, worker y verificación |
@@ -49,6 +50,7 @@ uv run python scripts/configure_demo.py
 docker compose up --build --wait api worker
 uv run python scripts/smoke_ingestion.py
 uv run python scripts/smoke_policy.py
+uv run python scripts/evaluate_ai.py --provider mock --output storage/ai-mock.json
 ```
 
 La API se ejecuta en `http://127.0.0.1:8000`; su documentación interactiva se encuentra en `/docs`. La generación de configuración crea credenciales locales privadas y rechaza sobrescribir `.env`. La [guía de ingesta](docs/es/ingestion.md) describe la extracción; la [guía de operación](docs/es/foundation.md) detalla la configuración de identidad y base de datos.

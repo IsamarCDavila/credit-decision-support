@@ -8,6 +8,7 @@ from fastapi.responses import Response
 from pydantic import BaseModel
 from sqlalchemy import text
 
+from credit_support.ai_models import AIDraft, ModelCallView
 from credit_support.db import get_engine
 from credit_support.ingestion import queue_extraction, require_case, upload
 from credit_support.parsers import MAX_FILE_BYTES, IngestionError
@@ -76,6 +77,8 @@ class ExtractionView(BaseModel):
     policy_id: str | None = None
     calculations: list[CalculationView] = []
     policy_check: PolicyCheckView | None = None
+    ai_draft: AIDraft | None = None
+    model_calls: list[ModelCallView] = []
 
 
 @router.post("/v1/cases/{id}/documents", status_code=202, response_model=DocumentReceipt)
@@ -181,7 +184,8 @@ def extraction_detail(id: UUID, evaluation_id: UUID, actor: Actor) -> Any:
             conn.execute(
                 text("""
           SELECT e.*,j.status AS job_status,j.result FROM evaluations e JOIN jobs j
-          ON j.evaluation_id=e.id AND j.step IN ('extract_documents','evaluate_policy')
+          ON j.evaluation_id=e.id
+          AND j.step IN ('extract_documents','evaluate_policy','ai_workflow')
           WHERE e.id=:eval AND e.case_id=:case
         """),
                 {"eval": evaluation_id, "case": id},
@@ -244,6 +248,37 @@ def extraction_detail(id: UUID, evaluation_id: UUID, actor: Actor) -> Any:
         policy_check: dict[str, Any] | None = conn.execute(
             text("SELECT result FROM policy_checks WHERE evaluation_id=:id"), {"id": evaluation_id}
         ).scalar_one_or_none()
+        draft = conn.execute(
+            text("SELECT draft FROM ai_drafts WHERE evaluation_id=:id"), {"id": evaluation_id}
+        ).scalar_one_or_none()
+        calls = [
+            {
+                **row,
+                "reserved_usd": str(row["reserved_usd"]),
+                "charged_usd": (
+                    str(row["charged_usd"])
+                    if row["provider"] == "mock" or row["input_tokens"] is not None
+                    else None
+                ),
+                "accounted_usd": str(
+                    row["charged_usd"] if row["charged_usd"] is not None else row["reserved_usd"]
+                ),
+                "cost_status": (
+                    "mock"
+                    if row["provider"] == "mock"
+                    else "usage_based"
+                    if row["input_tokens"] is not None
+                    else "reserved"
+                ),
+            }
+            for row in conn.execute(
+                text("""
+                 SELECT id,provider,model,stage,status,input_tokens,output_tokens,charged_usd,
+                 reserved_usd,prompt_version,response_id FROM model_calls
+                 WHERE evaluation_id=:id ORDER BY created_at,id"""),
+                {"id": evaluation_id},
+            ).mappings()
+        ]
         return {
             "evaluation_id": evaluation_id,
             "processing_state": evaluation["processing_state"],
@@ -258,4 +293,6 @@ def extraction_detail(id: UUID, evaluation_id: UUID, actor: Actor) -> Any:
             "policy_id": evaluation["policy_id"],
             "calculations": calculations,
             "policy_check": policy_check,
+            "ai_draft": draft,
+            "model_calls": calls,
         }

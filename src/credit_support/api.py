@@ -6,6 +6,7 @@ from fastapi import Depends, FastAPI, Header, HTTPException, Query
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
+from credit_support.ai_workflow import router as ai_router
 from credit_support.audit import append_event, canonical
 from credit_support.db import get_engine
 from credit_support.ingestion_api import router as ingestion_router
@@ -17,15 +18,16 @@ from credit_support.settings import Identity
 
 app = FastAPI(
     title="Credit Decision Support",
-    version="0.3.0",
+    version="0.4.0",
     description=(
         "Synthetic document ingestion, deterministic financial calculations, and versioned "
-        "policy checks. Model-assisted drafting and human review are subsequent milestones."
+        "policy checks, and grounded model-assisted drafts for human review."
     ),
 )
 app.add_middleware(RequestSizeLimit)
 app.include_router(ingestion_router)
 app.include_router(policy_router)
+app.include_router(ai_router)
 errors: dict[int | str, dict[str, Any]] = {
     code: {"model": Error} for code in (401, 403, 404, 409, 503)
 }
@@ -47,7 +49,7 @@ def health() -> Health:
 def ready() -> Health:
     with get_engine().connect() as conn:
         revision: str = conn.execute(text("SELECT version_num FROM alembic_version")).scalar_one()
-        if revision != "0003_policy_engine":
+        if revision != "0004_ai_workflow":
             raise HTTPException(503, "Database migration required")
     return Health(status="ready")
 
