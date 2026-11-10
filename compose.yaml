@@ -17,7 +17,7 @@ services:
     build: .
     environment:
       CDS_DATABASE_URL: postgresql+psycopg://postgres:${CDS_DATABASE_PASSWORD}@db:5432/credit_support
-    command: [alembic, upgrade, head]
+    command: [sh, -c, "alembic upgrade head && python -m credit_support.policy_catalog"]
     depends_on:
       db:
         condition: service_healthy

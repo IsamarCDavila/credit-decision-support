@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Credit Decision Support",
-    "description": "Synthetic document ingestion and evidence extraction. Financial evaluation, and human review are subsequent milestones.",
-    "version": "0.2.0"
+    "description": "Synthetic document ingestion, deterministic financial calculations, and versioned policy checks. Model-assisted drafting and human review are subsequent milestones.",
+    "version": "0.3.0"
   },
   "paths": {
     "/v1/cases/{id}/documents": {
@@ -274,6 +274,297 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ExtractionView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/policies": {
+      "get": {
+        "summary": "Policy Versions",
+        "operationId": "policy_versions_v1_policies_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "Response Policy Versions V1 Policies Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/policies/{policy_version}": {
+      "get": {
+        "summary": "Policy Detail",
+        "operationId": "policy_detail_v1_policies__policy_version__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "policy_version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Policy Version"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/policies/{policy_version}/fragments": {
+      "get": {
+        "summary": "Retrieve Fragments",
+        "operationId": "retrieve_fragments_v1_policies__policy_version__fragments_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "policy_version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Policy Version"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "title": "Q"
+            }
+          },
+          {
+            "name": "locale",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "en",
+                "es"
+              ],
+              "type": "string",
+              "default": "en",
+              "title": "Locale"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 10,
+              "minimum": 1,
+              "default": 3,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RetrievalHit"
+                  },
+                  "title": "Response Retrieve Fragments V1 Policies  Policy Version  Fragments Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/cases/{id}/policy": {
+      "get": {
+        "summary": "Applicable Policy",
+        "operationId": "applicable_policy_v1_cases__id__policy_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/cases/{id}/evaluate": {
+      "post": {
+        "summary": "Evaluate",
+        "operationId": "evaluate_v1_cases__id__evaluate_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractionReceipt"
                 }
               }
             }
@@ -764,6 +1055,74 @@
         ],
         "title": "Body_upload_document_v1_cases__id__documents_post"
       },
+      "CalculationView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "formula_id": {
+            "type": "string",
+            "title": "Formula Id"
+          },
+          "formula_version": {
+            "type": "string",
+            "title": "Formula Version"
+          },
+          "input_fact_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Input Fact Ids"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "unrounded_value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unrounded Value"
+          },
+          "details": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Details"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "formula_id",
+          "formula_version",
+          "input_fact_ids",
+          "status",
+          "value",
+          "unrounded_value",
+          "details"
+        ],
+        "title": "CalculationView"
+      },
       "CaseView": {
         "properties": {
           "segment": {
@@ -966,6 +1325,21 @@
         ],
         "title": "Error"
       },
+      "EvaluateRequest": {
+        "properties": {
+          "source_evaluation_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Source Evaluation Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "source_evaluation_id"
+        ],
+        "title": "EvaluateRequest"
+      },
       "EvidenceView": {
         "properties": {
           "id": {
@@ -1086,6 +1460,35 @@
             },
             "type": "array",
             "title": "Evidence"
+          },
+          "policy_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policy Id"
+          },
+          "calculations": {
+            "items": {
+              "$ref": "#/components/schemas/CalculationView"
+            },
+            "type": "array",
+            "title": "Calculations",
+            "default": []
+          },
+          "policy_check": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PolicyCheckView"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -1210,6 +1613,318 @@
           "status"
         ],
         "title": "Health"
+      },
+      "PolicyCheckView": {
+        "properties": {
+          "policy_version": {
+            "type": "string",
+            "title": "Policy Version"
+          },
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "meets_rules",
+              "exceptions",
+              "insufficient_evidence"
+            ],
+            "title": "Outcome"
+          },
+          "rule_results": {
+            "items": {
+              "$ref": "#/components/schemas/RuleResult"
+            },
+            "type": "array",
+            "title": "Rule Results"
+          },
+          "data_quality_exceptions": {
+            "items": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Data Quality Exceptions"
+          },
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyCitation"
+            },
+            "type": "array",
+            "title": "Citations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "policy_version",
+          "simulation",
+          "outcome",
+          "rule_results",
+          "data_quality_exceptions",
+          "citations"
+        ],
+        "title": "PolicyCheckView"
+      },
+      "PolicyCitation": {
+        "properties": {
+          "policy_version": {
+            "type": "string",
+            "title": "Policy Version"
+          },
+          "fragment_id": {
+            "type": "string",
+            "title": "Fragment Id"
+          },
+          "text_en": {
+            "type": "string",
+            "title": "Text En"
+          },
+          "text_es": {
+            "type": "string",
+            "title": "Text Es"
+          },
+          "sha256": {
+            "type": "string",
+            "title": "Sha256"
+          }
+        },
+        "type": "object",
+        "required": [
+          "policy_version",
+          "fragment_id",
+          "text_en",
+          "text_es",
+          "sha256"
+        ],
+        "title": "PolicyCitation"
+      },
+      "PolicyRule": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "const": "DSCR_MINIMUM",
+            "title": "Id",
+            "default": "DSCR_MINIMUM"
+          },
+          "formula": {
+            "type": "string",
+            "const": "DSCR",
+            "title": "Formula",
+            "default": "DSCR"
+          },
+          "operator": {
+            "type": "string",
+            "const": "gte",
+            "title": "Operator",
+            "default": "gte"
+          },
+          "threshold": {
+            "type": "string",
+            "pattern": "^(?:[0-9]{1,2}|100)(?:\\.[0-9]{1,4})?$",
+            "title": "Threshold"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "threshold"
+        ],
+        "title": "PolicyRule"
+      },
+      "PolicySpec": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Z0-9][A-Z0-9_-]{2,79}$",
+            "title": "Id"
+          },
+          "synthetic": {
+            "type": "boolean",
+            "const": true,
+            "title": "Synthetic"
+          },
+          "segment": {
+            "type": "string",
+            "const": "SME",
+            "title": "Segment"
+          },
+          "currency": {
+            "type": "string",
+            "const": "USD",
+            "title": "Currency"
+          },
+          "accounting_basis": {
+            "type": "string",
+            "const": "individual",
+            "title": "Accounting Basis"
+          },
+          "valid_from": {
+            "type": "string",
+            "format": "date",
+            "title": "Valid From"
+          },
+          "valid_to": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid To"
+          },
+          "template_version": {
+            "type": "string",
+            "const": "synthetic-policy-v1",
+            "title": "Template Version",
+            "default": "synthetic-policy-v1"
+          },
+          "rules": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyRule"
+            },
+            "type": "array",
+            "maxItems": 1,
+            "minItems": 1,
+            "title": "Rules"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "synthetic",
+          "segment",
+          "currency",
+          "accounting_basis",
+          "valid_from",
+          "valid_to",
+          "rules"
+        ],
+        "title": "PolicySpec"
+      },
+      "PolicyView": {
+        "properties": {
+          "specification": {
+            "$ref": "#/components/schemas/PolicySpec"
+          },
+          "content_sha256": {
+            "type": "string",
+            "title": "Content Sha256"
+          },
+          "fragments": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyCitation"
+            },
+            "type": "array",
+            "title": "Fragments"
+          }
+        },
+        "type": "object",
+        "required": [
+          "specification",
+          "content_sha256",
+          "fragments"
+        ],
+        "title": "PolicyView"
+      },
+      "RetrievalHit": {
+        "properties": {
+          "policy_version": {
+            "type": "string",
+            "title": "Policy Version"
+          },
+          "fragment_id": {
+            "type": "string",
+            "title": "Fragment Id"
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en",
+              "es"
+            ],
+            "title": "Locale"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "sha256": {
+            "type": "string",
+            "title": "Sha256"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          }
+        },
+        "type": "object",
+        "required": [
+          "policy_version",
+          "fragment_id",
+          "locale",
+          "text",
+          "sha256",
+          "score"
+        ],
+        "title": "RetrievalHit"
+      },
+      "RuleResult": {
+        "properties": {
+          "rule_id": {
+            "type": "string",
+            "title": "Rule Id"
+          },
+          "formula_id": {
+            "type": "string",
+            "title": "Formula Id"
+          },
+          "operator": {
+            "type": "string",
+            "title": "Operator"
+          },
+          "threshold": {
+            "type": "string",
+            "title": "Threshold"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PASS",
+              "FAIL",
+              "REQUIRES_REVIEW"
+            ],
+            "title": "Status"
+          },
+          "calculation_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Calculation Id"
+          },
+          "policy_fragment_id": {
+            "type": "string",
+            "title": "Policy Fragment Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rule_id",
+          "formula_id",
+          "operator",
+          "threshold",
+          "status",
+          "calculation_id",
+          "policy_fragment_id"
+        ],
+        "title": "RuleResult"
       },
       "ValidationError": {
         "properties": {

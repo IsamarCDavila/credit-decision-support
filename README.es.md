@@ -6,7 +6,7 @@ Análisis crediticio asistido por IA con trazabilidad, datos sintéticos, reglas
 
 ## Estado del proyecto
 
-**Ingesta documental — Fase 2.** El backend admite estados sintéticos PDF/CSV con formato definido, conserva archivos originales y extrae campos financieros con referencias verificables. Se implementaron permisos, idempotencia, snapshots históricos, migraciones y procesamiento mediante worker. Las reglas financieras, análisis asistido por modelos y revisión humana corresponden a hitos posteriores. Las metas de rendimiento y calidad de modelos permanecen sin medir.
+**Controles de políticas — Fase 3.** El backend ingiere estados sintéticos PDF/CSV, extrae hechos con evidencia, selecciona políticas versionadas y calcula DSCR con resultados deterministas y citas de política. Se incluye un informe de referencia controlado; no se ha establecido rendimiento real ni calidad de modelos. La redacción asistida por modelos y revisión humana corresponden a hitos posteriores.
 
 El MVP admite expedientes PyME en USD, periodos anuales completos y estados financieros individuales. Prepara análisis respaldados por evidencia para un revisor humano. Los informes llevan la marca **SIMULACIÓN**; las recomendaciones no autorizan créditos reales.
 
@@ -14,6 +14,7 @@ El MVP admite expedientes PyME en USD, periodos anuales completos y estados fina
 
 | Documento | Propósito |
 |---|---|
+| [Catálogo y controles financieros](docs/es/policy-engine.md) | Selección de políticas, DSCR, citas y verificación de referencia |
 | [Ingesta documental](docs/es/ingestion.md) | Formatos, extracción con evidencia, límites y demo |
 | [Operación de infraestructura base](docs/es/foundation.md) | Arranque, acceso a API, worker y verificación |
 | [Especificación del proyecto](docs/es/specification.md) | Problema, alcance, arquitectura y metas de diseño |
@@ -25,6 +26,7 @@ El MVP admite expedientes PyME en USD, periodos anuales completos y estados fina
 | [Evaluación y aceptación](docs/es/acceptance.md) | Métricas, casos de prueba y criterios por fase |
 | [Hoja de ruta](docs/es/roadmap.md) | Hitos de implementación y proceso de entrega |
 | [Estado de fase 0](docs/es/phase-0-delivery.md) | Artefactos disponibles y límites de validación |
+| [Referencia sintética medida](evaluations/reports/deterministic-baseline.json) | Concordancia y tiempos observados sobre diez casos controlados |
 | [Ejemplo sintético](data/synthetic/case-001.json) | Referencias de evidencia y cálculo DSCR esperado |
 
 ## Validar el ejemplo de diseño
@@ -46,6 +48,7 @@ uv sync --frozen --extra dev
 uv run python scripts/configure_demo.py
 docker compose up --build --wait api worker
 uv run python scripts/smoke_ingestion.py
+uv run python scripts/smoke_policy.py
 ```
 
 La API se ejecuta en `http://127.0.0.1:8000`; su documentación interactiva se encuentra en `/docs`. La generación de configuración crea credenciales locales privadas y rechaza sobrescribir `.env`. La [guía de ingesta](docs/es/ingestion.md) describe la extracción; la [guía de operación](docs/es/foundation.md) detalla la configuración de identidad y base de datos.

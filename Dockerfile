@@ -7,6 +7,7 @@ COPY src ./src
 RUN pip install --no-cache-dir --no-deps . && useradd --create-home app
 COPY alembic.ini ./
 COPY migrations ./migrations
+COPY data/policies ./data/policies
 USER app
 EXPOSE 8000
 CMD ["uvicorn", "credit_support.api:app", "--host", "0.0.0.0", "--port", "8000"]

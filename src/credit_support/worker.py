@@ -10,6 +10,8 @@ from credit_support.audit import append_event
 from credit_support.db import get_engine
 from credit_support.ingestion import extract
 from credit_support.parsers import IngestionError
+from credit_support.policy_catalog import PolicyError
+from credit_support.policy_engine import evaluate_policy
 from credit_support.settings import get_settings
 
 
@@ -63,7 +65,7 @@ def expire_exhausted(engine: Engine) -> None:
             {"id": candidate["id"]},
         ).first()
         if expired:
-            if candidate["step"] == "extract_documents":
+            if candidate["step"] in ("extract_documents", "evaluate_policy"):
                 conn.execute(
                     text("UPDATE evaluations SET processing_state='FAILED_TERMINAL' WHERE id=:id"),
                     {"id": candidate["evaluation_id"]},
@@ -111,12 +113,13 @@ def finish(engine: Engine, job: dict[str, Any]) -> bool:
         if current is None:
             return False
         result: dict[str, Any]
-        if current["step"] == "extract_documents":
+        if current["step"] in ("extract_documents", "evaluate_policy"):
             try:
                 with conn.begin_nested():
-                    result = extract(conn, UUID(str(job["evaluation_id"])))
+                    handler = extract if current["step"] == "extract_documents" else evaluate_policy
+                    result = handler(conn, UUID(str(job["evaluation_id"])))
                 status = "SUCCEEDED"
-            except IngestionError as exc:
+            except (IngestionError, PolicyError) as exc:
                 status, result = "FAILED_TERMINAL", {"error": str(exc)}
                 conn.execute(
                     text("UPDATE evaluations SET processing_state='FAILED_TERMINAL' WHERE id=:id"),

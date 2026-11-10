@@ -4,7 +4,7 @@
 
 ## Alcance implementado
 
-La fase 1 proporciona un servicio FastAPI, persistencia PostgreSQL mediante SQLAlchemy Core, migraciones Alembic, identidades demo resueltas en el servidor, permisos por expediente, creación idempotente, cadena de auditoría y worker persistente. Las migraciones SQL son el modelo autoritativo de persistencia. La base utiliza PostgreSQL 16; pgvector se incorpora con la recuperación de políticas en la fase 3.
+La fase 1 proporciona un servicio FastAPI, persistencia PostgreSQL mediante SQLAlchemy Core, migraciones Alembic, identidades demo resueltas en el servidor, permisos por expediente, creación idempotente, cadena de auditoría y worker persistente. Las migraciones SQL son el modelo autoritativo de persistencia. La base utiliza PostgreSQL 16; la fase 3 utiliza recuperación full-text como referencia; embeddings y pgvector requieren evaluación posterior según [ADR-003](adr/003-policy-engine.md).
 
 | Operación | Comportamiento |
 |---|---|
@@ -55,6 +55,6 @@ uv run mypy
 uv run python scripts/export_openapi.py
 ```
 
-La suite contiene 23 comprobaciones/escenarios de autenticación y autorización, idempotencia concurrente, hashes de auditoría, permisos de ejecución, solapamiento de políticas, snapshots inmutables, restricciones de revisión, evidencia obligatoria, localizadores inválidos, concurrencia/recuperación de leases y migración de avance/retroceso. El retroceso elimina tablas y funciones del proyecto y conserva tablas ajenas. Descarta datos del proyecto y se destina a bases desechables de desarrollo.
+Los escenarios de integración de infraestructura base cubren autenticación y autorización, idempotencia concurrente, hashes de auditoría, permisos de ejecución, solapamiento de políticas, snapshots inmutables, restricciones de revisión, evidencia obligatoria, localizadores inválidos, concurrencia/recuperación de leases y migración de avance/retroceso. El retroceso elimina tablas y funciones del proyecto y conserva tablas ajenas. Descarta datos del proyecto y se destina a bases desechables de desarrollo.
 
 GitHub Actions también comprueba diferencias del OpenAPI generado, construye y arranca los servicios Compose, verifica disponibilidad y detecta secretos. Aprobar las pruebas locales de Python no demuestra que la construcción del contenedor funcione; CI informa esa verificación de forma independiente. La fase 1 no contiene mediciones de rendimiento financiero ni calidad de modelos.
