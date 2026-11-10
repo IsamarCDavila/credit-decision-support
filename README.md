@@ -25,8 +25,6 @@ The MVP supports SME cases in USD, full annual periods, and standalone financial
 | [Phase 0 status](docs/phase-0-delivery.md) | Available artifacts and validation limits |
 | [Synthetic example](data/synthetic/case-001.json) | Evidence references and expected DSCR calculation |
 
-English is the primary documentation language. Each Markdown document links to its Spanish counterpart. See [contribution guidelines](CONTRIBUTING.md) for documentation conventions.
-
 ## Validate the design fixture
 
 Prerequisite: PowerShell 7.2 or later. From the repository root:

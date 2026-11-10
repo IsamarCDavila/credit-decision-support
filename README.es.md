@@ -25,8 +25,6 @@ El MVP admite expedientes PyME en USD, periodos anuales completos y estados fina
 | [Estado de fase 0](docs/es/phase-0-delivery.md) | Artefactos disponibles y límites de validación |
 | [Ejemplo sintético](data/synthetic/case-001.json) | Referencias de evidencia y cálculo DSCR esperado |
 
-El inglés es el idioma principal de la documentación. Cada documento Markdown enlaza a su versión en español. Las [guías de contribución](CONTRIBUTING.es.md) establecen las convenciones de documentación.
-
 ## Validar el ejemplo de diseño
 
 Requisito: PowerShell 7.2 o posterior. Desde la raíz del repositorio:
