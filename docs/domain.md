@@ -1,35 +1,37 @@
-# Contratos de dominio v0.1
+# Domain contracts v0.1
 
-## Hechos y evidencia
+**English** | [Español](es/domain.md)
 
-Un hecho tiene `fact_id`, `evaluation_id`, clave, valor decimal como cadena o null, moneda, unidad, periodo ISO con inicio y fin, base `individual`, estado y `evidence_ids`. Estados: `extracted`, `missing` (sin fuente), `ambiguous` (fuentes o interpretaciones incompatibles), `invalid` (no cumple el contrato). No existe `unknown`. Solo `extracted` entra en cálculos. La confianza opcional es una señal sin calibrar y nunca sustituye validación.
+## Facts and evidence
 
-Una evidencia tiene `evidence_id`, documento, SHA-256 y extracto exacto. PDF: página desde 1, y offsets del texto normalizado por página desde 0, fin exclusivo, con versión de parser. CSV: fila desde 2 contando cabecera en fila 1 y nombre de columna único. La integridad del hash y la correspondencia del valor con el extracto deben verificarse. Regiones visuales son una extensión futura.
+A fact contains `fact_id`, `evaluation_id`, a key, a decimal value encoded as a string or null, currency, unit, an ISO period with start and end dates, the `individual` accounting basis, status, and `evidence_ids`. Status values are `extracted`, `missing` (no source), `ambiguous` (incompatible sources or interpretations), and `invalid` (contract violation). There is no `unknown` status. Only `extracted` facts enter calculations. Optional confidence is an uncalibrated signal and never replaces validation.
 
-Un cálculo tiene `calculation_id`, fórmula y versión, entradas por fact_id, salida decimal o null y estado. Una afirmación del informe tiene `claim_id`, texto, materialidad, evidence_ids y calculation_ids. Reglas citan `policy_fragment_ids`. Se prohíbe presentar como verificada una conclusión sin soporte; una advertencia de ausencia se marca explícitamente. El informe usa plantillas para resultados críticos.
+Evidence contains `evidence_id`, a document reference, SHA-256, and an exact excerpt. PDF locators use a page number starting at 1 and offsets into normalized page text starting at 0, with an exclusive end offset and parser version. CSV locators use rows starting at 2, with the header in row 1, and a unique column name. Hash integrity and correspondence between excerpt and extracted value must be verified. Visual regions are a future extension.
 
-## Estados independientes
+A calculation contains `calculation_id`, formula identifier and version, input fact IDs, a decimal or null result, and status. A report claim contains `claim_id`, text, materiality, `evidence_ids`, and `calculation_ids`. Rules cite `policy_fragment_ids`. Unsupported conclusions cannot be presented as verified; missing-data warnings must be explicit. Critical results use report templates.
 
-- Procesamiento: CREATED → DOCUMENTS_RECEIVED → EXTRACTING → VALIDATING → POLICY_CHECK → DRAFT_READY. Después de publicar el borrador la ejecución es inmutable.
-- Revisión: NOT_READY → PENDING → APPROVED | REJECTED | NEEDS_MORE_INFO. DRAFT_READY inicia PENDING. Cada transición humana conserva autor, motivo y hora UTC.
-- Recomendación: DRAFT_ONLY con resultado `meets_rules`, `exceptions` o `insufficient_evidence`; nunca cambia directamente el estado humano.
+## Independent states
 
-Errores de procesamiento: FAILED_RETRYABLE puede reanudar desde el último paso confirmado, hasta tres intentos por paso; después FAILED_TERMINAL. Cada paso usa una clave única `(evaluation_id, step, input_hash)` para deduplicar resultados y eventos. La expiración de un lease permite a otro worker tomar el job. Efectos y eventos se confirman en la misma transacción cuando ambos residen en DB.
+- Processing: `CREATED → DOCUMENTS_RECEIVED → EXTRACTING → VALIDATING → POLICY_CHECK → DRAFT_READY`. The evaluation is immutable after draft publication.
+- Review: `NOT_READY → PENDING → APPROVED | REJECTED | NEEDS_MORE_INFO`. DRAFT_READY starts PENDING. Every human transition records the actor, reason, and UTC timestamp.
+- Recommendation: `DRAFT_ONLY`, with an outcome of `meets_rules`, `exceptions`, or `insufficient_evidence`. It never changes the human review state directly.
 
-NEEDS_MORE_INFO no reabre una evaluación: nuevos documentos originan otra. Un caso conserva `current_evaluation_id`; cambiarlo marca la revisión anterior como histórica, sin borrarla. Una revisión requiere evaluation_id y revisión esperada; si la evaluación ya no es actual o fue revisada se responde 409. Bloquear la fila del caso durante selección y revisión evita carreras.
+FAILED_RETRYABLE resumes from the last committed step, with at most three attempts per step, followed by FAILED_TERMINAL. Each step has a unique `(evaluation_id, step, input_hash)` key to deduplicate results and events. An expired lease allows another worker to claim the job. Effects and events commit within the same transaction when both reside in the database.
 
-## Política, publicaciones y versiones
+NEEDS_MORE_INFO does not reopen an evaluation: new documents create another evaluation. A case retains `current_evaluation_id`; replacing it makes previous reviews historical without deleting them. Review requires the evaluation ID and expected review state. An evaluation that is no longer current or has already been reviewed returns 409. Case-row locking during selection and review prevents races.
 
-Una política publicada fija ámbito, vigencia, texto, fragmentos, reglas y hashes. Publicación transaccional con bloqueo por ámbito para evitar solapamientos. El motor tiene operadores permitidos y reglas tipadas, sin eval ni código arbitrario. No actualizar una política publicada: crear versión nueva. El evaluador fija la versión antes de recuperar texto.
+## Policy publication and versions
 
-## HTTP y autorización
+A published policy fixes scope, validity dates, text, fragments, rules, and hashes. Publication is transactional, with locking by scope to prevent overlaps. The engine uses allowed operators and typed rules without `eval` or arbitrary code. Published policies require a new version for changes. The evaluator pins the version before retrieving text.
 
-Roles analyst, reviewer, auditor y admin, más autorización por caso. analyst crea/carga/evalúa; reviewer revisa; auditor consulta informes y eventos; admin publica políticas pero no obtiene acceso universal a casos. Una identidad demo estable debe resolverse del lado servidor, nunca de un role enviado por el cliente.
+## HTTP and authorization
 
-Idempotency-Key obligatorio en creación, carga, evaluación y revisión; ámbito actor+ruta, vigencia 24 h. Guardar hash del payload y respuesta: repetición idéntica devuelve la misma respuesta; payload distinto devuelve 409. La ejecución activa sobre el mismo snapshot se deduplica aunque cambie la clave. Cargas nuevas tras evaluación no alteran snapshots previos.
+Roles are `analyst`, `reviewer`, `auditor`, and `admin`, with additional case-level authorization. Analysts create cases, upload documents, and request evaluations. Reviewers review; auditors read reports and events. Administrators publish policies but do not automatically receive access to every case. A stable demo identity is resolved server-side rather than trusting a client-supplied role.
 
-Errores comunes: 400 entrada mal formada, 401 sin identidad, 403 sin permiso, 404 inexistente/no visible, 409 conflicto o fase incorrecta, 413 límite de carga, 422 contenido válido sintácticamente pero no aceptable. Tamaño máximo 10 MiB/documento, 20 documentos/caso y 100 páginas/PDF. El reporte requiere DRAFT_READY; incluye siempre SIMULACIÓN y estado humano actual.
+`Idempotency-Key` is required for case creation, upload, evaluation, and review, scoped to actor and route with a 24-hour lifetime. Store the payload hash and response. An identical request returns the same response; a different payload under the same key returns 409. Active execution of the same snapshot is deduplicated even if the key changes. Subsequent uploads never alter previous snapshots.
 
-## Reconstrucción y retención
+Common errors: 400 malformed input; 401 missing identity; 403 unauthorized; 404 absent or invisible resource; 409 conflicting state; 413 upload limit exceeded; 422 syntactically valid but unacceptable content. Limits are 10 MiB per document, 20 documents per case, and 100 pages per PDF. Reports require DRAFT_READY and always include the simulation label and current human review state: SIMULATION in English, SIMULACIÓN in Spanish.
 
-Reconstrucción significa recuperar el snapshot y las salidas almacenadas, verificar hashes, reglas, citas y revisión. No implica regeneración idéntica del LLM. Conservar respuestas del modelo, parámetros, prompts y versiones con acceso restringido; nunca secretos. La demo local conserva datos hasta borrado explícito. Una limpieza destruye adjuntos y salidas de manera documentada y deja tombstones sin contenido; ya no se declara reconstruible ese expediente. No contiene PII real.
+## Reconstruction and retention
+
+Reconstruction retrieves stored snapshots and outputs and verifies hashes, rules, citations, and review. It does not guarantee identical LLM regeneration. Model responses, parameters, prompts, and versions are retained with restricted access; secrets are excluded. The local demo retains data until explicit deletion. Documented cleanup removes attachments and outputs while leaving content-free tombstones; the affected case can no longer be described as reconstructible. Real PII is excluded.

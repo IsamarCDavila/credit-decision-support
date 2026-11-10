@@ -1,25 +1,27 @@
-# Entregas por fase y GitHub
+# Implementation roadmap
 
-Repositorio sugerido: `credit-decision-support`. Fase 0 describe el sistema; no representa una implementación terminada.
+**English** | [Español](es/roadmap.md)
 
-| Fase | Rama | Commit propuesto | Evidencia para PR |
+The project progresses through independently reviewable milestones. Phase 0 defines the system; subsequent phases implement and verify it.
+
+| Phase | Branch | Deliverable | Acceptance evidence |
 |---|---|---|---|
-| 0 | docs/phase-0-specification | docs: define MVP contracts and acceptance criteria | comprobación de contratos y limitaciones |
-| 1 | feat/phase-1-foundation | feat: bootstrap API persistence and CI | Compose, migraciones y CI |
-| 2 | feat/phase-2-ingestion | feat: ingest synthetic documents with evidence | parser y generador probados |
-| 3 | feat/phase-3-policy-engine | feat: add versioned policy rules and financial calculations | baseline y casos límite |
-| 4 | feat/phase-4-ai-workflow | feat: add validated AI extraction and drafting | evaluación reproducible y costes |
-| 5 | feat/phase-5-human-review | feat: add human review and audit reports | demo E2E, permisos y concurrencia |
-| 6 | test/phase-6-hardening | test: verify resilience security and performance | informe de límites medidos |
+| 0 — Specification | `docs/phase-0-specification` | Architecture, domain, initial SQL/HTTP contracts, synthetic fixture | Contract checks and documented design limits |
+| 1 — Foundation | `feat/phase-1-foundation` | FastAPI, persistence, migrations, demo identity, authorization, minimal persistent worker, Compose, CI | Healthy services, clean migrations, passing CI |
+| 2 — Ingestion | `feat/phase-2-ingestion` | Synthetic generator and PDF/CSV ingestion with evidence | Parser, locator, and input-limit tests |
+| 3 — Policy engine | `feat/phase-3-policy-engine` | Versioned policy selection and deterministic financial calculations | Baseline evaluation and boundary cases |
+| 4 — AI workflow | `feat/phase-4-ai-workflow` | Validated extraction, drafting, model adapter, offline mock | Reproducible evaluation and measured costs |
+| 5 — Human review | `feat/phase-5-human-review` | Review interface, audit history, JSON/PDF reports | End-to-end demo, authorization, concurrency tests |
+| 6 — Hardening | `test/phase-6-hardening` | Security, resilience, observability, load verification | Measured limits and reproducible test reports |
 
-Cada fase termina con diff revisable, comandos y resultados reales, README actualizado y lista de limitaciones. Abrir PR hacia main, revisar y fusionar solo con checks aprobados; después empezar la siguiente rama desde main. Usar squash para un commit claro por fase o conservar commits pequeños si facilitan revisión. Crear etiquetas v0.1.0 al tener la base ejecutable y v1.0.0 solo al completar el MVP; la documentación inicial no necesita release de producto.
+## Delivery process
 
-No subir .env, claves, PDFs reales, logs de proveedor ni datos bancarios. Los fixtures sintéticos pequeños sí pueden versionarse. Mantener cambios de infraestructura avanzada en PR separados, cada uno con ADR y benchmark.
+Each phase uses a branch and pull request targeting `main`. A milestone includes a reviewable diff, reproducible validation, current documentation in both languages, and relevant limitations. Merge after acceptance criteria and applicable checks pass; start the next branch from the updated `main`. Squash commits when a single milestone commit improves clarity, or retain small commits when they help review.
 
-## Siguiente trabajo concreto
+Version `v0.1.0` marks an executable foundation. Version `v1.0.0` requires the complete MVP acceptance criteria. The initial design baseline does not constitute a product release.
 
-Fase 1 implementa configuración, identidad demo por token local, permisos por caso, modelos/migraciones, endpoints base, worker persistente mínimo, Compose y CI. No requiere elegir proveedor LLM todavía. Verificar Docker y Python antes de prometer ejecución local; en este entorno Python no está disponible actualmente.
+## Dependencies and extensions
 
-## Conexión inicial a GitHub
+The foundation requires Python 3.12 and Docker Compose. A live LLM provider is not required for that milestone. Provider selection and token budget are resolved before live-model evaluation.
 
-Crear repositorio vacío con el nombre sugerido en la cuenta elegida; usar descripción del README. La visibilidad y licencia se eligen explícitamente. Con el remoto confirmado, iniciar Git en esta carpeta, crear la rama de fase 0 y subirla. No se ha creado un repositorio remoto durante esta entrega.
+Temporal, MCP, Kafka, Kubernetes, OCR, currency conversion, and additional financial segments remain separate extensions. Each requires an architecture decision, a defined need, and appropriate benchmark evidence. Small synthetic fixtures may be versioned; credentials, real documents, and provider logs are excluded.

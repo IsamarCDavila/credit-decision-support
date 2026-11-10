@@ -1,21 +1,17 @@
-# Entrega de fase 0 — 2026-11-10
+# Phase 0: Specification baseline
 
-## Resultado
+**English** | [Español](es/phase-0-delivery.md)
 
-Especificación original preservada y decisiones complementarias documentadas. Alcance PyME/USD/anual/individual. Contratos de evidencia, política, cálculo, revisión e idempotencia; DDL preliminar; nueve rutas HTTP; fixture sintético; amenazas y evaluación; roadmap por PR.
+## Available artifacts
 
-## Validación ejecutada
+The design baseline defines SME cases in USD, full annual periods, and standalone financial statements. It includes an architecture decision; evidence, policy, calculation, review, and idempotency contracts; preliminary PostgreSQL DDL; nine initial HTTP routes; a synthetic fixture; a threat model; and phase acceptance criteria.
 
-`./scripts/check-phase0.ps1`: PASS para rutas iniciales, referencias, localizadores CSV, SHA-256 y DSCR decimal. No es un validador completo de OpenAPI. No se ejecutó el DDL, ni existe todavía backend o suite pytest. Python, Docker y psql no estaban disponibles en PATH; Git y Node sí.
+## Validation scope
 
-## Trabajo que continúa en fase 1
+`./scripts/check-phase0.ps1` checks initial route structure, evidence references, CSV locators, document SHA-256, and decimal DSCR. The supplied fixture passes these checks.
 
-Completar esquemas de respuestas HTTP y validarlos contra OpenAPI, traducir DDL a migraciones y probar restricciones transaccionales. No confundir presencia de un contrato preliminar con comportamiento implementado. Configurar runtime Python y Docker, identidad demo y CI. Proveedor LLM y licencia permanecen pendientes y no bloquean el backend inicial.
+This validation does not include complete OpenAPI schema validation, executed PostgreSQL DDL, backend behavior, or performance measurements. SQL constraints and API descriptions represent planned behavior until implemented and tested.
 
-## Texto sugerido para PR
+## Foundation acceptance requirements
 
-Título: `docs: define credit decision support MVP and phase gates`
-
-Define un MVP de evaluación crediticia simulada con políticas seleccionadas de forma determinista, evidencia identificable y decisiones humanas sobre snapshots inmutables. Añade contratos iniciales de dominio, SQL y HTTP, un expediente sintético verificable y criterios de aceptación por fase.
-
-Validación: comprobación PowerShell aprobada para las rutas y el expediente de ejemplo. El contrato HTTP y el DDL son preliminares: la validación completa, migraciones ejecutadas y pruebas del backend corresponden a fase 1. No hay resultados de rendimiento medidos.
+The foundation milestone completes HTTP response schemas and validates the OpenAPI contract, translates the preliminary DDL into migrations, and tests transactional constraints. It also establishes demo identity, authorization, persistence, runtime configuration, and CI. Live-model provider selection is required before AI evaluation; licensing remains an open project decision.

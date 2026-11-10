@@ -1,17 +1,19 @@
-# Amenazas y controles verificables
+# Threat model and verification
 
-| Amenaza | Control previsto | Prueba de aceptación |
+**English** | [Español](es/threat-model.md)
+
+| Threat | Planned control | Acceptance scenario |
 |---|---|---|
-| Instrucciones maliciosas en PDF/política | Contenido como dato, herramientas permitidas, sin shell y validación de salida | PDF ordena ignorar política: ninguna herramienta o regla cambia |
-| Cifra/cita inventada | Verificar hash, extracto y valor; rechazo de conclusiones sin evidencia | Valor alterado o cita inexistente bloquea el hallazgo |
-| Lectura de otro caso | Identidad servidor, autorización por caso en cada ruta | Actor ajeno recibe 404 sin metadatos |
-| Autoaprobación o decisión del modelo | Reviewer distinto del preparador, endpoint humano separado | analyst y worker no pueden resolver |
-| Revisión obsoleta | Bloqueo de caso, evaluation_id y revisión esperada | Carrera carga/revisión devuelve 409 para snapshot antiguo |
-| Doble ejecución | Idempotencia y unicidad de paso/snapshot | Dos peticiones simultáneas producen un job y un resultado |
-| PDF bomba o ruta manipulada | Límites, parser aislado con timeout, storage_key generado por servidor | Archivo excesivo/path traversal rechazado |
-| Robo de claves | Entorno local ignorado, logs redactados, CI con secretos mínimos | Escaneo y prueba de redacción |
-| Auditoría manipulada | Rol runtime sin UPDATE/DELETE; cadena hash y copias | Alteración detectada; registrar límite frente a administrador |
-| Mezcla de políticas | Selección exacta antes de RAG, filtros y comprobación de citas | Fragmento de otra versión rechazado |
-| Dependencia/proveedor caído | Timeout, tres intentos, lease y mock CI | Reinicio conserva pasos confirmados sin efectos duplicados |
+| Malicious PDF/policy instructions | Treat content as data; allowlisted tools; no shell; output validation | A PDF requests policy bypass; tools and rules remain unchanged |
+| Fabricated amount or citation | Verify hash, excerpt, and value; reject unsupported conclusions | Altered value or nonexistent citation blocks the finding |
+| Cross-case access | Server-side identity and case authorization on every route | Unrelated actor receives 404 without metadata |
+| Self-approval or model decision | Reviewer differs from preparer; separate human endpoint | Analyst and worker cannot resolve the case |
+| Stale review | Case lock, evaluation ID, and expected state | Upload/review race returns 409 for the stale snapshot |
+| Duplicate execution | Idempotency and unique step/snapshot | Concurrent duplicate requests produce one job and result |
+| Resource-exhausting PDF or manipulated path | Limits; isolated parser with timeout; server-generated storage key | Oversized file or path traversal is rejected |
+| Credential theft | Ignored local environment files; redacted logs; minimal CI secrets | Secret scan and redaction checks |
+| Altered audit history | Runtime role cannot UPDATE/DELETE; hash chain and backups | Tampering is detected, with administrator limitations documented |
+| Mixed policy versions | Exact selection before RAG; filters and citation checks | Fragment from another version is rejected |
+| Dependency/provider outage | Timeout; three attempts; lease; CI mock | Restart preserves committed steps without duplicate effects |
 
-Fronteras: usuario→API, archivos→parser, contenido→LLM, LLM→herramientas, API/worker→DB y almacenamiento, runtime→proveedor. No usar datos reales. El proveedor debe poder desactivarse; CI funciona sin llamadas externas. Una identidad demo no es autenticación apta para producción.
+Trust boundaries are user→API, file→parser, content→LLM, LLM→tools, API/worker→database and storage, and runtime→provider. Real data is excluded. The provider can be disabled, and CI runs without external model calls. Demo identity is not production-grade authentication.

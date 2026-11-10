@@ -1,34 +1,46 @@
 # Credit Decision Support
 
-Auditable AI-assisted credit analysis with synthetic data and human review.
+**English** | [Español](README.es.md)
 
-**Estado: fase 0 preparada. No existe todavía un backend ni resultados medidos.**
+Auditable AI-assisted credit analysis with synthetic data, deterministic financial rules, and human review.
 
-Proyecto demostrativo: ayuda a preparar una evaluación; ninguna salida constituye una autorización crediticia real. Todos los informes llevan la marca SIMULACIÓN.
+## Project status
 
-## Documentación
+**Design stage — Phase 0.** The repository contains the MVP specification, architecture decisions, initial contracts, and acceptance criteria. The backend is not implemented. Performance and model-quality targets have not been measured.
 
-- [Decisiones de alcance y arquitectura](docs/adr/001-mvp.md)
-- [Contratos y reglas del dominio](docs/domain.md)
-- [Contrato HTTP inicial](contracts/openapi.json)
-- [Esquema PostgreSQL inicial](contracts/schema.sql)
-- [Amenazas y controles](docs/threat-model.md)
-- [Evaluación y aceptación](docs/acceptance.md)
-- [Plan por fases y GitHub](docs/roadmap.md)
-- [Expediente sintético](data/synthetic/case-001.json)
+The MVP supports SME cases in USD, full annual periods, and standalone financial statements. It prepares evidence-backed analysis for a human reviewer. Reports are marked **SIMULATION**; recommendations do not authorize real credit.
 
-La especificación original se conserva en `docs/original-specification.md` como referencia. Si hay diferencias, prevalecen las decisiones explícitas de esta fase. Sus prompts son documentación, no instrucciones ejecutadas automáticamente.
+## Documentation
 
-## Verificación de fase 0
+| Document | Purpose |
+|---|---|
+| [Project specification](docs/specification.md) | Problem, scope, architecture, and design targets |
+| [Architecture decision](docs/adr/001-mvp.md) | MVP scope and technical choices |
+| [Domain contracts](docs/domain.md) | Evidence, financial calculations, policies, and review states |
+| [Initial HTTP contract](contracts/openapi.json) | Proposed API operations |
+| [Initial PostgreSQL schema](contracts/schema.sql) | Proposed persistence model |
+| [Threat model](docs/threat-model.md) | Threats, planned controls, and verification scenarios |
+| [Evaluation and acceptance](docs/acceptance.md) | Metrics, test cases, and phase gates |
+| [Roadmap](docs/roadmap.md) | Implementation milestones and release process |
+| [Phase 0 status](docs/phase-0-delivery.md) | Available artifacts and validation limits |
+| [Synthetic example](data/synthetic/case-001.json) | Evidence references and expected DSCR calculation |
 
-En PowerShell: `./scripts/check-phase0.ps1`. Comprueba estructura del contrato y consistencia del ejemplo; no sustituye una validación OpenAPI completa ni ejecutar el DDL en PostgreSQL.
+English is the primary documentation language. Each Markdown document links to its Spanish counterpart. See [contribution guidelines](CONTRIBUTING.md) for documentation conventions.
 
-## Ejecución
+## Validate the design fixture
 
-Pendiente de fase 1. Stack elegido: Python 3.12, FastAPI, Pydantic v2, PostgreSQL 16 con pgvector, SQLAlchemy, Alembic, worker con jobs en DB y Docker Compose. Orquestación explícita en Python; React/TypeScript en fase 5.
+Prerequisite: PowerShell 7.2 or later. From the repository root:
 
-## Publicación
+```powershell
+./scripts/check-phase0.ps1
+```
 
-Nombre recomendado del repositorio: `credit-decision-support`. Descripción: `Auditable AI-assisted credit analysis with synthetic data, deterministic financial rules, and human review.`
+The check verifies initial routes, evidence references, CSV locators, the document SHA-256, and the example's decimal DSCR. It does not validate the complete OpenAPI specification, execute PostgreSQL DDL, or test a backend.
 
-Sin licencia elegida todavía: no se concede una licencia de código abierto por omisión. No publicar datos reales, secretos ni resultados no medidos.
+## Planned runtime
+
+Python 3.12, FastAPI, Pydantic v2, PostgreSQL 16 with pgvector, SQLAlchemy, Alembic, and Docker Compose. An explicit Python state machine and database-backed worker handle orchestration. React/TypeScript is planned for the review interface. Runtime installation and startup instructions belong to the foundation milestone.
+
+## Data and licensing
+
+Only synthetic documents and cases are permitted. Credentials, real customer data, and provider logs must remain outside version control. No license has been selected; no open-source license is granted by default.
