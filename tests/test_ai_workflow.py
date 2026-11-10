@@ -15,7 +15,7 @@ from test_policy_engine import catalog as policy_catalog_fixture
 from test_policy_engine import extract_case
 
 from credit_support import ai_workflow, llm
-from credit_support.ai_models import DraftSelection, ExtractionProposal
+from credit_support.ai_models import DraftSelection, ExtractionProposal, GeneralistProposal
 from credit_support.ai_workflow import CLAIM_IDS, SECTIONS, validate_extraction, validate_selection
 from credit_support.db import get_engine
 from credit_support.llm import ModelError, budget, call_model
@@ -23,6 +23,39 @@ from credit_support.settings import get_settings
 from credit_support.worker import claim, finish
 
 catalog = policy_catalog_fixture
+
+
+@pytest.mark.parametrize("model", [ExtractionProposal, GeneralistProposal])
+def test_source_schema_restricts_ids_without_relaxing_coverage(client, catalog, model):
+    from jsonschema import ValidationError, validate
+
+    api, tokens = client
+    _, source = extract_case(api, tokens["analyst"], variant="ambiguous")
+    units = ai_workflow.source_units(get_engine(), UUID(source["evaluation_id"]))
+    assert units == ai_workflow.source_units(get_engine(), UUID(source["evaluation_id"]))
+    assert [u["source_id"] for u in units] == [f"S{i:06}" for i in range(1, len(units) + 1)]
+    schema = ai_workflow.extraction_schema(model, units)
+    expected = ai_workflow.expected_extraction(units)
+    validate_extraction(ExtractionProposal.model_validate(expected), units)
+    data = (
+        expected
+        if model == ExtractionProposal
+        else {"extraction": expected, "draft": {"claim_ids": CLAIM_IDS, "section_order": SECTIONS}}
+    )
+    validate(data, schema)
+    expected["observations"][0]["source_id"] = "invented-or-corrupted-uuid"
+    with pytest.raises(ValidationError):
+        validate(data, schema)
+    expected["observations"].pop()
+    with pytest.raises(ModelError):
+        validate_extraction(ExtractionProposal.model_validate(expected), units)
+
+
+def test_source_schema_limit_blocks_oversized_catalog_before_provider():
+    with pytest.raises(ModelError, match="MODEL_SOURCE_LIMIT"):
+        ai_workflow.extraction_schema(
+            ExtractionProposal, [{"source_id": str(i)} for i in range(501)]
+        )
 
 
 def start(api, token, case_id, source, workflow="multi_agent", provider="mock", key="ai"):

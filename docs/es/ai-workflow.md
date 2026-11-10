@@ -15,6 +15,8 @@ La fase 4 incorpora un adaptador de OpenAI y un flujo acotado para preparar borr
 
 La extracción y organización asistidas por modelos son deliberadamente restringidas. El parser ya reconoce las etiquetas financieras admitidas; el modelo no aporta comprensión narrativa. El código genera las afirmaciones materiales, por lo que su respaldo no demuestra la fiabilidad de redacción libre de un modelo general.
 
+La versión `grounded-agents-v2` asigna referencias locales estables (`S000001`, etc.) según el orden de documentos y filas fijados. El esquema de respuesta enumera las referencias permitidas; después se aplica igualmente la validación completa de fuentes y valores. El catálogo se reconstruye desde los documentos inmutables, sin copiar UUID de base de datos a través del modelo. Se admiten hasta 500 unidades de fuente por solicitud de IA, además de los límites de bytes/tokens. Los límites de ingesta determinista no cambian.
+
 ## Flujos y API
 
 ```json
@@ -80,6 +82,15 @@ La [comparación mock](../../evaluations/reports/ai-mock-comparison.json) comple
 
 El [intento inicial de OpenAI](../../evaluations/reports/ai-openai-initial-attempt.json) devolvió `OPENAI_HTTP_429`, sin respuesta completada ni uso disponible. Su reserva incierta de US$0,064468 se conserva en el registro acumulado.
 
-La [campaña real posterior](../../evaluations/reports/ai-openai-comparison.json) realizó diez de los doce intentos previstos antes de detenerse por un fallo de cobertura de fuentes. El flujo especializado produjo cinco borradores válidos de cinco intentos; el generalista, cuatro de cinco. En el segundo caso contradictorio, las observaciones del generalista fallaron la cobertura exacta y se rechazaron antes de persistir herramientas o publicar un borrador. Es un fallo observado del modelo y un bloqueo correcto del validador, sin corregir ni repetir la respuesta. No se intentaron los dos flujos restantes; la comparación prevista permanece incompleta.
+La [campaña real de versión 1](../../evaluations/reports/ai-openai-v1-comparison.json) realizó diez de los doce intentos previstos antes de detenerse por un fallo de cobertura. El flujo especializado produjo cinco borradores válidos de cinco intentos; el generalista, cuatro de cinco. La inspección de la propuesta conservada identificó un UUID alterado en la referencia de `total_debt`, con el importe correcto. Fue un error al copiar la referencia, no evidencia de que se descartara el importe contradictorio. El validador lo rechazó antes de persistir herramientas o publicar el borrador. La respuesta fallida permanece sin cambios en el informe histórico. No se intentaron los dos flujos restantes de esa campaña.
 
-Las quince llamadas reales con uso registrado consumieron US$0,077378 según los precios documentados. Incluida la reserva inicial incierta, el acumulado utilizado o reservado es US$0,141846 de US$2; quedan US$1,858154. La reserva no es un cargo confirmado del proveedor. El consumo pagado está desactivado tras la campaña. La muestra pequeña e incompleta no demuestra superioridad; la omisión del generalista permanece registrada como limitación.
+Las quince llamadas medidas de versión 1 consumieron US$0,077378. Con la reserva inicial incierta, su acumulado utilizado o reservado fue US$0,141846 de US$2. Las mediciones posteriores de versión 2 se registran por separado en la [comparación actual](../../evaluations/reports/ai-openai-comparison.json), sin sobrescribir el fallo histórico ni reiniciar el presupuesto. La reserva no es un cargo confirmado del proveedor. Ni la muestra histórica ni una muestra posterior correcta demuestran superioridad de un flujo.
+
+La versión 2 completó las doce ejecuciones reales previstas sobre casos completos, contradictorios y con instrucciones maliciosas, con dos repeticiones por flujo. Las doce coincidieron con la referencia financiera independiente y generaron borradores completos con evidencia. La suite contiene 148 pruebas correctas con PostgreSQL; la comparación mock actual completó 20/20 flujos.
+
+| Flujo de versión 2 | Borradores válidos con evidencia | Llamadas | Costo según tokens | Mediana del tiempo por flujo |
+|---|---|---|---|---|
+| Generalista | 6/6 | 6 | US$0,025832 | 3,8066 s |
+| Roles especializados | 6/6 | 12 | US$0,041942 | 4,7998 s |
+
+Son mediciones locales en serie, sin garantías de servicio ni potencia estadística para comparar. Ambos flujos pasaron la muestra; los roles especializados requirieron más llamadas y mayor costo en esta ejecución. La versión 2 utilizó US$0,067774. Entre ambas campañas, el uso medido es US$0,145152 más la reserva inicial de US$0,064468: US$0,209620 utilizados/reservados; quedan US$1,790380 de la asignación de US$2. El consumo pagado está desactivado tras la verificación.

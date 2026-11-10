@@ -1,7 +1,7 @@
 {
   "evaluation": "bounded-ai-comparison-v1",
-  "run_id": "32fc40d9-49dd-412b-873d-b44cd9c627b0",
-  "run_at_utc": "2026-11-10T15:35:00.058726+00:00",
+  "run_id": "01f43678-6c67-4eae-8370-e8033f365b50",
+  "run_at_utc": "2026-11-10T16:14:43.123484+00:00",
   "provider": "mock",
   "corpus_seed": 100,
   "repetitions": 1,
@@ -24,14 +24,14 @@
       "variant": "complete",
       "repetition": 1,
       "workflow": "generalist",
-      "evaluation_id": "65cb76e0-2925-46e7-9530-06fd965142fe",
+      "evaluation_id": "0d0a718c-2d91-4e75-9007-5180d538bf76",
       "succeeded": true,
       "matches_ground_truth": true,
       "grounded_complete_draft": true,
-      "elapsed_seconds": 1.1438,
+      "elapsed_seconds": 1.9576,
       "model_calls": [
         {
-          "id": "e549a385-a87d-488f-b808-b25cc8729e76",
+          "id": "505a0f88-1538-4472-ae2a-6533856b1b0b",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "generalist",
@@ -42,7 +42,7 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         }
       ],
@@ -52,14 +52,14 @@
       "variant": "complete",
       "repetition": 1,
       "workflow": "multi_agent",
-      "evaluation_id": "61618206-f3a0-4c8a-9fe6-577d090d2198",
+      "evaluation_id": "46ab735d-c4d0-4118-9d92-08eea0033223",
       "succeeded": true,
       "matches_ground_truth": true,
       "grounded_complete_draft": true,
-      "elapsed_seconds": 1.1501,
+      "elapsed_seconds": 5.8427,
       "model_calls": [
         {
-          "id": "dfd6c221-dc15-4bb3-b677-15a2202cc322",
+          "id": "3044b5fd-1635-4ca2-9a93-ca4f7e3de8cc",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "extractor",
@@ -70,11 +70,11 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         },
         {
-          "id": "119341de-e107-4c20-a3e8-8c6e05b75a33",
+          "id": "760dbe56-6de8-4d72-82f4-9b88dc286d67",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "draft",
@@ -85,7 +85,7 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         }
       ],
@@ -95,14 +95,14 @@
       "variant": "missing",
       "repetition": 1,
       "workflow": "generalist",
-      "evaluation_id": "a8b04aa1-385f-450c-805a-b25368a810e6",
+      "evaluation_id": "361e8c62-ece5-416d-9af0-1abdd07910e1",
       "succeeded": true,
       "matches_ground_truth": true,
       "grounded_complete_draft": true,
-      "elapsed_seconds": 0.9394,
+      "elapsed_seconds": 1.1036,
       "model_calls": [
         {
-          "id": "38aa81ca-6881-4170-ae50-ed0bc805d033",
+          "id": "a73a4c91-b448-4af4-a404-4b1d4bbb8de8",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "generalist",
@@ -113,7 +113,7 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         }
       ],
@@ -123,14 +123,14 @@
       "variant": "missing",
       "repetition": 1,
       "workflow": "multi_agent",
-      "evaluation_id": "c40bd5a5-f24f-453c-bec2-a661a1f25591",
+      "evaluation_id": "d86a95e8-dd20-432d-b0ad-af826b5abe67",
       "succeeded": true,
       "matches_ground_truth": true,
       "grounded_complete_draft": true,
-      "elapsed_seconds": 1.1294,
+      "elapsed_seconds": 0.8853,
       "model_calls": [
         {
-          "id": "637351ee-2863-4fa8-ae24-ad6bb3f91abe",
+          "id": "2af4bc9d-0fde-4f3c-ab09-d74faa5e03d7",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "extractor",
@@ -141,11 +141,11 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         },
         {
-          "id": "a9050df4-7751-4dbc-9781-048d2604b9fa",
+          "id": "bc55f2b9-bb99-49b3-9076-30e28c76402a",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "draft",
@@ -156,7 +156,7 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         }
       ],
@@ -166,14 +166,14 @@
       "variant": "ambiguous",
       "repetition": 1,
       "workflow": "generalist",
-      "evaluation_id": "b9c733e8-2807-42fd-b5ca-89e572911857",
+      "evaluation_id": "eb382d9c-aa5d-49d4-9343-e45893c8f727",
       "succeeded": true,
       "matches_ground_truth": true,
       "grounded_complete_draft": true,
-      "elapsed_seconds": 1.1093,
+      "elapsed_seconds": 1.0862,
       "model_calls": [
         {
-          "id": "6a54ab03-cfa2-431a-ad5a-cde15131cf0c",
+          "id": "9bda3737-61f2-4809-bd77-bc4461a8da81",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "generalist",
@@ -184,7 +184,7 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         }
       ],
@@ -194,14 +194,14 @@
       "variant": "ambiguous",
       "repetition": 1,
       "workflow": "multi_agent",
-      "evaluation_id": "e7ae1fdf-7a1d-4527-ac89-348e2c7c364d",
+      "evaluation_id": "8fbb7110-a3df-40a9-9ca0-41dcd31c7e01",
       "succeeded": true,
       "matches_ground_truth": true,
       "grounded_complete_draft": true,
-      "elapsed_seconds": 0.9303,
+      "elapsed_seconds": 1.111,
       "model_calls": [
         {
-          "id": "a662023b-b62f-45d0-bc32-d7642ff1478c",
+          "id": "69d12977-a079-4915-8e62-241c4d17258e",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "extractor",
@@ -212,11 +212,11 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         },
         {
-          "id": "f851a50d-a8b8-40c2-9446-0b5e6c3f87b9",
+          "id": "b2d3e600-b4ea-41d7-983d-04caedf944ee",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "draft",
@@ -227,7 +227,7 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         }
       ],
@@ -237,14 +237,14 @@
       "variant": "invalid",
       "repetition": 1,
       "workflow": "generalist",
-      "evaluation_id": "1eee527c-97b4-4a93-9dab-41827f172e15",
+      "evaluation_id": "e76e310c-183a-4db1-ac6c-9a93a055d98f",
       "succeeded": true,
       "matches_ground_truth": true,
       "grounded_complete_draft": true,
-      "elapsed_seconds": 1.1117,
+      "elapsed_seconds": 1.1247,
       "model_calls": [
         {
-          "id": "9a6d53b1-6fa2-497a-bd10-b4f136b4c1f1",
+          "id": "f2ca13e5-6a94-4d37-9c88-b7537ace6dd7",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "generalist",
@@ -255,7 +255,7 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         }
       ],
@@ -265,14 +265,14 @@
       "variant": "invalid",
       "repetition": 1,
       "workflow": "multi_agent",
-      "evaluation_id": "9a038cf9-68d7-4b27-96c7-2818ad29118e",
+      "evaluation_id": "c6cc53d6-76bc-4b3b-8399-6886c79dcf48",
       "succeeded": true,
       "matches_ground_truth": true,
       "grounded_complete_draft": true,
-      "elapsed_seconds": 1.1265,
+      "elapsed_seconds": 0.8899,
       "model_calls": [
         {
-          "id": "1564b737-8a30-4e7e-8308-26546a73dfca",
+          "id": "85f54620-479f-4f2c-b437-f04dd93a3f4d",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "extractor",
@@ -283,11 +283,11 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         },
         {
-          "id": "931b06f9-4bbf-4964-a30b-0dad21c4610c",
+          "id": "2ea36e3d-ef22-4e73-8317-7c45fbc1da09",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "draft",
@@ -298,7 +298,7 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         }
       ],
@@ -308,14 +308,14 @@
       "variant": "zero_debt",
       "repetition": 1,
       "workflow": "generalist",
-      "evaluation_id": "762ec1da-fd1f-4a2c-aa60-7da78d7461e9",
+      "evaluation_id": "0674e748-2198-4651-8f2c-08c20085a3f6",
       "succeeded": true,
       "matches_ground_truth": true,
       "grounded_complete_draft": true,
-      "elapsed_seconds": 1.1105,
+      "elapsed_seconds": 0.9034,
       "model_calls": [
         {
-          "id": "e8c2354c-06cf-43a8-9566-62ff9445bd11",
+          "id": "8855e1d4-1f10-4e14-8aca-de88f725c8c1",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "generalist",
@@ -326,7 +326,7 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         }
       ],
@@ -336,14 +336,14 @@
       "variant": "zero_debt",
       "repetition": 1,
       "workflow": "multi_agent",
-      "evaluation_id": "3c08c5d3-6b25-4120-8018-93b51150467e",
+      "evaluation_id": "8f6a126a-d6ea-43be-9b0a-64ee698bd824",
       "succeeded": true,
       "matches_ground_truth": true,
       "grounded_complete_draft": true,
-      "elapsed_seconds": 1.1536,
+      "elapsed_seconds": 1.1012,
       "model_calls": [
         {
-          "id": "77b2807f-ac74-44eb-a5ba-d2904331e71c",
+          "id": "438728c6-f49f-46b0-bddc-3905770f2830",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "extractor",
@@ -354,11 +354,11 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         },
         {
-          "id": "3910ebfd-6625-40b2-b73c-e734a6974543",
+          "id": "bb17085d-93b7-4ac6-9068-8ecbd3211646",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "draft",
@@ -369,7 +369,7 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         }
       ],
@@ -379,14 +379,14 @@
       "variant": "negative_cash",
       "repetition": 1,
       "workflow": "generalist",
-      "evaluation_id": "3daa1aa1-8351-45eb-8577-2baffc263076",
+      "evaluation_id": "c544f30c-6801-484e-acd8-3883c82bcea4",
       "succeeded": true,
       "matches_ground_truth": true,
       "grounded_complete_draft": true,
-      "elapsed_seconds": 1.3033,
+      "elapsed_seconds": 1.0953,
       "model_calls": [
         {
-          "id": "cad6b4f8-cc64-47a5-b2ee-2dbdc5716d62",
+          "id": "a6097e57-b9f7-4da9-90f5-1355272922eb",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "generalist",
@@ -397,7 +397,7 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         }
       ],
@@ -407,14 +407,14 @@
       "variant": "negative_cash",
       "repetition": 1,
       "workflow": "multi_agent",
-      "evaluation_id": "16eefbd7-70fa-4b82-8779-175ac365244c",
+      "evaluation_id": "3371b88e-62e2-4457-ae66-e69af53852d1",
       "succeeded": true,
       "matches_ground_truth": true,
       "grounded_complete_draft": true,
-      "elapsed_seconds": 1.2546,
+      "elapsed_seconds": 1.121,
       "model_calls": [
         {
-          "id": "f49a1b99-34e1-40df-bd81-0173a4cc18ed",
+          "id": "0c395b5e-1bd3-43b2-a84b-6ac8436be60b",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "extractor",
@@ -425,11 +425,11 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         },
         {
-          "id": "eff1a3ef-846f-4fec-b3e7-d34f60d54445",
+          "id": "68a15429-e2cb-4524-9239-3f9a06bfa891",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "draft",
@@ -440,7 +440,7 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         }
       ],
@@ -450,14 +450,14 @@
       "variant": "blank",
       "repetition": 1,
       "workflow": "generalist",
-      "evaluation_id": "88b2b856-5ff6-49c5-b1e4-642331e4e6f5",
+      "evaluation_id": "8d39470e-6df2-4281-9a4c-8381c9eb6957",
       "succeeded": true,
       "matches_ground_truth": true,
       "grounded_complete_draft": true,
-      "elapsed_seconds": 1.1339,
+      "elapsed_seconds": 1.1127,
       "model_calls": [
         {
-          "id": "8580763a-c0d4-4872-a859-4572fa1529f9",
+          "id": "52e727b3-ab74-4f02-8d4e-ec4c4091a4a8",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "generalist",
@@ -468,7 +468,7 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         }
       ],
@@ -478,14 +478,14 @@
       "variant": "blank",
       "repetition": 1,
       "workflow": "multi_agent",
-      "evaluation_id": "29a27b07-fba6-4943-80a3-862362bd6dae",
+      "evaluation_id": "1241f7ef-3079-4c07-840d-e2b7a87786ac",
       "succeeded": true,
       "matches_ground_truth": true,
       "grounded_complete_draft": true,
-      "elapsed_seconds": 0.8937,
+      "elapsed_seconds": 1.0919,
       "model_calls": [
         {
-          "id": "44dae6c6-c179-4bb7-9554-a19891e87fab",
+          "id": "ad8241e8-f3e3-4d65-b690-892bd09730d6",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "extractor",
@@ -496,11 +496,11 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         },
         {
-          "id": "3c244f48-c6dc-4ae8-b41d-d731776b163d",
+          "id": "9d5a9dd9-b936-473a-adaa-04c626ff4970",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "draft",
@@ -511,7 +511,7 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         }
       ],
@@ -521,14 +521,14 @@
       "variant": "large_revenue",
       "repetition": 1,
       "workflow": "generalist",
-      "evaluation_id": "e795f22f-2634-4d30-9e15-4447286006de",
+      "evaluation_id": "d90457af-b811-49df-b660-997bf7eabc63",
       "succeeded": true,
       "matches_ground_truth": true,
       "grounded_complete_draft": true,
-      "elapsed_seconds": 1.1043,
+      "elapsed_seconds": 0.9092,
       "model_calls": [
         {
-          "id": "148a7645-a36b-48a4-8c55-9d1a72bc2703",
+          "id": "84ebd315-7097-4846-95b5-eee0dffa5e7e",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "generalist",
@@ -539,7 +539,7 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         }
       ],
@@ -549,14 +549,14 @@
       "variant": "large_revenue",
       "repetition": 1,
       "workflow": "multi_agent",
-      "evaluation_id": "95de88e2-f595-4502-994a-e6f5b17a567b",
+      "evaluation_id": "6265877a-5817-4572-a12f-7635274ec9ce",
       "succeeded": true,
       "matches_ground_truth": true,
       "grounded_complete_draft": true,
-      "elapsed_seconds": 0.8969,
+      "elapsed_seconds": 1.0839,
       "model_calls": [
         {
-          "id": "2d1ab0de-7ca4-483b-9850-89ccf4029b51",
+          "id": "869ebe87-b128-4166-80a0-45c39ceae2dc",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "extractor",
@@ -567,11 +567,11 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         },
         {
-          "id": "04c19ae0-2333-47b2-80b6-e7eaea2c79ec",
+          "id": "37bcbe18-d0f3-4061-b366-c38b975e09fc",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "draft",
@@ -582,7 +582,7 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         }
       ],
@@ -592,14 +592,14 @@
       "variant": "negative_debt",
       "repetition": 1,
       "workflow": "generalist",
-      "evaluation_id": "bfd3cb6b-b8d8-4441-ae3b-d43cc613e472",
+      "evaluation_id": "55cf2974-86e3-4953-891b-27ba1a092b8c",
       "succeeded": true,
       "matches_ground_truth": true,
       "grounded_complete_draft": true,
-      "elapsed_seconds": 0.8795,
+      "elapsed_seconds": 1.0719,
       "model_calls": [
         {
-          "id": "55eb660d-75db-4bf1-9fd9-1e9341846cc2",
+          "id": "6ba3d8ef-4fa2-40d1-82d3-c9912ba71170",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "generalist",
@@ -610,7 +610,7 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         }
       ],
@@ -620,14 +620,14 @@
       "variant": "negative_debt",
       "repetition": 1,
       "workflow": "multi_agent",
-      "evaluation_id": "8946091d-e664-4313-afcb-8dbba70c4114",
+      "evaluation_id": "f255e532-e7ec-4778-aaf2-d82434fae099",
       "succeeded": true,
       "matches_ground_truth": true,
       "grounded_complete_draft": true,
-      "elapsed_seconds": 1.089,
+      "elapsed_seconds": 1.0929,
       "model_calls": [
         {
-          "id": "317ff3a6-8609-45a9-b15b-3e3425de7b49",
+          "id": "893f09e2-e75d-4737-8fbc-13aa186a149c",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "extractor",
@@ -638,11 +638,11 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         },
         {
-          "id": "51924000-ae41-4e59-bae4-c87c2aed3232",
+          "id": "80d2dc7d-c998-4f03-961f-e9fc850bb688",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "draft",
@@ -653,7 +653,7 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         }
       ],
@@ -663,14 +663,14 @@
       "variant": "injection",
       "repetition": 1,
       "workflow": "generalist",
-      "evaluation_id": "e4f4ccaf-9c37-4e11-81d6-6eb41d2caa17",
+      "evaluation_id": "3441e882-6f5a-4c8f-b6cb-6d9caaacd761",
       "succeeded": true,
       "matches_ground_truth": true,
       "grounded_complete_draft": true,
-      "elapsed_seconds": 1.0894,
+      "elapsed_seconds": 1.0785,
       "model_calls": [
         {
-          "id": "a9ed90f1-3637-44b3-925d-d15b68e8ee7f",
+          "id": "cab855a9-c2cc-4948-a582-4e39517d9183",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "generalist",
@@ -681,7 +681,7 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         }
       ],
@@ -691,14 +691,14 @@
       "variant": "injection",
       "repetition": 1,
       "workflow": "multi_agent",
-      "evaluation_id": "599c0799-b7e5-483c-af76-878171e6dc4c",
+      "evaluation_id": "79bb16ab-2454-4c4b-b799-c7327d429cd7",
       "succeeded": true,
       "matches_ground_truth": true,
       "grounded_complete_draft": true,
-      "elapsed_seconds": 1.0908,
+      "elapsed_seconds": 1.0859,
       "model_calls": [
         {
-          "id": "5ba2df46-fea4-42df-a65b-5e72625d862a",
+          "id": "16dc8355-c6be-4e4d-aad3-d2f664e9f1d8",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "extractor",
@@ -709,11 +709,11 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         },
         {
-          "id": "d90d2e9e-5468-4dfe-b2b3-8afd3e4a3450",
+          "id": "244fd952-7eb3-4065-ac30-a86a5d43fd53",
           "provider": "mock",
           "model": "deterministic-fixture-v1",
           "stage": "draft",
@@ -724,7 +724,7 @@
           "reserved_usd": "0",
           "accounted_usd": "0",
           "cost_status": "mock",
-          "prompt_version": "grounded-agents-v1",
+          "prompt_version": "grounded-agents-v2",
           "response_id": null
         }
       ],
@@ -742,7 +742,7 @@
       "output_tokens": 0,
       "charged_or_reserved_usd": "0",
       "unknown_usage_calls": 0,
-      "median_seconds": 1.1099
+      "median_seconds": 1.0907
     },
     "multi_agent": {
       "runs": 10,
@@ -754,7 +754,7 @@
       "output_tokens": 0,
       "charged_or_reserved_usd": "0",
       "unknown_usage_calls": 0,
-      "median_seconds": 1.1086
+      "median_seconds": 1.0924
     }
   }
 }

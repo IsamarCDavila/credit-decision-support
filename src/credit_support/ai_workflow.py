@@ -7,7 +7,7 @@ from typing import Any, cast
 from uuid import UUID
 
 from fastapi import APIRouter, HTTPException
-from pydantic import ValidationError
+from pydantic import BaseModel, ValidationError
 from sqlalchemy import Engine, text
 
 from credit_support.ai_models import (
@@ -63,7 +63,7 @@ def start_ai(id: UUID, body: AIRequest, actor: Actor, key: Key) -> Any:
 
 
 def source_units(engine: Engine, evaluation_id: UUID) -> list[dict[str, str]]:
-    units = []
+    units: list[dict[str, str]] = []
     with engine.connect() as conn:
         docs = (
             conn.execute(
@@ -80,26 +80,36 @@ def source_units(engine: Engine, evaluation_id: UUID) -> list[dict[str, str]]:
     for doc in docs:
         parsed = doc["parsed"]
         if parsed["rows"]:
-            for index, row in enumerate(parsed["rows"], 2):
+            for row in parsed["rows"]:
                 units.append(
                     {
-                        "source_id": f"{doc['id']}:row:{index}",
+                        "source_id": f"S{len(units) + 1:06}",
                         "text": f"{row['key']}: {row['value']}",
                         "key": row["key"],
                         "raw_value": row["value"],
                     }
                 )
         else:
-            for index, candidate in enumerate(parsed["candidates"]):
+            for candidate in parsed["candidates"]:
                 units.append(
                     {
-                        "source_id": f"{doc['id']}:field:{index}",
+                        "source_id": f"S{len(units) + 1:06}",
                         "text": f"{candidate['key']}: {candidate['raw']}",
                         "key": candidate["key"],
                         "raw_value": candidate["raw"],
                     }
                 )
     return units
+
+
+def extraction_schema(model: type[BaseModel], units: list[dict[str, str]]) -> dict[str, Any]:
+    if not units or len(units) > 500:
+        raise ModelError("MODEL_SOURCE_LIMIT")
+    schema = model.model_json_schema()
+    schema["$defs"]["Observation"]["properties"]["source_id"]["enum"] = [
+        unit["source_id"] for unit in units
+    ]
+    return schema
 
 
 def expected_extraction(units: list[dict[str, str]]) -> dict[str, Any]:
@@ -278,7 +288,7 @@ def run_ai(engine: Engine, job: dict[str, Any], lost: Event) -> dict[str, Any]:
             "generalist",
             GENERALIST,
             payload,
-            GeneralistProposal.model_json_schema(),
+            extraction_schema(GeneralistProposal, units),
             {"extraction": fixture, "draft": selection},
             4096,
         )
@@ -293,7 +303,7 @@ def run_ai(engine: Engine, job: dict[str, Any], lost: Event) -> dict[str, Any]:
             "extractor",
             EXTRACT,
             payload,
-            ExtractionProposal.model_json_schema(),
+            extraction_schema(ExtractionProposal, units),
             fixture,
         )
         proposal = ExtractionProposal.model_validate(output)
