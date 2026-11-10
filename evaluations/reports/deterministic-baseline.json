@@ -1,0 +1,210 @@
+{
+  "baseline": "deterministic-synthetic-v1",
+  "run_at_utc": "2026-11-10T07:53:22.494401+00:00",
+  "environment": {
+    "python": "3.12.15",
+    "platform": "Windows"
+  },
+  "corpus_seed": 100,
+  "case_count": 10,
+  "matching_cases": 10,
+  "valid_policy_citation_cases": 10,
+  "median_seconds": 2.1346,
+  "p95_seconds": 2.602,
+  "model_calls": 0,
+  "model_tokens": 0,
+  "infrastructure_cost_usd": null,
+  "limitations": "Ten controlled synthetic cases; no real-world accuracy, service-level, manual time-saving, or statistical generalization claim.",
+  "cases": [
+    {
+      "case_id": "case-001",
+      "variant": "complete",
+      "expected": {
+        "metric_status": "CALCULATED",
+        "rule_status": "PASS",
+        "outcome": "meets_rules",
+        "display": "1.2389"
+      },
+      "observed": {
+        "metric_status": "CALCULATED",
+        "rule_status": "PASS",
+        "outcome": "meets_rules",
+        "display": "1.2389"
+      },
+      "matches_ground_truth": true,
+      "policy_citations_valid": true,
+      "elapsed_seconds": 2.602
+    },
+    {
+      "case_id": "case-002",
+      "variant": "missing",
+      "expected": {
+        "metric_status": "MISSING_INPUT",
+        "rule_status": "REQUIRES_REVIEW",
+        "outcome": "insufficient_evidence",
+        "display": null
+      },
+      "observed": {
+        "metric_status": "MISSING_INPUT",
+        "rule_status": "REQUIRES_REVIEW",
+        "outcome": "insufficient_evidence",
+        "display": null
+      },
+      "matches_ground_truth": true,
+      "policy_citations_valid": true,
+      "elapsed_seconds": 2.1391
+    },
+    {
+      "case_id": "case-003",
+      "variant": "ambiguous",
+      "expected": {
+        "metric_status": "MISSING_INPUT",
+        "rule_status": "REQUIRES_REVIEW",
+        "outcome": "insufficient_evidence",
+        "display": null
+      },
+      "observed": {
+        "metric_status": "MISSING_INPUT",
+        "rule_status": "REQUIRES_REVIEW",
+        "outcome": "insufficient_evidence",
+        "display": null
+      },
+      "matches_ground_truth": true,
+      "policy_citations_valid": true,
+      "elapsed_seconds": 2.1423
+    },
+    {
+      "case_id": "case-004",
+      "variant": "invalid",
+      "expected": {
+        "metric_status": "CALCULATED",
+        "rule_status": "PASS",
+        "outcome": "insufficient_evidence",
+        "display": "1.5059"
+      },
+      "observed": {
+        "metric_status": "CALCULATED",
+        "rule_status": "PASS",
+        "outcome": "insufficient_evidence",
+        "display": "1.5059"
+      },
+      "matches_ground_truth": true,
+      "policy_citations_valid": true,
+      "elapsed_seconds": 2.128
+    },
+    {
+      "case_id": "case-005",
+      "variant": "zero_debt",
+      "expected": {
+        "metric_status": "NOT_APPLICABLE",
+        "rule_status": "REQUIRES_REVIEW",
+        "outcome": "insufficient_evidence",
+        "display": null
+      },
+      "observed": {
+        "metric_status": "NOT_APPLICABLE",
+        "rule_status": "REQUIRES_REVIEW",
+        "outcome": "insufficient_evidence",
+        "display": null
+      },
+      "matches_ground_truth": true,
+      "policy_citations_valid": true,
+      "elapsed_seconds": 2.1659
+    },
+    {
+      "case_id": "case-006",
+      "variant": "negative_cash",
+      "expected": {
+        "metric_status": "CALCULATED",
+        "rule_status": "FAIL",
+        "outcome": "exceptions",
+        "display": "-0.0147"
+      },
+      "observed": {
+        "metric_status": "CALCULATED",
+        "rule_status": "FAIL",
+        "outcome": "exceptions",
+        "display": "-0.0147"
+      },
+      "matches_ground_truth": true,
+      "policy_citations_valid": true,
+      "elapsed_seconds": 1.9897
+    },
+    {
+      "case_id": "case-007",
+      "variant": "blank",
+      "expected": {
+        "metric_status": "MISSING_INPUT",
+        "rule_status": "REQUIRES_REVIEW",
+        "outcome": "insufficient_evidence",
+        "display": null
+      },
+      "observed": {
+        "metric_status": "MISSING_INPUT",
+        "rule_status": "REQUIRES_REVIEW",
+        "outcome": "insufficient_evidence",
+        "display": null
+      },
+      "matches_ground_truth": true,
+      "policy_citations_valid": true,
+      "elapsed_seconds": 2.1301
+    },
+    {
+      "case_id": "case-008",
+      "variant": "large_revenue",
+      "expected": {
+        "metric_status": "CALCULATED",
+        "rule_status": "FAIL",
+        "outcome": "exceptions",
+        "display": "0.6346"
+      },
+      "observed": {
+        "metric_status": "CALCULATED",
+        "rule_status": "FAIL",
+        "outcome": "exceptions",
+        "display": "0.6346"
+      },
+      "matches_ground_truth": true,
+      "policy_citations_valid": true,
+      "elapsed_seconds": 2.1511
+    },
+    {
+      "case_id": "case-009",
+      "variant": "negative_debt",
+      "expected": {
+        "metric_status": "INVALID_INPUT",
+        "rule_status": "REQUIRES_REVIEW",
+        "outcome": "insufficient_evidence",
+        "display": null
+      },
+      "observed": {
+        "metric_status": "INVALID_INPUT",
+        "rule_status": "REQUIRES_REVIEW",
+        "outcome": "insufficient_evidence",
+        "display": null
+      },
+      "matches_ground_truth": true,
+      "policy_citations_valid": true,
+      "elapsed_seconds": 2.1143
+    },
+    {
+      "case_id": "case-010",
+      "variant": "injection",
+      "expected": {
+        "metric_status": "CALCULATED",
+        "rule_status": "FAIL",
+        "outcome": "exceptions",
+        "display": "1.1393"
+      },
+      "observed": {
+        "metric_status": "CALCULATED",
+        "rule_status": "FAIL",
+        "outcome": "exceptions",
+        "display": "1.1393"
+      },
+      "matches_ground_truth": true,
+      "policy_citations_valid": true,
+      "elapsed_seconds": 2.1129
+    }
+  ]
+}

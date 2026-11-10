@@ -4,7 +4,7 @@
 
 ## Implemented scope
 
-Phase 1 provides a FastAPI service, PostgreSQL persistence through SQLAlchemy Core, Alembic migrations, server-resolved demo identities, case-level permissions, idempotent case creation, an audit chain, and a persistent worker. SQL migrations are the authoritative persistence model. The foundation uses PostgreSQL 16; pgvector is introduced with policy retrieval in Phase 3.
+Phase 1 provides a FastAPI service, PostgreSQL persistence through SQLAlchemy Core, Alembic migrations, server-resolved demo identities, case-level permissions, idempotent case creation, an audit chain, and a persistent worker. SQL migrations are the authoritative persistence model. The foundation uses PostgreSQL 16; Phase 3 uses full-text policy retrieval as a baseline; embeddings and pgvector require later evaluation under [ADR-003](adr/003-policy-engine.md).
 
 | Operation | Behavior |
 |---|---|
@@ -55,6 +55,6 @@ uv run mypy
 uv run python scripts/export_openapi.py
 ```
 
-The integration suite contains 23 checks/scenarios covering API authentication and authorization, concurrent idempotency, audit hashes, runtime permissions, policy overlap, immutable snapshots, review guards, required evidence, invalid locators, worker concurrency/lease recovery, and migration upgrade/downgrade. Migration rollback removes project tables and functions while preserving unrelated tables. Downgrading discards project data and is intended for disposable development databases.
+Foundation integration scenarios cover API authentication and authorization, concurrent idempotency, audit hashes, runtime permissions, policy overlap, immutable snapshots, review guards, required evidence, invalid locators, worker concurrency/lease recovery, and migration upgrade/downgrade. Migration rollback removes project tables and functions while preserving unrelated tables. Downgrading discards project data and is intended for disposable development databases.
 
 GitHub Actions additionally checks generated OpenAPI drift, builds and starts Compose services, checks readiness, and runs secret scanning. A passing local Python suite does not establish a successful container build; container verification is reported independently by CI. There are no financial-performance or model-quality measurements in Phase 1.

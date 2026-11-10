@@ -54,7 +54,7 @@ Los agentes extraen y sintetizan; las herramientas deterministas calculan y apli
 | Capa | Elección del MVP |
 |---|---|
 | API | Python 3.12, FastAPI, Pydantic v2 |
-| Persistencia | PostgreSQL 16, SQLAlchemy, Alembic; pgvector para recuperar políticas |
+| Persistencia | PostgreSQL 16, SQLAlchemy, Alembic; recuperación full-text de referencia ([ADR-003](adr/003-policy-engine.md)) |
 | Orquestación | Máquina de estados explícita en Python y trabajos persistidos en base de datos |
 | Modelos | Adaptador independiente del proveedor, salidas estructuradas validadas y mock de CI sin conexión |
 | Documentos | Almacenamiento transaccional en PostgreSQL; parsers de PDF con texto y CSV UTF-8 ([ADR-002](adr/002-ingestion.md)) |

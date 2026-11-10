@@ -1,4 +1,4 @@
-name: Foundation checks
+name: Project checks
 on: [push, pull_request]
 permissions:
   contents: read
@@ -34,6 +34,8 @@ jobs:
       - run: docker compose up --build --wait api worker
       - run: curl --fail http://127.0.0.1:8000/readyz
       - run: uv run python scripts/smoke_ingestion.py
+      - run: uv run python scripts/smoke_policy.py
+      - run: uv run python scripts/evaluate_baseline.py --output storage/ci-baseline.json
       - if: always()
         run: docker compose down
   secrets:

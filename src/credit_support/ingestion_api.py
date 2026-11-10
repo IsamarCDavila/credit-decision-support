@@ -11,6 +11,7 @@ from sqlalchemy import text
 from credit_support.db import get_engine
 from credit_support.ingestion import queue_extraction, require_case, upload
 from credit_support.parsers import MAX_FILE_BYTES, IngestionError
+from credit_support.policy_models import CalculationView, PolicyCheckView
 from credit_support.schemas import UTCTimestamp
 from credit_support.security import identity
 from credit_support.settings import Identity
@@ -72,6 +73,9 @@ class ExtractionView(BaseModel):
     created_at: UTCTimestamp
     facts: list[FactView]
     evidence: list[EvidenceView]
+    policy_id: str | None = None
+    calculations: list[CalculationView] = []
+    policy_check: PolicyCheckView | None = None
 
 
 @router.post("/v1/cases/{id}/documents", status_code=202, response_model=DocumentReceipt)
@@ -177,7 +181,7 @@ def extraction_detail(id: UUID, evaluation_id: UUID, actor: Actor) -> Any:
             conn.execute(
                 text("""
           SELECT e.*,j.status AS job_status,j.result FROM evaluations e JOIN jobs j
-          ON j.evaluation_id=e.id AND j.step='extract_documents'
+          ON j.evaluation_id=e.id AND j.step IN ('extract_documents','evaluate_policy')
           WHERE e.id=:eval AND e.case_id=:case
         """),
                 {"eval": evaluation_id, "case": id},
@@ -186,7 +190,7 @@ def extraction_detail(id: UUID, evaluation_id: UUID, actor: Actor) -> Any:
             .first()
         )
         if not evaluation:
-            raise HTTPException(404, "Extraction not found")
+            raise HTTPException(404, "Evaluation not found")
         rows = (
             conn.execute(
                 text("SELECT * FROM facts WHERE evaluation_id=:id ORDER BY key"),
@@ -225,6 +229,21 @@ def extraction_detail(id: UUID, evaluation_id: UUID, actor: Actor) -> Any:
             .mappings()
             .all()
         )
+        calculations = []
+        for item in conn.execute(
+            text("SELECT * FROM calculations WHERE evaluation_id=:id ORDER BY formula_id"),
+            {"id": evaluation_id},
+        ).mappings():
+            calculations.append(
+                {
+                    **item,
+                    "value": item["details"].get("display_value"),
+                    "unrounded_value": str(item["result"]) if item["result"] is not None else None,
+                }
+            )
+        policy_check: dict[str, Any] | None = conn.execute(
+            text("SELECT result FROM policy_checks WHERE evaluation_id=:id"), {"id": evaluation_id}
+        ).scalar_one_or_none()
         return {
             "evaluation_id": evaluation_id,
             "processing_state": evaluation["processing_state"],
@@ -236,4 +255,7 @@ def extraction_detail(id: UUID, evaluation_id: UUID, actor: Actor) -> Any:
             "created_at": evaluation["created_at"],
             "facts": facts,
             "evidence": evidence,
+            "policy_id": evaluation["policy_id"],
+            "calculations": calculations,
+            "policy_check": policy_check,
         }

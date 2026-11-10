@@ -10,20 +10,22 @@ from credit_support.audit import append_event, canonical
 from credit_support.db import get_engine
 from credit_support.ingestion_api import router as ingestion_router
 from credit_support.limits import RequestSizeLimit
+from credit_support.policy_api import router as policy_router
 from credit_support.schemas import AuditPage, CaseView, CreateCase, Error, Health
 from credit_support.security import authorize, identity
 from credit_support.settings import Identity
 
 app = FastAPI(
     title="Credit Decision Support",
-    version="0.2.0",
+    version="0.3.0",
     description=(
-        "Synthetic document ingestion and evidence extraction. Financial evaluation, "
-        "and human review are subsequent milestones."
+        "Synthetic document ingestion, deterministic financial calculations, and versioned "
+        "policy checks. Model-assisted drafting and human review are subsequent milestones."
     ),
 )
 app.add_middleware(RequestSizeLimit)
 app.include_router(ingestion_router)
+app.include_router(policy_router)
 errors: dict[int | str, dict[str, Any]] = {
     code: {"model": Error} for code in (401, 403, 404, 409, 503)
 }
@@ -45,7 +47,7 @@ def health() -> Health:
 def ready() -> Health:
     with get_engine().connect() as conn:
         revision: str = conn.execute(text("SELECT version_num FROM alembic_version")).scalar_one()
-        if revision != "0002_ingestion":
+        if revision != "0003_policy_engine":
             raise HTTPException(503, "Database migration required")
     return Health(status="ready")
 

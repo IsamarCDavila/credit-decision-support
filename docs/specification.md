@@ -54,7 +54,7 @@ Agents extract and synthesize; deterministic tools calculate and apply explicit 
 | Layer | MVP choice |
 |---|---|
 | API | Python 3.12, FastAPI, Pydantic v2 |
-| Persistence | PostgreSQL 16, SQLAlchemy, Alembic; pgvector for policy retrieval |
+| Persistence | PostgreSQL 16, SQLAlchemy, Alembic; full-text policy retrieval baseline ([ADR-003](adr/003-policy-engine.md)) |
 | Orchestration | Explicit Python state machine and database-backed jobs |
 | Models | Provider-independent adapter, validated structured outputs, offline CI mock |
 | Documents | Transactional PostgreSQL document storage; text-based PDF and UTF-8 CSV parsers ([ADR-002](adr/002-ingestion.md)) |

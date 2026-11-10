@@ -8,8 +8,10 @@ parts = [
     (root / "migrations" / name).read_text(encoding="utf-8")
     for name in ("0001_schema.sql", "0001_controls.sql")
 ]
-parts.append(runpy.run_path(str(root / "migrations/versions/0002_ingestion.py"))["SQL"])
+for revision in ("0002_ingestion", "0003_policy_engine"):
+    parts.append(runpy.run_path(str(root / f"migrations/versions/{revision}.py"))["SQL"])
 (root / "contracts/schema.sql").write_text(
-    "-- Reference export through 0002_ingestion. Apply changes with Alembic.\n" + "\n".join(parts),
+    "-- Reference export through 0003_policy_engine. Apply changes with Alembic.\n"
+    + "\n".join(parts),
     encoding="utf-8",
 )

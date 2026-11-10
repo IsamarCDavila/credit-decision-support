@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "credit-decision-support"
-version = "0.2.0"
+version = "0.3.0"
 description = "Auditable credit analysis with synthetic data and human review"
 requires-python = ">=3.12,<3.13"
 dependencies = [

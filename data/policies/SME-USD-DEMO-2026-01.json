@@ -1,0 +1,11 @@
+{
+  "id": "SME-USD-DEMO-2026-01",
+  "synthetic": true,
+  "segment": "SME",
+  "currency": "USD",
+  "accounting_basis": "individual",
+  "valid_from": "2026-01-01",
+  "valid_to": "2027-01-01",
+  "template_version": "synthetic-policy-v1",
+  "rules": [{"id": "DSCR_MINIMUM", "formula": "DSCR", "operator": "gte", "threshold": "1.20"}]
+}
