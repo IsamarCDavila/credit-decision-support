@@ -1,0 +1,553 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "0.0.1",
+    "description": "Initial design contract. Synthetic data only. No running backend.",
+    "title": "Credit Decision Support"
+  },
+  "security": [
+    {
+      "DemoBearer": []
+    }
+  ],
+  "paths": {
+    "/v1/cases": {
+      "post": {
+        "operationId": "createCase",
+        "summary": "Create synthetic SME USD case",
+        "parameters": [
+          {
+            "required": true,
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "name": "Idempotency-Key"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Create synthetic SME USD case"
+          },
+          "400": {
+            "description": "Error; see docs/domain.md"
+          },
+          "401": {
+            "description": "Error; see docs/domain.md"
+          },
+          "403": {
+            "description": "Error; see docs/domain.md"
+          },
+          "404": {
+            "description": "Error; see docs/domain.md"
+          },
+          "409": {
+            "description": "Error; see docs/domain.md"
+          },
+          "413": {
+            "description": "Error; see docs/domain.md"
+          },
+          "422": {
+            "description": "Error; see docs/domain.md"
+          },
+          "503": {
+            "description": "Error; see docs/domain.md"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "segment",
+                  "currency",
+                  "cutoff"
+                ],
+                "type": "object",
+                "properties": {
+                  "cutoff": {
+                    "format": "date",
+                    "type": "string"
+                  },
+                  "currency": {
+                    "const": "USD"
+                  },
+                  "segment": {
+                    "const": "SME"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/v1/cases/{id}/documents": {
+      "post": {
+        "operationId": "uploadDocument",
+        "summary": "Upload synthetic PDF or CSV",
+        "parameters": [
+          {
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "name": "id"
+          },
+          {
+            "required": true,
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "name": "Idempotency-Key"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Upload synthetic PDF or CSV"
+          },
+          "400": {
+            "description": "Error; see docs/domain.md"
+          },
+          "401": {
+            "description": "Error; see docs/domain.md"
+          },
+          "403": {
+            "description": "Error; see docs/domain.md"
+          },
+          "404": {
+            "description": "Error; see docs/domain.md"
+          },
+          "409": {
+            "description": "Error; see docs/domain.md"
+          },
+          "413": {
+            "description": "Error; see docs/domain.md"
+          },
+          "422": {
+            "description": "Error; see docs/domain.md"
+          },
+          "503": {
+            "description": "Error; see docs/domain.md"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "file"
+                ],
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "format": "binary",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/v1/cases/{id}/evaluate": {
+      "post": {
+        "operationId": "evaluateCase",
+        "summary": "Create immutable evaluation snapshot and job",
+        "parameters": [
+          {
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "name": "id"
+          },
+          {
+            "required": true,
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "name": "Idempotency-Key"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Create immutable evaluation snapshot and job"
+          },
+          "400": {
+            "description": "Error; see docs/domain.md"
+          },
+          "401": {
+            "description": "Error; see docs/domain.md"
+          },
+          "403": {
+            "description": "Error; see docs/domain.md"
+          },
+          "404": {
+            "description": "Error; see docs/domain.md"
+          },
+          "409": {
+            "description": "Error; see docs/domain.md"
+          },
+          "413": {
+            "description": "Error; see docs/domain.md"
+          },
+          "422": {
+            "description": "Error; see docs/domain.md"
+          },
+          "503": {
+            "description": "Error; see docs/domain.md"
+          }
+        }
+      }
+    },
+    "/v1/cases/{id}": {
+      "get": {
+        "operationId": "getCase",
+        "summary": "Read case and current evaluation",
+        "parameters": [
+          {
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Read case and current evaluation"
+          },
+          "400": {
+            "description": "Error; see docs/domain.md"
+          },
+          "401": {
+            "description": "Error; see docs/domain.md"
+          },
+          "403": {
+            "description": "Error; see docs/domain.md"
+          },
+          "404": {
+            "description": "Error; see docs/domain.md"
+          },
+          "409": {
+            "description": "Error; see docs/domain.md"
+          },
+          "413": {
+            "description": "Error; see docs/domain.md"
+          },
+          "422": {
+            "description": "Error; see docs/domain.md"
+          },
+          "503": {
+            "description": "Error; see docs/domain.md"
+          }
+        }
+      }
+    },
+    "/v1/cases/{id}/report": {
+      "get": {
+        "operationId": "getReport",
+        "summary": "Read SIMULACION report only at DRAFT_READY",
+        "parameters": [
+          {
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Read SIMULACION report only at DRAFT_READY"
+          },
+          "400": {
+            "description": "Error; see docs/domain.md"
+          },
+          "401": {
+            "description": "Error; see docs/domain.md"
+          },
+          "403": {
+            "description": "Error; see docs/domain.md"
+          },
+          "404": {
+            "description": "Error; see docs/domain.md"
+          },
+          "409": {
+            "description": "Error; see docs/domain.md"
+          },
+          "413": {
+            "description": "Error; see docs/domain.md"
+          },
+          "422": {
+            "description": "Error; see docs/domain.md"
+          },
+          "503": {
+            "description": "Error; see docs/domain.md"
+          }
+        }
+      }
+    },
+    "/v1/cases/{id}/review": {
+      "post": {
+        "operationId": "reviewCase",
+        "summary": "Review current evaluation with mandatory reason",
+        "parameters": [
+          {
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "name": "id"
+          },
+          {
+            "required": true,
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "name": "Idempotency-Key"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Review current evaluation with mandatory reason"
+          },
+          "400": {
+            "description": "Error; see docs/domain.md"
+          },
+          "401": {
+            "description": "Error; see docs/domain.md"
+          },
+          "403": {
+            "description": "Error; see docs/domain.md"
+          },
+          "404": {
+            "description": "Error; see docs/domain.md"
+          },
+          "409": {
+            "description": "Error; see docs/domain.md"
+          },
+          "413": {
+            "description": "Error; see docs/domain.md"
+          },
+          "422": {
+            "description": "Error; see docs/domain.md"
+          },
+          "503": {
+            "description": "Error; see docs/domain.md"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "evaluation_id",
+                  "expected_review_state",
+                  "decision",
+                  "reason"
+                ],
+                "type": "object",
+                "properties": {
+                  "evaluation_id": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "decision": {
+                    "enum": [
+                      "APPROVED",
+                      "REJECTED",
+                      "NEEDS_MORE_INFO"
+                    ],
+                    "type": "string"
+                  },
+                  "reason": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "expected_review_state": {
+                    "const": "PENDING"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/v1/cases/{id}/audit-events": {
+      "get": {
+        "operationId": "getAuditEvents",
+        "summary": "Read paginated audit events",
+        "parameters": [
+          {
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "name": "id"
+          },
+          {
+            "in": "query",
+            "schema": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "name": "after_sequence"
+          },
+          {
+            "in": "query",
+            "schema": {
+              "default": 50,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "name": "limit"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Read paginated audit events"
+          },
+          "400": {
+            "description": "Error; see docs/domain.md"
+          },
+          "401": {
+            "description": "Error; see docs/domain.md"
+          },
+          "403": {
+            "description": "Error; see docs/domain.md"
+          },
+          "404": {
+            "description": "Error; see docs/domain.md"
+          },
+          "409": {
+            "description": "Error; see docs/domain.md"
+          },
+          "413": {
+            "description": "Error; see docs/domain.md"
+          },
+          "422": {
+            "description": "Error; see docs/domain.md"
+          },
+          "503": {
+            "description": "Error; see docs/domain.md"
+          }
+        }
+      }
+    },
+    "/healthz": {
+      "get": {
+        "operationId": "health",
+        "summary": "Liveness",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Liveness"
+          },
+          "400": {
+            "description": "Error; see docs/domain.md"
+          },
+          "401": {
+            "description": "Error; see docs/domain.md"
+          },
+          "403": {
+            "description": "Error; see docs/domain.md"
+          },
+          "404": {
+            "description": "Error; see docs/domain.md"
+          },
+          "409": {
+            "description": "Error; see docs/domain.md"
+          },
+          "413": {
+            "description": "Error; see docs/domain.md"
+          },
+          "422": {
+            "description": "Error; see docs/domain.md"
+          },
+          "503": {
+            "description": "Error; see docs/domain.md"
+          }
+        },
+        "security": []
+      }
+    },
+    "/readyz": {
+      "get": {
+        "operationId": "readiness",
+        "summary": "Dependency readiness",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Dependency readiness"
+          },
+          "400": {
+            "description": "Error; see docs/domain.md"
+          },
+          "401": {
+            "description": "Error; see docs/domain.md"
+          },
+          "403": {
+            "description": "Error; see docs/domain.md"
+          },
+          "404": {
+            "description": "Error; see docs/domain.md"
+          },
+          "409": {
+            "description": "Error; see docs/domain.md"
+          },
+          "413": {
+            "description": "Error; see docs/domain.md"
+          },
+          "422": {
+            "description": "Error; see docs/domain.md"
+          },
+          "503": {
+            "description": "Error; see docs/domain.md"
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "DemoBearer": {
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  }
+}

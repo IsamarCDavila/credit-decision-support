@@ -1,6 +1,6 @@
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
-$spec = Get-Content -Raw (Join-Path $root 'contracts/openapi.json') | ConvertFrom-Json
+$spec = Get-Content -Raw (Join-Path $root 'contracts/openapi-design.json') | ConvertFrom-Json
 if ($spec.openapi -ne '3.1.0') { throw 'OpenAPI version' }
 if (@($spec.paths.PSObject.Properties).Count -lt 8) { throw 'Missing routes' }
 foreach ($path in $spec.paths.PSObject.Properties) {
