@@ -206,10 +206,17 @@ def test_reports_reconstruct_sources_review_and_chain(client, catalog, locale, v
     proof = attached.pop("integrity")
     assert hashlib.sha256(canonical(attached).encode()).hexdigest() == proof["payload_sha256"]
     assert attached["evaluation"]["evaluation_id"] == eid
+    assert attached["evaluation"]["ai_draft"] == value["evaluation"]["ai_draft"]
     extracted = "\n".join(page.extract_text() for page in reader.pages)
     assert ("SIMULACIÓN" if locale == "es" else "SIMULATION") in extracted
     assert "APPROVED" in extracted and eid in extracted and reason in extracted
     assert "payload_sha256" not in extracted
+    presentation = extracted.split("Códigos técnicos" if locale == "es" else "Technical codes")[0]
+    assert ("Simulación aprobada" if locale == "es" else "Simulation approved") in presentation
+    assert ("Evaluación actual\nSí" if locale == "es" else "Current snapshot\nYes") in presentation
+    assert "True" not in presentation
+    assert "estado de evidencia: extracted" not in presentation
+    assert "evidence status: extracted" not in presentation
 
 
 def test_not_ready_report_and_static_security_headers(client, catalog):

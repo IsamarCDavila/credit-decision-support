@@ -1,5 +1,7 @@
 """Paginated English/Spanish simulation reports with embedded Latin-script fonts."""
 
+import re
+from datetime import datetime
 from io import BytesIO
 from pathlib import Path
 from typing import Any
@@ -28,6 +30,52 @@ def render_pdf(report: dict[str, Any]) -> bytes:
 
     def label(en: str, spanish: str) -> str:
         return spanish if es else en
+
+    names = {
+        "annual_revenue": ("Annual revenue", "Ingresos anuales"),
+        "ebitda": ("EBITDA", "EBITDA"),
+        "total_debt": ("Total debt", "Deuda total"),
+        "debt_service": ("Debt service", "Servicio de deuda"),
+        "available_cash_flow": ("Available cash flow", "Flujo de caja disponible"),
+        "obligations": ("Obligations", "Obligaciones"),
+    }
+    terms = {
+        **names,
+        "PENDING": ("Pending review", "Revisión pendiente"),
+        "APPROVED": ("Simulation approved", "Simulación aprobada"),
+        "REJECTED": ("Simulation rejected", "Simulación rechazada"),
+        "NEEDS_MORE_INFO": ("More information needed", "Se necesita información"),
+        "extracted": ("Verified", "Verificado"),
+        "missing": ("Missing", "Ausente"),
+        "ambiguous": ("Conflicting evidence", "Evidencia contradictoria"),
+        "invalid": ("Invalid input", "Entrada inválida"),
+        "CALCULATED": ("Calculated", "Calculado"),
+        "NOT_APPLICABLE": ("Not applicable", "No aplica"),
+        "INVALID_INPUT": ("Invalid input", "Entrada inválida"),
+        "MISSING_INPUT": ("Missing input", "Faltan datos"),
+        "meets_rules": ("Meets the rules", "Cumple las reglas"),
+        "exceptions": ("Policy exceptions", "Excepciones de política"),
+        "insufficient_evidence": ("Insufficient evidence", "Evidencia insuficiente"),
+        "PASS": ("Rule satisfied", "Regla cumplida"),
+        "FAIL": ("Rule not satisfied", "Regla no cumplida"),
+        "REQUIRES_REVIEW": ("Review required", "Requiere revisión"),
+    }
+
+    def display(value: str) -> str:
+        return label(*terms[value]) if value in terms else value
+
+    def finding(value: str) -> str:
+        # Translate only complete known tokens in the presentation copy.
+        return re.sub(
+            r"\b(?:" + "|".join(map(re.escape, terms)) + r")\b",
+            lambda match: display(match[0]),
+            value,
+        )
+
+    def timestamp(value: str) -> str:
+        return datetime.fromisoformat(value.replace("Z", "+00:00")).strftime(
+            "%Y-%m-%d %H:%M:%S UTC"
+        )
 
     styles = getSampleStyleSheet()
     for name, size, leading in [
@@ -98,11 +146,15 @@ def render_pdf(report: dict[str, Any]) -> bytes:
                 [label("Evaluation", "Evaluación"), evaluation["evaluation_id"]],
                 [
                     label("Cutoff / scope", "Fecha de corte / alcance"),
-                    f"{report['case']['cutoff']} | SME | USD | individual",
+                    f"{report['case']['cutoff']} | {label('SME', 'PyME')} | USD | "
+                    + label("Standalone statements", "Estados financieros individuales"),
                 ],
-                [label("Current snapshot", "Evaluación actual"), str(evaluation["current"])],
-                [label("Human review", "Revisión humana"), review["state"]],
-                [label("Exported at (UTC)", "Exportado (UTC)"), report["generated_at"]],
+                [
+                    label("Current snapshot", "Evaluación actual"),
+                    label("Yes", "Sí") if evaluation["current"] else label("No", "No"),
+                ],
+                [label("Human review", "Revisión humana"), display(review["state"])],
+                [label("Exported at (UTC)", "Exportado (UTC)"), timestamp(report["generated_at"])],
             ],
             [45 * mm, 125 * mm],
         ),
@@ -110,9 +162,12 @@ def render_pdf(report: dict[str, Any]) -> bytes:
     ]
     if review["record"]:
         record = review["record"]
+        reviewer = record["reviewer_id"]
+        if reviewer.startswith("guided:"):
+            reviewer = label("Demo reviewer", "Revisor demo")
         story += [
             p(label("Human decision", "Decisión humana"), "Heading1"),
-            p(f"{record['reviewer_id']} | {record['decision']} | {record['created_at']}"),
+            p(f"{reviewer} | {display(record['decision'])} | {timestamp(record['created_at'])}"),
             p(record["reason"]),
             Spacer(1, 3 * mm),
         ]
@@ -126,14 +181,6 @@ def render_pdf(report: dict[str, Any]) -> bytes:
             ),
             Spacer(1, 3 * mm),
         ]
-    names = {
-        "annual_revenue": ("Annual revenue", "Ingresos anuales"),
-        "ebitda": ("EBITDA", "EBITDA"),
-        "total_debt": ("Total debt", "Deuda total"),
-        "debt_service": ("Debt service", "Servicio de deuda"),
-        "available_cash_flow": ("Available cash flow", "Flujo de caja disponible"),
-        "obligations": ("Obligations", "Obligaciones"),
-    }
     rows = [
         [
             label("Financial fact", "Dato financiero"),
@@ -142,7 +189,7 @@ def render_pdf(report: dict[str, Any]) -> bytes:
         ]
     ]
     for fact in evaluation["facts"]:
-        rows.append([label(*names[fact["key"]]), fact["value"] or "-", fact["status"]])
+        rows.append([label(*names[fact["key"]]), fact["value"] or "-", display(fact["status"])])
     story += [
         p(label("Financial facts", "Datos financieros"), "Heading1"),
         table(rows, [72 * mm, 48 * mm, 50 * mm]),
@@ -151,15 +198,15 @@ def render_pdf(report: dict[str, Any]) -> bytes:
     check = evaluation["policy_check"]
     story += [
         p(label("Calculation and policy", "Cálculo y política"), "Heading1"),
-        p(f"DSCR: {calc['value'] or '-'} | {calc['status']} | {calc['formula_version']}"),
-        p(f"{check['policy_version']} | {check['outcome']}"),
+        p(f"DSCR: {calc['value'] or '-'} | {display(calc['status'])}"),
+        p(f"{check['policy_version']} | {display(check['outcome'])}"),
         p(label("Verified draft findings", "Hallazgos verificados del borrador"), "Heading1"),
     ]
     for section in evaluation["ai_draft"]["section_order"]:
         for claim in evaluation["ai_draft"]["claims"]:
             if claim["section"] != section:
                 continue
-            group = [p(claim["text_es" if es else "text_en"])]
+            group = [p(finding(claim["text_es" if es else "text_en"]))]
             refs = (
                 claim["fact_ids"]
                 + claim["evidence_ids"]
@@ -203,6 +250,12 @@ def render_pdf(report: dict[str, Any]) -> bytes:
         ]
     story += [
         p(label("Audit and reconstruction", "Auditoría y reconstrucción"), "Heading1"),
+        tiny(
+            label("Technical codes", "Códigos técnicos")
+            + ": "
+            + f"{review['state']} | {calc['status']} | "
+            + f"{calc['formula_version']} | {check['outcome']}"
+        ),
         p(
             label(
                 "Source checksums, locators, draft, policy, financial calculation, "
