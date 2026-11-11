@@ -24,7 +24,7 @@ Las credenciales permanecen en memoria del navegador; recargar pierde el acceso.
 | `CDS_DEMO_MAX_ACTIVE_SESSIONS` | `20` | Máximo de sesiones simultáneas sin vencer |
 | `CDS_DEMO_MAX_SESSIONS` | `200` | Máximo de sesiones conservadas, incluidas las vencidas o finalizadas |
 
-La base de datos serializa la admisión y responde 429 al alcanzar la capacidad. No existe purga automática del historial. Antes de ampliar el alojamiento se debe revisar retención y capacidad; reiniciar la base también borraría el registro acumulado de costos y no debe utilizarse para reponer el presupuesto. Este hito no proporciona protección de tráfico público de producción ni un proveedor de identidad de producción.
+La creación también tiene un límite de frecuencia por dirección de conexión; consultar [seguridad](hardening.md). La base de datos serializa la admisión y responde 429 al alcanzar la capacidad. No existe purga automática del historial. Antes de ampliar el alojamiento se debe revisar retención y capacidad; reiniciar la base también borraría el registro acumulado de costos y no debe utilizarse para reponer el presupuesto. Este hito no proporciona protección de tráfico público de producción ni un proveedor de identidad de producción.
 
 Las credenciales son tokens aleatorios almacenados como hashes SHA-256 en el servidor. Las tres se devuelven una sola vez al crear la sesión. Cada una está restringida al expediente de su sesión, incluidos listados y acceso a documentos/evaluaciones. Los usuarios guiados no pueden crear más expedientes, cargar fuentes, asignar identidades ni invocar modelos pagados. El espacio avanzado conserva su flujo de tokens configurados.
 

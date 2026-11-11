@@ -10,4 +10,4 @@ COPY migrations ./migrations
 COPY data/policies ./data/policies
 USER app
 EXPOSE 8000
-CMD ["uvicorn", "credit_support.api:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "credit_support.api:app", "--host", "0.0.0.0", "--port", "8000", "--no-access-log", "--no-proxy-headers"]

@@ -1,10 +1,12 @@
 import argparse
 import json
+import logging
 import time
 from typing import Any
 from uuid import UUID, uuid4
 
 from sqlalchemy import Engine, text
+from sqlalchemy.exc import SQLAlchemyError
 
 from credit_support.audit import append_event
 from credit_support.db import get_engine
@@ -158,6 +160,20 @@ def finish(engine: Engine, job: dict[str, Any]) -> bool:
         return True
 
 
+def run_once(engine: Engine, worker_id: str, lease_seconds: int) -> bool:
+    """A rolled-back database failure leaves recovery to the durable lease, without paid retries."""
+    try:
+        job = claim(engine, worker_id, lease_seconds)
+        if job:
+            return finish(engine, job)
+        return False
+    except SQLAlchemyError:
+        logging.getLogger("credit_support.operations").warning(
+            '{"event":"worker_database_unavailable","recovery":"lease_reclaim"}'
+        )
+        return False
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run the persistent foundation worker")
     parser.add_argument("--once", action="store_true")
@@ -165,9 +181,7 @@ def main() -> None:
     settings = get_settings()
     worker_id = str(uuid4())
     while True:
-        job = claim(get_engine(), worker_id, settings.worker_lease_seconds)
-        if job:
-            finish(get_engine(), job)
+        run_once(get_engine(), worker_id, settings.worker_lease_seconds)
         if args.once:
             return
         time.sleep(settings.worker_poll_seconds)

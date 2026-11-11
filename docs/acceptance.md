@@ -40,3 +40,7 @@ Reliability is validly completed jobs divided by initiated jobs under a declared
 4. AI: offline mock, interchangeable adapter, citation validation, and B/C benchmark.
 5. Human review: interface, mandatory reasons, concurrency controls, simulation reports, and reconstructible audit history.
 6. Hardening: at least ten end-to-end scenarios, adversarial/resilience tests, and measured load limits. Report each design target as met or unmet with supporting evidence.
+
+## Phase 6 evidence
+
+See [hardening and measured load](hardening.md) for the ten-scenario protocol, 40 runs, confidence intervals, and status of every target. Timed human intervention and infrastructure cost allocation remain unmet; a complete version 1.0 release is not claimed.

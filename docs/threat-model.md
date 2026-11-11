@@ -17,3 +17,7 @@
 | Dependency/provider outage | Timeout; three attempts; lease; CI mock | Restart preserves committed steps without duplicate effects |
 
 Trust boundaries are user→API, file→parser, content→LLM, LLM→tools, API/worker→database and storage, and runtime→provider. Real data is excluded. The provider can be disabled, and CI runs without external model calls. Demo identity is not production-grade authentication.
+
+## Implementation evidence
+
+The [hardening evaluation](hardening.md) maps implemented controls, reproducible tests, and remaining limits. Integration tests cover invented sources/citations, isolation, self-approval, stale review, duplicates, file limits, parser timeout, hashes, and provider failures. Phase 6 adds demo admission throttling, redacted logs, and lease recovery in a new process. Backup restoration and independent penetration testing remain unverified.

@@ -6,7 +6,7 @@ Auditable AI-assisted credit analysis with synthetic data, deterministic financi
 
 ## Project status
 
-**Human review workspace — Phase 5.** The application ingests synthetic PDF/CSV statements, verifies model-proposed observations, calculates DSCR, checks versioned policies, and prepares grounded bilingual drafts. A browser workspace supports case assignment, independent human review, evidence/audit inspection, and verified JSON/PDF reports. OpenAI remains optional and disabled by default, with a cumulative US$2 application allowance. Security, resilience, and measured load hardening remain Phase 6.
+**Security, resilience, and measured load — Phase 6.** The application supports synthetic PDF/CSV ingestion, financial and policy analysis, grounded drafts, human review, and bilingual reports. It includes guided access, bounded admission, redacted telemetry, and worker recovery. Forty mock end-to-end runs were measured; scope and unmet targets are documented in the [hardening evaluation](docs/hardening.md). OpenAI is optional, disabled by default, and subject to the cumulative US$2 application allowance.
 
 The MVP supports SME cases in USD, full annual periods, and standalone financial statements. It prepares evidence-backed analysis for a human reviewer. Reports are marked **SIMULATION**; recommendations do not authorize real credit.
 
@@ -18,6 +18,7 @@ With the application running, open `http://127.0.0.1:8000/`, select **Try demo**
 
 | Document | Purpose |
 |---|---|
+| [Hardening and measured load](docs/hardening.md) | Operational controls, resilience, measurements, and unmet targets |
 | [Human review workspace](docs/human-review.md) | Browser access, assignment, decisions, report reconstruction, and demo |
 | [Grounded AI workflow](docs/ai-workflow.md) | Model roles, source validation, OpenAI setup, costs, and comparison limits |
 | [Policy catalog and financial checks](docs/policy-engine.md) | Policy selection, DSCR, citations, and baseline verification |

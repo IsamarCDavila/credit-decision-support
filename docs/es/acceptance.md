@@ -40,3 +40,7 @@ Fiabilidad: trabajos completados válidamente / trabajos iniciados bajo protocol
 4. IA: mock offline, adaptador intercambiable, validación de citas y benchmark B/C.
 5. Humano: UI, revisión con motivo, concurrencia, reporte SIMULACIÓN y auditoría reconstruible.
 6. Hardening: diez E2E como mínimo, pruebas adversariales/resiliencia y límites de carga medidos. Metas del original se reportan como cumplidas o incumplidas con evidencia.
+
+## Evidencia de fase 6
+
+Consultar [seguridad y carga medida](hardening.md) para el protocolo de diez escenarios, 40 recorridos, intervalos de confianza y estado de cada meta. La intervención humana cronometrada y la asignación de costos de infraestructura siguen pendientes; no se declara una versión 1.0 completa.

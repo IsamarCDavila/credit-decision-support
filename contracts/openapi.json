@@ -3,9 +3,34 @@
   "info": {
     "title": "Credit Decision Support",
     "description": "Synthetic document ingestion, deterministic financial calculations, and versioned policy checks, and grounded model-assisted drafts for human review.",
-    "version": "0.5.1"
+    "version": "0.6.0"
   },
   "paths": {
+    "/v1/operations": {
+      "get": {
+        "summary": "Operations",
+        "operationId": "operations_v1_operations_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Operations V1 Operations Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
     "/v1/cases/{id}/documents": {
       "post": {
         "summary": "Upload Document",

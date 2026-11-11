@@ -56,6 +56,9 @@ def database():
 
 @pytest.fixture(autouse=True)
 def reset(database):
+    from credit_support.operations import demo_admission
+
+    demo_admission.peers.clear()
     # Restricted to a disposable test database by the session fixture.
     with database.begin() as conn:
         conn.execute(text("TRUNCATE cases,policy_versions,idempotency_records CASCADE"))
