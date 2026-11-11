@@ -41,6 +41,14 @@ jobs:
       - run: uv run python scripts/evaluate_ai.py --provider mock --output storage/ci-ai.json
       - run: uv run python scripts/smoke_review.py --output-dir storage/ci-review
       - run: uv run python scripts/smoke_guided_demo.py
+      - run: uv run python scripts/evaluate_hardening.py --concurrency 1 4 --output storage/ci-hardening.json
+      - run: uv run python scripts/smoke_operations.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hardening-measurements
+          path: storage/ci-hardening.json
+          if-no-files-found: ignore
       - if: always()
         run: docker compose down
   secrets:

@@ -24,7 +24,7 @@ Credentials remain in browser memory; reloading loses access. Only the language 
 | `CDS_DEMO_MAX_ACTIVE_SESSIONS` | `20` | Maximum concurrent unexpired sessions |
 | `CDS_DEMO_MAX_SESSIONS` | `200` | Maximum retained sessions, including expired or ended sessions |
 
-The database serializes session admission and returns 429 at capacity. There is no automatic history purge. Operators must review retention and capacity before wider hosting; resetting the database would also erase the cumulative model-cost ledger and must not be used to replenish an allowance. This milestone does not provide public-production traffic protection or a production identity provider.
+Creation also has a per-peer frequency limit; see [hardening](hardening.md). The database serializes session admission and returns 429 at capacity. There is no automatic history purge. Operators must review retention and capacity before wider hosting; resetting the database would also erase the cumulative model-cost ledger and must not be used to replenish an allowance. This milestone does not provide public-production traffic protection or a production identity provider.
 
 Session credentials are random bearer tokens stored as SHA-256 hashes on the server. All three are returned once on creation. Each credential is restricted to its own session's case, including case listings and document/evaluation access. Guided users cannot create additional cases, upload sources, assign identities, or invoke paid models. The advanced workspace retains its existing configured-token workflow.
 

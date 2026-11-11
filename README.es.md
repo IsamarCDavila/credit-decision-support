@@ -6,7 +6,7 @@ Análisis crediticio asistido por IA con trazabilidad, datos sintéticos, reglas
 
 ## Estado del proyecto
 
-**Espacio de revisión humana — Fase 5.** La aplicación ingiere estados sintéticos PDF/CSV, verifica observaciones propuestas por modelos, calcula DSCR, comprueba políticas versionadas y prepara borradores bilingües con evidencia. La interfaz permite asignar expedientes, realizar una revisión independiente, consultar fuentes/auditoría y exportar JSON/PDF verificados. OpenAI sigue siendo opcional y está desactivado por defecto, con asignación acumulada de US$2. Seguridad, resiliencia y carga medida corresponden a la fase 6.
+**Seguridad, resiliencia y carga medida — Fase 6.** La aplicación permite ingesta sintética PDF/CSV, análisis financiero y de políticas, borradores con evidencia, revisión humana e informes bilingües. Incluye demo guiada, admisión acotada, telemetría sin datos sensibles y recuperación del worker. Se midieron 40 recorridos con modelo simulado; los límites y metas pendientes se describen en la [evaluación de seguridad y carga](docs/es/hardening.md). OpenAI es opcional, desactivado por defecto y sujeto al presupuesto acumulado de US$2.
 
 El MVP admite expedientes PyME en USD, periodos anuales completos y estados financieros individuales. Prepara análisis respaldados por evidencia para un revisor humano. Los informes llevan la marca **SIMULACIÓN**; las recomendaciones no autorizan créditos reales.
 
@@ -18,6 +18,7 @@ Con la aplicación en ejecución, abrir `http://127.0.0.1:8000/`, seleccionar **
 
 | Documento | Propósito |
 |---|---|
+| [Seguridad y carga medida](docs/es/hardening.md) | Controles operativos, resiliencia, mediciones y metas pendientes |
 | [Espacio de revisión humana](docs/es/human-review.md) | Acceso web, asignación, decisiones, reconstrucción de informes y demo |
 | [Flujo de IA con evidencia](docs/es/ai-workflow.md) | Roles, validación, configuración de OpenAI, costos y límites de comparación |
 | [Catálogo y controles financieros](docs/es/policy-engine.md) | Selección de políticas, DSCR, citas y verificación de referencia |

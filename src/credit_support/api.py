@@ -14,6 +14,8 @@ from credit_support.db import get_engine
 from credit_support.demo_api import router as demo_router
 from credit_support.ingestion_api import router as ingestion_router
 from credit_support.limits import RequestSizeLimit
+from credit_support.operations import ServiceBoundary
+from credit_support.operations import router as operations_router
 from credit_support.policy_api import router as policy_router
 from credit_support.reports import router as report_router
 from credit_support.review_api import router as review_router
@@ -23,13 +25,15 @@ from credit_support.settings import Identity
 
 app = FastAPI(
     title="Credit Decision Support",
-    version="0.5.1",
+    version="0.6.0",
     description=(
         "Synthetic document ingestion, deterministic financial calculations, and versioned "
         "policy checks, and grounded model-assisted drafts for human review."
     ),
 )
 app.add_middleware(RequestSizeLimit)
+app.add_middleware(ServiceBoundary)
+app.include_router(operations_router)
 app.include_router(ingestion_router)
 app.include_router(policy_router)
 app.include_router(ai_router)

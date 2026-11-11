@@ -17,3 +17,7 @@
 | Dependencia/proveedor caído | Timeout, tres intentos, lease y mock CI | Reinicio conserva pasos confirmados sin efectos duplicados |
 
 Fronteras: usuario→API, archivos→parser, contenido→LLM, LLM→herramientas, API/worker→DB y almacenamiento, runtime→proveedor. No usar datos reales. El proveedor debe poder desactivarse; CI funciona sin llamadas externas. Una identidad demo no es autenticación apta para producción.
+
+## Evidencia de implementación
+
+La [evaluación de seguridad y carga](hardening.md) relaciona controles implementados, pruebas reproducibles y límites pendientes. Las pruebas de integración cubren rechazo de fuentes/citas inventadas, aislamiento, autoaprobación, revisión obsoleta, duplicados, límites de archivos, bloqueo del parser, hashes y errores de proveedor. La fase 6 añade límite de creación de demos, registros sin datos sensibles y recuperación de concesiones en otro proceso. La restauración de copias y las pruebas de penetración independientes siguen sin verificarse.

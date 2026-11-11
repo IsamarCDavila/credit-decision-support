@@ -34,6 +34,9 @@ class Settings(BaseSettings):
     demo_session_ttl_seconds: int = Field(default=1800, ge=60, le=7200)
     demo_max_active_sessions: int = Field(default=20, ge=1, le=100)
     demo_max_sessions: int = Field(default=200, ge=1, le=1000)
+    demo_requests_per_minute: int = Field(default=8, ge=1, le=60)
+    db_statement_timeout_ms: int = Field(default=15000, ge=100, le=120000)
+    db_lock_timeout_ms: int = Field(default=5000, ge=100, le=30000)
 
     @model_validator(mode="after")
     def validate_configuration(self) -> "Settings":
