@@ -1,0 +1,24 @@
+{
+  "format": "edited_screenshot_walkthrough",
+  "duration_seconds": 50,
+  "fps": 12,
+  "resolution": [
+    1280,
+    720
+  ],
+  "audio": false,
+  "languages": [
+    {
+      "locale": "en",
+      "file": "walkthrough.en.mp4",
+      "bytes": 778804,
+      "decoded_without_errors": true
+    },
+    {
+      "locale": "es",
+      "file": "walkthrough.es.mp4",
+      "bytes": 830411,
+      "decoded_without_errors": true
+    }
+  ]
+}
