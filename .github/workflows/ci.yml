@@ -26,6 +26,7 @@ jobs:
       - run: uv run ruff check .
       - run: uv run ruff format --check .
       - run: node --check src/credit_support/web/workspace.js
+      - run: node --check src/credit_support/web/guided-demo.js
       - run: uv run mypy
       - run: uv run pytest -q
       - run: uv run python scripts/export_openapi.py
@@ -39,6 +40,7 @@ jobs:
       - run: uv run python scripts/evaluate_baseline.py --output storage/ci-baseline.json
       - run: uv run python scripts/evaluate_ai.py --provider mock --output storage/ci-ai.json
       - run: uv run python scripts/smoke_review.py --output-dir storage/ci-review
+      - run: uv run python scripts/smoke_guided_demo.py
       - if: always()
         run: docker compose down
   secrets:

@@ -6,7 +6,7 @@ La fase 5 incorpora una interfaz web, asignación de revisores/auditores, decisi
 
 ## Inicio y acceso
 
-Se requieren Python 3.12, uv y Docker Compose v2, según la [operación base](foundation.md). Las instalaciones existentes deben aplicar la última migración; el servicio de migración de Compose aplica `0005_human_review` antes de iniciar la API.
+Se requieren Python 3.12, uv y Docker Compose v2, según la [operación base](foundation.md). Las instalaciones existentes deben aplicar la última migración; el servicio de migración de Compose aplica `0006_guided_demo` antes de iniciar la API.
 
 ```sh
 uv sync --frozen --extra dev
@@ -24,6 +24,8 @@ uv run python scripts/demo_access.py --role auditor --show-token
 ```
 
 Conservar esas credenciales en privado. El comando oculta el token salvo que se indique `--show-token`. La interfaz mantiene el token en memoria, limpia el campo después del acceso y elimina las credenciales al cerrar sesión o recargar la página. Solo la preferencia de idioma se guarda en el almacenamiento local del navegador. Los tokens demo son identidades configuradas en el servidor, no sesiones de cuentas de producción ni una integración con un proveedor de identidad.
+
+Para explorar un expediente preparado sin copiar credenciales, seleccionar **Probar demo**. La [demo guiada](guided-demo.md) usa sesiones aisladas y un modelo simulado. El acceso con tokens descrito arriba permanece en **Acceso avanzado al espacio de trabajo**.
 
 ## Flujo del expediente
 

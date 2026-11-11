@@ -1,0 +1,19 @@
+{
+  "provider": "mock",
+  "paid_model_calls": 0,
+  "prepared_dscr": "1.5000",
+  "isolated_sessions_verified": 2,
+  "roles_verified": [
+    "analyst",
+    "reviewer",
+    "auditor"
+  ],
+  "review_state": "NEEDS_MORE_INFO",
+  "report_locales": [
+    "en",
+    "es"
+  ],
+  "embedded_pdf_snapshot_verified": true,
+  "session_revocation_verified": true,
+  "static_asset_verified": true
+}

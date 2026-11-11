@@ -42,6 +42,8 @@ CLAIM_IDS = [
 
 @router.post("/v1/cases/{id}/ai-evaluate", status_code=202, response_model=ExtractionReceipt)
 def start_ai(id: UUID, body: AIRequest, actor: Actor, key: Key) -> Any:
+    if actor.demo_session_id is not None and body.provider != "mock":
+        raise HTTPException(403, "Guided demo permits the offline provider only")
     settings = get_settings()
     if body.provider == "openai" and (not settings.llm_live_enabled or not settings.openai_api_key):
         raise HTTPException(409, "OpenAI is disabled or its API key is missing")

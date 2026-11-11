@@ -57,6 +57,8 @@ class MemberView(BaseModel):
 class ProfileView(MemberView):
     live_model_enabled: bool
     simulation: Literal[True]
+    guided_demo: bool = False
+    demo_expires_at: UTCTimestamp | None = None
 
 
 class CaseSummary(CaseView):
@@ -105,8 +107,10 @@ class ReviewStateView(BaseModel):
 def profile(actor: Actor) -> Any:
     return {
         **actor.model_dump(),
-        "live_model_enabled": get_settings().llm_live_enabled,
+        "live_model_enabled": get_settings().llm_live_enabled and actor.demo_session_id is None,
         "simulation": True,
+        "guided_demo": actor.demo_session_id is not None,
+        "demo_expires_at": actor.demo_expires_at,
     }
 
 
@@ -114,6 +118,18 @@ def profile(actor: Actor) -> Any:
 def directory(actor: Actor) -> Any:
     if actor.role != "analyst":
         raise HTTPException(403, "Analyst role required")
+    if actor.demo_session_id is not None:
+        with get_engine().connect() as conn:
+            return [
+                dict(r)
+                for r in conn.execute(
+                    text("""
+              SELECT actor_id,role FROM demo_role_tokens WHERE session_id=:id
+              AND role IN ('reviewer','auditor') ORDER BY role
+            """),
+                    {"id": actor.demo_session_id},
+                ).mappings()
+            ]
     people = {
         (a.actor_id, a.role)
         for a in get_settings().demo_identities.values()
@@ -136,9 +152,18 @@ def list_cases(
           JOIN case_members m ON m.case_id=c.id AND m.actor_id=:actor AND m.role=:role
           LEFT JOIN evaluations e ON e.id=c.current_evaluation_id
           LEFT JOIN reviews r ON r.evaluation_id=e.id
+          WHERE (CAST(:session AS uuid) IS NULL OR c.id IN
+            (SELECT case_id FROM demo_sessions WHERE id=CAST(:session AS uuid)
+             AND revoked_at IS NULL AND expires_at>clock_timestamp()))
           ORDER BY c.created_at DESC,c.id DESC LIMIT :limit OFFSET :offset
         """),
-                {"actor": actor.actor_id, "role": actor.role, "limit": limit + 1, "offset": offset},
+                {
+                    "actor": actor.actor_id,
+                    "role": actor.role,
+                    "limit": limit + 1,
+                    "offset": offset,
+                    "session": actor.demo_session_id,
+                },
             )
             .mappings()
             .all()
@@ -199,6 +224,8 @@ def workspace(id: UUID, actor: Actor) -> Any:
 
 @router.post("/v1/cases/{id}/members", status_code=201, response_model=MemberRequest)
 def assign_member(id: UUID, body: MemberRequest, actor: Actor, key: Key) -> Any:
+    if actor.demo_session_id is not None:
+        raise HTTPException(403, "Guided demo roles are assigned only within their own session")
     if actor.role != "analyst":
         raise HTTPException(403, "Analyst role required")
     if (

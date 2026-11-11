@@ -10,6 +10,10 @@ Análisis crediticio asistido por IA con trazabilidad, datos sintéticos, reglas
 
 El MVP admite expedientes PyME en USD, periodos anuales completos y estados financieros individuales. Prepara análisis respaldados por evidencia para un revisor humano. Los informes llevan la marca **SIMULACIÓN**; las recomendaciones no autorizan créditos reales.
 
+## Probar la demo
+
+Con la aplicación en ejecución, abrir `http://127.0.0.1:8000/`, seleccionar **Probar demo** y elegir Analista, Revisor o Auditor. Cada sesión incluye un expediente ficticio propio y permite cambiar de rol, revisar evidencia y exportar informes. No requiere copiar tokens ni consume OpenAI. La misma persona puede simular los tres roles; no demuestra separación entre personas reales. Consultar la [demo guiada](docs/es/guided-demo.md).
+
 ## Documentación
 
 | Documento | Propósito |
@@ -53,6 +57,7 @@ uv run python scripts/smoke_ingestion.py
 uv run python scripts/smoke_policy.py
 uv run python scripts/evaluate_ai.py --provider mock --output storage/ai-mock.json
 uv run python scripts/smoke_review.py
+uv run python scripts/smoke_guided_demo.py
 ```
 
 La interfaz abre en `http://127.0.0.1:8000/`; la documentación interactiva de la API está en `/docs`. La configuración crea credenciales locales privadas y rechaza sobrescribir `.env`. La [guía de revisión](docs/es/human-review.md) explica el acceso y el flujo de revisión; la [guía de ingesta](docs/es/ingestion.md), los formatos; y la [operación base](docs/es/foundation.md), la identidad y base de datos.

@@ -35,6 +35,7 @@ def database():
             )
         )
     os.environ["CDS_LLM_LIVE_ENABLED"] = "false"
+    os.environ["CDS_GUIDED_DEMO_ENABLED"] = "false"
     os.environ["CDS_DATABASE_URL"] = url
     get_settings.cache_clear()
     config = Config(str(ROOT / "alembic.ini"))
