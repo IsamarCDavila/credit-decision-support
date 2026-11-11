@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: credit-decision-support-demo
+    runtime: docker
+    plan: free
+    branch: main
+    autoDeployTrigger: "off"
+    dockerCommand: python -m credit_support.hosted_demo
+    healthCheckPath: /readyz
+    envVars:
+      - key: CDS_DATABASE_URL
+        sync: false
+      - key: CDS_PUBLIC_DEMO
+        value: "true"
+      - key: CDS_LLM_LIVE_ENABLED
+        value: "false"
+      - key: CDS_OPENAI_API_KEY
+        value: ""
+      - key: CDS_DEMO_IDENTITIES
+        value: "{}"
+      - key: CDS_GUIDED_DEMO_ENABLED
+        value: "true"
+      - key: CDS_DEMO_MAX_ACTIVE_SESSIONS
+        value: "5"
+      - key: CDS_DEMO_MAX_SESSIONS
+        value: "100"

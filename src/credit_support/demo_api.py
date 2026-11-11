@@ -48,6 +48,7 @@ def demo_config() -> dict[str, Any]:
     settings = get_settings()
     return {
         "enabled": settings.guided_demo_enabled,
+        "public_demo": settings.public_demo,
         "session_ttl_seconds": settings.demo_session_ttl_seconds,
         "roles": list(ROLES),
     }
@@ -63,8 +64,11 @@ def create_session(
     if not settings.guided_demo_enabled:
         raise HTTPException(404, "Guided demo is disabled")
     origin = request.headers.get("origin")
+    expected_origin = (
+        settings.public_origin if settings.public_demo else str(request.base_url).rstrip("/")
+    )
     if request.headers.get("sec-fetch-site") == "cross-site" or (
-        origin and origin != str(request.base_url).rstrip("/")
+        origin and origin != expected_origin
     ):
         raise HTTPException(403, "Use the same-origin demonstration page")
     session_id, case_id, document_id, source_id, source_job = [uuid4() for _ in range(5)]

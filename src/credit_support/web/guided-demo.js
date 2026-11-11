@@ -163,6 +163,12 @@ $("demo-next").addEventListener("click", () => {
 
 json("/v1/demo/config").then(config => {
   $("guided-entry").hidden = !config.enabled;
+  $("technical-access").hidden = !!config.public_demo;
+  if (config.public_demo) {
+    words.en.localWorkspace = "Public demonstration workspace";
+    words.es.localWorkspace = "Espacio de demostración público";
+    language();
+  }
   $("technical-access").open = !config.enabled;
 }).catch(() => { $("technical-access").open = true; });
 language();

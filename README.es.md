@@ -24,6 +24,7 @@ Con la aplicación en ejecución, abrir `http://127.0.0.1:8000/`, seleccionar **
 
 | Documento | Propósito |
 |---|---|
+| [Despliegue público](docs/es/public-hosting.md) | Perfil gratuito, separación de credenciales y validación en proveedores |
 | [Seguridad y carga medida](docs/es/hardening.md) | Controles operativos, resiliencia, mediciones y metas pendientes |
 | [Espacio de revisión humana](docs/es/human-review.md) | Acceso web, asignación, decisiones, reconstrucción de informes y demo |
 | [Flujo de IA con evidencia](docs/es/ai-workflow.md) | Roles, validación, configuración de OpenAI, costos y límites de comparación |

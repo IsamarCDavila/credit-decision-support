@@ -1,7 +1,9 @@
+import os
 from datetime import datetime
 from decimal import Decimal
 from functools import lru_cache
 from typing import Literal
+from urllib.parse import urlsplit
 from uuid import UUID
 
 from pydantic import BaseModel, Field, SecretStr, model_validator
@@ -37,9 +39,32 @@ class Settings(BaseSettings):
     demo_requests_per_minute: int = Field(default=8, ge=1, le=60)
     db_statement_timeout_ms: int = Field(default=15000, ge=100, le=120000)
     db_lock_timeout_ms: int = Field(default=5000, ge=100, le=30000)
+    public_demo: bool = False
+    public_origin: str | None = None
 
     @model_validator(mode="after")
     def validate_configuration(self) -> "Settings":
+        if self.public_demo:
+            origin = urlsplit(self.public_origin or "")
+            if (
+                origin.scheme != "https"
+                or not origin.hostname
+                or origin.username
+                or origin.password
+                or origin.path not in ("", "/")
+                or origin.query
+                or origin.fragment
+            ):
+                raise ValueError("Public demo requires an explicit HTTPS origin")
+            if (
+                self.llm_live_enabled
+                or (self.openai_api_key and self.openai_api_key.get_secret_value())
+                or self.demo_identities
+            ):
+                raise ValueError(
+                    "Public demo forbids provider keys, live models, and static identities"
+                )
+            self.public_origin = (self.public_origin or "").rstrip("/")
         if not self.database_url.get_secret_value().startswith("postgresql+psycopg://"):
             raise ValueError("PostgreSQL with psycopg is required")
         if any(len(token) < 24 for token in self.demo_identities):
@@ -49,4 +74,5 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
-    return Settings()  # type: ignore[call-arg]
+    public = os.environ.get("CDS_PUBLIC_DEMO", "").lower() in {"true", "1", "yes", "on"}
+    return Settings(_env_file=None if public else ".env")  # type: ignore[call-arg]
