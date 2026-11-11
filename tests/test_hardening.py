@@ -10,7 +10,6 @@ import pytest
 from conftest import auth
 from evaluate_hardening import timings, wilson
 from sqlalchemy import text
-from sqlalchemy.engine import make_url
 from sqlalchemy.exc import DBAPIError, OperationalError
 from test_worker import add_job
 
@@ -122,16 +121,28 @@ def test_worker_restarts_in_new_process_without_duplicate_effects(database):
         conn.execute(
             text("UPDATE jobs SET lease_until=now()-interval '1 second' WHERE id=:id"), {"id": job}
         )
-    url = make_url(os.environ["CDS_TEST_ADMIN_URL"]).set(username="cds_runtime")
-    env = {**os.environ, "CDS_DATABASE_URL": url.render_as_string(hide_password=False)}
+    env = {**os.environ, "CDS_DATABASE_URL": os.environ["CDS_TEST_ADMIN_URL"]}
+    # Test clusters intentionally use a NOLOGIN runtime role. Match the fixture's
+    # SET ROLE connection hook rather than granting new login privileges.
+    bootstrap = """
+from sqlalchemy import event
+from credit_support.db import get_engine
+from credit_support.worker import main
+def runtime_connection(connection, _record):
+    connection.execute('SET ROLE cds_runtime')
+    connection.commit()
+event.listen(get_engine(), 'connect', runtime_connection)
+main()
+"""
     for _ in range(2):
         completed = subprocess.run(
-            [sys.executable, "-m", "credit_support.worker", "--once"],
+            [sys.executable, "-c", bootstrap, "--once"],
             env=env,
             capture_output=True,
             timeout=20,
         )
         assert completed.returncode == 0, "Worker subprocess failed"
+        assert b"worker_database_unavailable" not in completed.stderr
     with database.connect() as conn:
         row = conn.execute(text("SELECT status,attempts FROM jobs WHERE id=:id"), {"id": job}).one()
         assert tuple(row) == ("SUCCEEDED", 2)

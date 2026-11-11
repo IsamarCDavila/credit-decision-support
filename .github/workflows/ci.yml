@@ -50,7 +50,7 @@ jobs:
           path: storage/ci-hardening.json
           if-no-files-found: ignore
       - if: always()
-        run: docker compose down
+        run: if [ -f .env ]; then docker compose down; fi
   secrets:
     runs-on: ubuntu-latest
     permissions:
