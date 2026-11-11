@@ -14,6 +14,12 @@ The MVP supports SME cases in USD, full annual periods, and standalone financial
 
 With the application running, open `http://127.0.0.1:8000/`, select **Try demo**, and choose Analyst, Reviewer, or Auditor. Each session includes its own fictitious case and supports role switching, evidence inspection, and report exports. No token copying or OpenAI usage is required. One visitor can simulate all three roles; this does not demonstrate separation between real people. See the [guided demo](docs/guided-demo.md).
 
+## Project walkthrough
+
+[Presentation, architecture, screenshots, and narration](docs/presentation.md) · [Español](docs/es/presentation.md)
+
+![Guided credit-analysis workspace](docs/media/02-analysis.en.webp)
+
 ## Documentation
 
 | Document | Purpose |

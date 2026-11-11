@@ -14,6 +14,12 @@ El MVP admite expedientes PyME en USD, periodos anuales completos y estados fina
 
 Con la aplicación en ejecución, abrir `http://127.0.0.1:8000/`, seleccionar **Probar demo** y elegir Analista, Revisor o Auditor. Cada sesión incluye un expediente ficticio propio y permite cambiar de rol, revisar evidencia y exportar informes. No requiere copiar tokens ni consume OpenAI. La misma persona puede simular los tres roles; no demuestra separación entre personas reales. Consultar la [demo guiada](docs/es/guided-demo.md).
 
+## Recorrido del proyecto
+
+[Presentación, arquitectura, capturas y narración](docs/es/presentation.md) · [English](docs/presentation.md)
+
+![Espacio guiado de análisis crediticio](docs/media/02-analysis.es.webp)
+
 ## Documentación
 
 | Documento | Propósito |

@@ -1,0 +1,51 @@
+[
+  {
+    "start_seconds": 0,
+    "end_seconds": 5,
+    "scene": "01-entry",
+    "title": "Evidence before decisions",
+    "caption": "Synthetic credit analysis. Guided roles. No real credit authorization."
+  },
+  {
+    "start_seconds": 5,
+    "end_seconds": 12,
+    "scene": "02-analysis",
+    "title": "01  Understand the analysis",
+    "caption": "150,000 / 100,000 = DSCR 1.5000. Policy outcome and human review stay separate."
+  },
+  {
+    "start_seconds": 12,
+    "end_seconds": 20,
+    "scene": "03-evidence",
+    "title": "02  Follow the evidence",
+    "caption": "Each verified amount links to a retained source and an exact row/column locator."
+  },
+  {
+    "start_seconds": 20,
+    "end_seconds": 29,
+    "scene": "04-review",
+    "title": "03  Record a reasoned assessment",
+    "caption": "A different simulated actor requests more information. The reason is retained verbatim."
+  },
+  {
+    "start_seconds": 29,
+    "end_seconds": 38,
+    "scene": "05-audit",
+    "title": "04  Trace and export",
+    "caption": "The event chain retains the review. PDF/JSON exports preserve the verified snapshot."
+  },
+  {
+    "start_seconds": 38,
+    "end_seconds": 45,
+    "scene": "architecture",
+    "title": "How the system works",
+    "caption": "Models propose; code validates and calculates. A separate human endpoint records review."
+  },
+  {
+    "start_seconds": 45,
+    "end_seconds": 50,
+    "scene": "evidence",
+    "title": "Measured scope",
+    "caption": "Small mock cohort. No production reliability or model-superiority claim."
+  }
+]

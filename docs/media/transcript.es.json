@@ -1,0 +1,51 @@
+[
+  {
+    "start_seconds": 0,
+    "end_seconds": 5,
+    "scene": "01-entry",
+    "title": "Evidencia antes de decidir",
+    "caption": "Análisis crediticio sintético. Roles guiados. Sin autorización de créditos reales."
+  },
+  {
+    "start_seconds": 5,
+    "end_seconds": 12,
+    "scene": "02-analysis",
+    "title": "01  Comprende el análisis",
+    "caption": "150.000 / 100.000 = DSCR 1.5000. La política y la revisión son estados separados."
+  },
+  {
+    "start_seconds": 12,
+    "end_seconds": 20,
+    "scene": "03-evidence",
+    "title": "02  Consulta la evidencia",
+    "caption": "Cada importe verificado conduce a una fuente conservada y su fila/columna exacta."
+  },
+  {
+    "start_seconds": 20,
+    "end_seconds": 29,
+    "scene": "04-review",
+    "title": "03  Registra una evaluación con motivo",
+    "caption": "Otro actor simulado solicita información. El motivo se conserva sin reescritura."
+  },
+  {
+    "start_seconds": 29,
+    "end_seconds": 38,
+    "scene": "05-audit",
+    "title": "04  Consulta y exporta",
+    "caption": "La auditoría conserva la revisión. PDF/JSON retienen la instantánea verificada."
+  },
+  {
+    "start_seconds": 38,
+    "end_seconds": 45,
+    "scene": "architecture",
+    "title": "Cómo funciona el sistema",
+    "caption": "El modelo propone; el código valida y calcula. La revisión humana es separada."
+  },
+  {
+    "start_seconds": 45,
+    "end_seconds": 50,
+    "scene": "evidence",
+    "title": "Alcance medido",
+    "caption": "Muestra sintética pequeña. Sin garantía de producción ni superioridad del modelo."
+  }
+]
