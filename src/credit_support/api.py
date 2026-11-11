@@ -25,7 +25,7 @@ from credit_support.settings import Identity
 
 app = FastAPI(
     title="Credit Decision Support",
-    version="0.6.0",
+    version="0.7.0",
     description=(
         "Synthetic document ingestion, deterministic financial calculations, and versioned "
         "policy checks, and grounded model-assisted drafts for human review."

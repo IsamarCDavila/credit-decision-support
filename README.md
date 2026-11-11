@@ -24,6 +24,7 @@ With the application running, open `http://127.0.0.1:8000/`, select **Try demo**
 
 | Document | Purpose |
 |---|---|
+| [Public deployment](docs/public-hosting.md) | Free-tier profile, credential separation, and provider validation |
 | [Hardening and measured load](docs/hardening.md) | Operational controls, resilience, measurements, and unmet targets |
 | [Human review workspace](docs/human-review.md) | Browser access, assignment, decisions, report reconstruction, and demo |
 | [Grounded AI workflow](docs/ai-workflow.md) | Model roles, source validation, OpenAI setup, costs, and comparison limits |
