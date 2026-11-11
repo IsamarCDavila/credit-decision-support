@@ -11,10 +11,13 @@ from sqlalchemy import Connection, Engine, text
 from credit_support.audit import append_event, canonical
 from credit_support.idempotency import remember, replay
 from credit_support.parsers import FIELDS, PARSER_VERSION, IngestionError, parse_document
+from credit_support.security import authorize
 from credit_support.settings import Identity
 
 
 def require_case(conn: Connection, case_id: UUID, actor: Identity, *, lock: bool = False) -> Any:
+    if actor.demo_session_id is not None:
+        authorize(conn, case_id, actor)
     row = (
         conn.execute(
             text(
@@ -37,6 +40,8 @@ def require_case(conn: Connection, case_id: UUID, actor: Identity, *, lock: bool
 def upload(
     engine: Engine, case_id: UUID, actor: Identity, key: str, data: bytes, media_type: str
 ) -> dict[str, Any]:
+    if actor.demo_session_id is not None:
+        raise HTTPException(403, "Guided demo uses the included synthetic documents")
     if actor.role != "analyst":
         raise HTTPException(403, "Analyst role required")
     with engine.connect() as conn:

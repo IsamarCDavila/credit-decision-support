@@ -3,7 +3,7 @@
   "info": {
     "title": "Credit Decision Support",
     "description": "Synthetic document ingestion, deterministic financial calculations, and versioned policy checks, and grounded model-assisted drafts for human review.",
-    "version": "0.5.0"
+    "version": "0.5.1"
   },
   "paths": {
     "/v1/cases/{id}/documents": {
@@ -1238,6 +1238,103 @@
             }
           }
         }
+      }
+    },
+    "/v1/demo/config": {
+      "get": {
+        "summary": "Demo Config",
+        "operationId": "demo_config_v1_demo_config_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Demo Config V1 Demo Config Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/demo/sessions": {
+      "post": {
+        "summary": "Create Session",
+        "operationId": "create_session_v1_demo_sessions_post",
+        "parameters": [
+          {
+            "name": "X-Demo-Request",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1",
+              "type": "string",
+              "title": "X-Demo-Request"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SessionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/demo/session/end": {
+      "post": {
+        "summary": "End Session",
+        "operationId": "end_session_v1_demo_session_end_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "boolean"
+                  },
+                  "type": "object",
+                  "title": "Response End Session V1 Demo Session End Post"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/healthz": {
@@ -3009,6 +3106,23 @@
             "type": "boolean",
             "const": true,
             "title": "Simulation"
+          },
+          "guided_demo": {
+            "type": "boolean",
+            "title": "Guided Demo",
+            "default": false
+          },
+          "demo_expires_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Demo Expires At"
           }
         },
         "type": "object",
@@ -3229,6 +3343,92 @@
           "policy_fragment_id"
         ],
         "title": "RuleResult"
+      },
+      "SessionRequest": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "analyst",
+              "reviewer",
+              "auditor"
+            ],
+            "title": "Role",
+            "default": "analyst"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "SessionRequest"
+      },
+      "SessionView": {
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Session Id"
+          },
+          "case_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Case Id"
+          },
+          "evaluation_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Evaluation Id"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "analyst",
+              "reviewer",
+              "auditor"
+            ],
+            "title": "Role"
+          },
+          "role_tokens": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "propertyNames": {
+              "enum": [
+                "analyst",
+                "reviewer",
+                "auditor"
+              ]
+            },
+            "type": "object",
+            "title": "Role Tokens"
+          },
+          "simulation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulation",
+            "default": true
+          },
+          "provider": {
+            "type": "string",
+            "const": "mock",
+            "title": "Provider",
+            "default": "mock"
+          }
+        },
+        "type": "object",
+        "required": [
+          "session_id",
+          "case_id",
+          "evaluation_id",
+          "expires_at",
+          "role",
+          "role_tokens"
+        ],
+        "title": "SessionView"
       },
       "ValidationError": {
         "properties": {

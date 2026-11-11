@@ -29,7 +29,11 @@ def run(base_url, output):
         page = client.get("/")
         page.raise_for_status()
         assert "script-src 'self'" in page.headers["content-security-policy"]
-        for asset, media in [("workspace.js", "text/javascript"), ("workspace.css", "text/css")]:
+        for asset, media in [
+            ("workspace.js", "text/javascript"),
+            ("guided-demo.js", "text/javascript"),
+            ("workspace.css", "text/css"),
+        ]:
             response = client.get("/assets/" + asset)
             response.raise_for_status()
             assert response.headers["content-type"].startswith(media)

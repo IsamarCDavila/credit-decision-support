@@ -15,6 +15,7 @@ identities = {
     )
 }
 content = (
+    "CDS_GUIDED_DEMO_ENABLED=true\n"
     f"CDS_DATABASE_PASSWORD={secrets.token_hex(24)}\n"
     f"CDS_RUNTIME_PASSWORD={secrets.token_hex(24)}\n"
     f"CDS_DEMO_IDENTITIES='{json.dumps(identities)}'\n"

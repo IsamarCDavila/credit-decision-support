@@ -10,6 +10,10 @@ Auditable AI-assisted credit analysis with synthetic data, deterministic financi
 
 The MVP supports SME cases in USD, full annual periods, and standalone financial statements. It prepares evidence-backed analysis for a human reviewer. Reports are marked **SIMULATION**; recommendations do not authorize real credit.
 
+## Try the demo
+
+With the application running, open `http://127.0.0.1:8000/`, select **Try demo**, and choose Analyst, Reviewer, or Auditor. Each session includes its own fictitious case and supports role switching, evidence inspection, and report exports. No token copying or OpenAI usage is required. One visitor can simulate all three roles; this does not demonstrate separation between real people. See the [guided demo](docs/guided-demo.md).
+
 ## Documentation
 
 | Document | Purpose |
@@ -53,6 +57,7 @@ uv run python scripts/smoke_ingestion.py
 uv run python scripts/smoke_policy.py
 uv run python scripts/evaluate_ai.py --provider mock --output storage/ai-mock.json
 uv run python scripts/smoke_review.py
+uv run python scripts/smoke_guided_demo.py
 ```
 
 The workspace opens at `http://127.0.0.1:8000/`; interactive API documentation is at `/docs`. Configuration generation creates private local credentials and refuses to overwrite `.env`. See [human review](docs/human-review.md) for signing in and the review workflow, [document ingestion](docs/ingestion.md) for supported inputs, and [foundation operations](docs/foundation.md) for database/identity configuration.

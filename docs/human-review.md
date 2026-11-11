@@ -6,7 +6,7 @@ Phase 5 adds a browser workspace, assigned reviewers/auditors, immutable human d
 
 ## Start and access
 
-Use Python 3.12, uv, and Docker Compose v2 as described in [foundation operations](foundation.md). Existing installations must apply the latest migration; Compose's migration service applies `0005_human_review` before the API starts.
+Use Python 3.12, uv, and Docker Compose v2 as described in [foundation operations](foundation.md). Existing installations must apply the latest migration; Compose's migration service applies `0006_guided_demo` before the API starts.
 
 ```sh
 uv sync --frozen --extra dev
@@ -24,6 +24,8 @@ uv run python scripts/demo_access.py --role auditor --show-token
 ```
 
 Keep those credentials private. The helper hides the token unless `--show-token` is explicitly supplied. The UI holds the entered token in memory, clears the field after sign-in, and clears credentials on sign-out or page reload. Only the language preference is stored in browser local storage. Demo tokens are server-configured identities, not production account sessions or an identity-provider integration.
+
+To explore a prepared case without copying credentials, select **Try demo**. The [guided demo](guided-demo.md) uses isolated sessions and a simulated model. Token-based access above remains available under **Advanced workspace access**.
 
 ## Case workflow
 

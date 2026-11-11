@@ -11,6 +11,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from credit_support.ai_workflow import router as ai_router
 from credit_support.audit import append_event, canonical
 from credit_support.db import get_engine
+from credit_support.demo_api import router as demo_router
 from credit_support.ingestion_api import router as ingestion_router
 from credit_support.limits import RequestSizeLimit
 from credit_support.policy_api import router as policy_router
@@ -22,7 +23,7 @@ from credit_support.settings import Identity
 
 app = FastAPI(
     title="Credit Decision Support",
-    version="0.5.0",
+    version="0.5.1",
     description=(
         "Synthetic document ingestion, deterministic financial calculations, and versioned "
         "policy checks, and grounded model-assisted drafts for human review."
@@ -34,11 +35,14 @@ app.include_router(policy_router)
 app.include_router(ai_router)
 app.include_router(review_router)
 app.include_router(report_router)
+app.include_router(demo_router)
 web_root = Path(__file__).parent / "web"
 
 
 @app.get("/assets/{name}", include_in_schema=False)
-def workspace_asset(name: Literal["workspace.js", "workspace.css"]) -> FileResponse:
+def workspace_asset(
+    name: Literal["workspace.js", "workspace.css", "guided-demo.js"],
+) -> FileResponse:
     return FileResponse(
         web_root / name, media_type=("text/javascript" if name.endswith(".js") else "text/css")
     )
@@ -85,7 +89,7 @@ def health() -> Health:
 def ready() -> Health:
     with get_engine().connect() as conn:
         revision: str = conn.execute(text("SELECT version_num FROM alembic_version")).scalar_one()
-        if revision != "0005_human_review":
+        if revision != "0006_guided_demo":
             raise HTTPException(503, "Database migration required")
     return Health(status="ready")
 
@@ -96,6 +100,8 @@ def create_case(
     actor: Annotated[Identity, Depends(identity)],
     key: Annotated[str, Header(alias="Idempotency-Key", min_length=1, max_length=128)],
 ) -> CaseView:
+    if actor.demo_session_id is not None:
+        raise HTTPException(403, "Guided demo uses its isolated example case")
     if actor.role != "analyst":
         raise HTTPException(403, "Analyst role required")
     payload = body.model_dump(mode="json")

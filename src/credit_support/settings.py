@@ -1,6 +1,8 @@
+from datetime import datetime
 from decimal import Decimal
 from functools import lru_cache
 from typing import Literal
+from uuid import UUID
 
 from pydantic import BaseModel, Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -9,6 +11,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Identity(BaseModel):
     actor_id: str = Field(min_length=1)
     role: str = Field(pattern="^(analyst|reviewer|auditor|admin)$")
+    demo_session_id: UUID | None = None
+    demo_expires_at: datetime | None = None
 
 
 class Settings(BaseSettings):
@@ -26,6 +30,10 @@ class Settings(BaseSettings):
     llm_budget_usd: Decimal = Field(default=Decimal("2.00"), gt=0, le=2)
     llm_max_calls: int = Field(default=64, ge=1, le=100)
     llm_timeout_seconds: float = Field(default=60, ge=1, le=120)
+    guided_demo_enabled: bool = False
+    demo_session_ttl_seconds: int = Field(default=1800, ge=60, le=7200)
+    demo_max_active_sessions: int = Field(default=20, ge=1, le=100)
+    demo_max_sessions: int = Field(default=200, ge=1, le=1000)
 
     @model_validator(mode="after")
     def validate_configuration(self) -> "Settings":
